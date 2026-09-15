@@ -1,26 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-outfit: 'Outfit', sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+body { font-family: var(--font-space); }
+.font-display { font-family: var(--font-outfit); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes eq-dance {
+  from { height: 8px; }
+  to   { height: 100%; }
 }
+.eq-bar { animation: eq-dance 0.6s ease-in-out infinite alternate; }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes sparkle-float {
+  0%,100% { transform: translateY(0) rotate(0deg); opacity: .35; }
+  50%      { transform: translateY(-10px) rotate(20deg); opacity: .7; }
 }
+.sparkle { animation: sparkle-float 4s ease-in-out infinite; }
+
+@keyframes timer-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .6; }
+}
+.timer-danger { animation: timer-pulse 0.5s ease-in-out infinite; }
