@@ -505,6 +505,8 @@
   .imp-deco { display: none; }
   .jam-layout { grid-template-columns: 1fr; }
   .srow { grid-template-columns: 90px 1fr 90px; }
+  .hb-two-col { grid-template-columns: 1fr !important; }
+  .hb-resp-grid { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 600px) {
   .rounds-grid { grid-template-columns: 1fr 1fr; }
@@ -515,3 +517,189 @@
   .wall-input-row { flex-direction: column; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   STUDENT TRIBE HANDBOOK — VISUAL DESIGN SYSTEM & EXACT ELEMENTS
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Bubble 3D Typography ── */
+.bubble-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  -webkit-text-stroke: 3px #000;
+  paint-order: stroke fill;
+  text-shadow: 
+    4px 4px 0px #000,
+    6px 6px 0px rgba(0,0,0,0.8);
+}
+
+.bubble-subtitle {
+  font-family: 'Comic Sans MS', 'Outfit', cursive, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 2px #000;
+  paint-order: stroke fill;
+  text-shadow: 3px 3px 0px #000;
+}
+
+/* ── Repeating Diagonal Ribbon Tickers ── */
+.ticker-ribbon {
+  background: var(--yellow);
+  color: #000;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 0;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.ticker-ribbon-lime {
+  background: var(--lime);
+}
+.ticker-content {
+  display: flex;
+  gap: 1.5rem;
+  animation: ribbon-scroll 20s linear infinite;
+}
+@keyframes ribbon-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Retro Polaroid & Taped Photo Cards ── */
+.polaroid-card {
+  background: #FFF;
+  padding: 10px 10px 24px 10px;
+  border-radius: 4px;
+  border: 2px solid #000;
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.9);
+  position: relative;
+  transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s;
+}
+.polaroid-card:hover {
+  transform: scale(1.04) rotate(0deg) !important;
+  box-shadow: 8px 8px 0px rgba(0,0,0,1);
+  z-index: 10;
+}
+.tape-strip {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 70px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  border: 1px dashed rgba(0,0,0,0.25);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  z-index: 5;
+}
+
+/* ── Mac OS Browser / Application Window Mockup ── */
+.mac-window {
+  background: #FFF;
+  border: 3px solid #000;
+  border-radius: 12px;
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.9);
+  overflow: hidden;
+  color: #000;
+}
+.mac-window-header {
+  background: #EFEFEF;
+  border-bottom: 2px solid #000;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mac-window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+.mac-dot-red { background: #FF5F56; }
+.mac-dot-yellow { background: #FFBD2E; }
+.mac-dot-green { background: #27C93F; }
+
+/* ── Responsibility Badges & Pills ── */
+.hb-pill {
+  border: 2.5px solid #000;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  box-shadow: 4px 4px 0px #000;
+  transition: transform 0.2s var(--ease-bounce), box-shadow 0.2s;
+}
+.hb-pill:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+}
+.hb-pill-yellow {
+  background: var(--yellow);
+  color: #000;
+}
+.hb-pill-cyan {
+  background: #00FFD1;
+  color: #000;
+}
+.hb-pill-lime {
+  background: var(--lime);
+  color: #000;
+}
+.hb-pill-purple {
+  background: #7B2FFF;
+  color: #FFF;
+}
+
+/* ── Big Corner Number Badges ── */
+.hb-num-badge {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 0.8;
+  -webkit-text-stroke: 3px #000;
+  paint-order: stroke fill;
+  text-shadow: 4px 4px 0px #000;
+}
+.num-yellow { color: var(--yellow); }
+.num-cyan { color: #00FFD1; }
+.num-lime { color: var(--lime); }
+.num-purple { color: #7B2FFF; }
+
+/* ── Multi-Colored Fluid Wave Dividers ── */
+.fluid-waves {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+}
+.fluid-wave-bar {
+  height: 12px;
+  width: 100%;
+}
+
+/* ── QR Code Component Box ── */
+.qr-box {
+  background: #FFF;
+  border: 2.5px solid #000;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 4px 4px 0px #000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+

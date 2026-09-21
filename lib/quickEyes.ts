@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { uniqueChannelName } from '@/lib/realtime'
 
 export type QEPhase = 'idle' | 'visual' | 'timer' | 'question' | 'closed' | 'revealed'
 
@@ -80,7 +81,7 @@ export async function fetchQuickEyesState(): Promise<QERoundState | null> {
 export function subscribeToQuickEyesRound(onChange: () => void): () => void {
   const supabase = createClient()
   const channel = supabase
-    .channel('quick-eyes-round-sync')
+    .channel(uniqueChannelName('quick-eyes-round-sync'))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'rounds' }, onChange)
     .subscribe()
   return () => { supabase.removeChannel(channel) }
@@ -125,7 +126,7 @@ export async function fetchMyAttempt(roundId: string, userId: string) {
 export function subscribeToQuickEyesAttempts(roundId: string, onChange: () => void): () => void {
   const supabase = createClient()
   const channel = supabase
-    .channel(`quick-eyes-attempts-${roundId}`)
+    .channel(uniqueChannelName(`quick-eyes-attempts-${roundId}`))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'player_attempts', filter: `round_id=eq.${roundId}` }, onChange)
     .subscribe()
   return () => { supabase.removeChannel(channel) }

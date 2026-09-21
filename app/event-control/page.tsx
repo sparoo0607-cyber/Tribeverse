@@ -203,7 +203,7 @@ export default function AdminGamesManagerPage() {
  <p className="text-xs font-bold text-white/40 font-display uppercase tracking-widest mb-2">Per-Round Controllers</p>
  <div className="flex flex-wrap gap-2">
  <Link
- href="/admin/games/playground/quick-eyes"
+ href="/event-control/playground/quick-eyes"
  className="px-3 py-2 bg-[#1A6FFF]/20 hover:bg-[#1A6FFF]/30 border border-[#1A6FFF]/40 text-[#1A6FFF] rounded-xl text-xs font-black font-display uppercase transition-colors"
  >
  Quick Eyes →
@@ -214,6 +214,18 @@ export default function AdminGamesManagerPage() {
  </span>
  ))}
  </div>
+ </div>
+ )}
+
+ {st.slug ==='detective'&& (
+ <div className="mt-4 pt-4 border-t border-white/10">
+ <p className="text-xs font-bold text-white/40 font-display uppercase tracking-widest mb-2">Round-by-Round Controller</p>
+ <Link
+ href="/event-control/detective"
+ className="inline-block px-3 py-2 bg-[#00FFD1]/20 hover:bg-[#00FFD1]/30 border border-[#00FFD1]/40 text-[#00FFD1] rounded-xl text-xs font-black font-display uppercase transition-colors"
+ >
+ Role Assignment & 5 Rounds →
+ </Link>
  </div>
  )}
 

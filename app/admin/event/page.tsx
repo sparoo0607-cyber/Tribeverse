@@ -76,7 +76,7 @@ export default function AdminEventControlPage() {
 
  {/* Link to per-stage controller */}
  <Link
- href="/admin/games"
+ href="/event-control"
  className="block bg-white/[0.03] border border-white/10 hover:border-[#FFE600]/40 p-6 rounded-2xl transition-all"
  >
  <h3 className="text-lg font-black text-white font-display">Lock / Go Live / Reveal per Stage</h3>

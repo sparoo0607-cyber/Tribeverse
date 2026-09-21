@@ -36,11 +36,14 @@ export async function GET(request: NextRequest) {
  .single()
 
  if (profile?.role ==='admin') {
- return NextResponse.redirect(`${origin}/admin `)
+ return NextResponse.redirect(`${origin}/admin`)
+ }
+ if (profile?.role ==='host') {
+ return NextResponse.redirect(`${origin}/event-flow`)
  }
  return NextResponse.redirect(`${origin}${next}`)
  }
  }
 
- return NextResponse.redirect(`${origin}/login?error=auth_failed `)
+ return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }

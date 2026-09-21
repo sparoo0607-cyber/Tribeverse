@@ -1,6 +1,6 @@
 // lib/types.ts
 
-export type UserRole ='student'|'admin'
+export type UserRole ='student'|'admin'|'host'
 
 export interface Profile {
  id: string

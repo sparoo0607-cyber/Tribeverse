@@ -76,7 +76,7 @@ export default function QuickEyesAdminPage() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-2 text-xs text-white/40 font-display">
-        <Link href="/admin/games" className="hover:text-white">Game Manager</Link>
+        <Link href="/event-control" className="hover:text-white">Event Control</Link>
         <span>/</span>
         <span className="text-white/70">Quick Eyes</span>
       </div>
@@ -91,7 +91,7 @@ export default function QuickEyesAdminPage() {
         <h1 className="text-3xl font-black text-white font-display">Quick Eyes Controller</h1>
         <p className="text-white/60 text-xs mt-1">Observation round · every phase change pushes instantly to student phones and the projector display.</p>
         <Link
-          href="/admin/display/playground/quick-eyes"
+          href="/display/playground/quick-eyes"
           target="_blank"
           className="inline-block mt-3 text-xs font-bold text-[#FFE600] hover:underline font-display"
         >

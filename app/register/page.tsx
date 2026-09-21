@@ -34,95 +34,62 @@ export default function RegisterPage() {
     setSuccess('')
 
     try {
-      // 1. Generate a unique Student Pass ID
-      const passSuffix = Math.floor(1000 + Math.random() * 9000)
-      const studentId = `ST-2026-TRB-${passSuffix}`
-
-      // 2. Sign up user in Supabase Auth
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            student_id: studentId,
-            phone: phone,
-            college: college,
-            assigned_round: selectedRound,
-            role: 'student',
-          },
-        },
+      // 1. Call server-side registration API (Pre-confirms email & bypasses rate limits)
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+          phone,
+          college,
+          assignedRound: selectedRound,
+          role: 'student',
+        }),
       })
 
-      if (signUpError) {
-        // If user already exists, try signing in directly
-        if (signUpError.message.toLowerCase().includes('already registered') || signUpError.message.toLowerCase().includes('exists')) {
+      const data = await res.json()
+
+      if (!res.ok) {
+        // If account already exists, attempt instant sign in
+        if (data.exists || data.error?.toLowerCase().includes('already') || data.error?.toLowerCase().includes('exists')) {
           const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
           if (signInError) {
-            throw new Error('Account already exists. Please sign in with your password.')
+            throw new Error('Account already registered. Please sign in with your password.')
           }
-          // Signed in successfully
           router.push('/dashboard/pass?welcome=true')
           return
         }
-        throw signUpError
+        throw new Error(data.error || 'Registration failed')
       }
 
-      const user = authData?.user
-      if (user) {
-        // 3. Upsert Profile
-        await supabase.from('profiles').upsert({
-          id: user.id,
-          full_name: fullName,
-          student_id: studentId,
-          role: 'student',
-        })
-
-        // 4. Assign to a team if teams exist
-        const { data: teams } = await supabase.from('teams').select('id, name, team_number').order('team_number')
-        if (teams && teams.length > 0) {
-          // Randomly or sequentially pick a team
-          const pickedTeam = teams[Math.floor(Math.random() * teams.length)]
-          await supabase.from('team_members').upsert({
-            team_id: pickedTeam.id,
-            user_id: user.id,
-            assigned_round: selectedRound,
-          }, { onConflict: 'user_id' })
-        }
-
-        // 5. Store pass metadata in local storage for fast instant load
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('tribeverse_pass_data', JSON.stringify({
-            fullName,
-            studentId,
-            college,
-            phone,
-            assignedRound: selectedRound,
-            email,
-          }))
-        }
-
-        // 6. Check if email confirmation is required or if session is active
-        if (authData.session) {
-          setSuccess('Registration complete! Generating your Event Pass…')
-          setTimeout(() => {
-            router.push('/dashboard/pass?welcome=true')
-          }, 600)
-        } else {
-          // Auto sign in to establish session
-          const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password })
-          if (!signInErr) {
-            router.push('/dashboard/pass?welcome=true')
-          } else {
-            setSuccess('Registration successful! Please check your email or proceed to Login.')
-            setTimeout(() => {
-              router.push('/login')
-            }, 1200)
-          }
-        }
-      } else {
-        router.push('/login')
+      // 2. Save local pass metadata for fast loading
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('tribeverse_pass_data', JSON.stringify({
+          fullName,
+          studentId: data.user?.studentId,
+          college,
+          phone,
+          assignedRound: selectedRound,
+          email,
+        }))
       }
+
+      // 3. Immediately log the student in
+      const { error: loginErr } = await supabase.auth.signInWithPassword({ email, password })
+      if (loginErr) {
+        setSuccess('Registration successful! Redirecting to login…')
+        setTimeout(() => {
+          router.push('/login')
+        }, 800)
+        return
+      }
+
+      setSuccess('Registration complete! Generating your Event Pass…')
+      setTimeout(() => {
+        router.push('/dashboard/pass?welcome=true')
+      }, 500)
     } catch (err: any) {
       setError(err.message || 'Failed to register. Please try again.')
     } finally {

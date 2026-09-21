@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { uniqueChannelName } from '@/lib/realtime'
 
 export interface RevealedAnswer {
  title: string
@@ -148,7 +149,7 @@ export async function fetchStageStates(): Promise<Record<string, StageState>>{
 export function subscribeToStageChanges(onChange: () =>void): () =>void {
  const supabase = createClient()
  const channel = supabase
- .channel('activities-sync')
+ .channel(uniqueChannelName('activities-sync'))
  .on('postgres_changes', { event: '*', schema: 'public', table: 'activities'}, onChange)
  .subscribe()
  return () =>{ supabase.removeChannel(channel) }
@@ -210,7 +211,7 @@ export async function fetchLatestBroadcast(): Promise<BroadcastNotification | nu
 export function subscribeToBroadcasts(onNew: (b: BroadcastNotification) =>void): () =>void {
  const supabase = createClient()
  const channel = supabase
- .channel('broadcasts-sync')
+ .channel(uniqueChannelName('broadcasts-sync'))
  .on(
 'postgres_changes',
  { event: 'INSERT', schema: 'public', table: 'broadcasts'},
@@ -232,4 +233,28 @@ export function subscribeToBroadcasts(onNew: (b: BroadcastNotification) =>void):
 export async function pushBroadcast(message: string, type: BroadcastNotification['type'] ='info') {
  const supabase = createClient()
  await supabase.from('broadcasts').insert({ message, type })
+}
+
+// Host (Event Flow runner): read the live event row (id + current step).
+export async function fetchEventFlow(): Promise<{ id: string; currentStep: number } | null> {
+ const supabase = createClient()
+ const { data } = await supabase.from('events').select('id, current_step').order('created_at').limit(1).maybeSingle()
+ if (!data) return null
+ return { id: data.id, currentStep: data.current_step ?? 0 }
+}
+
+// Host: advance/rewind the Event Flow for every synced screen.
+export async function setEventFlowStep(eventId: string, step: number) {
+ const supabase = createClient()
+ await supabase.from('events').update({ current_step: step }).eq('id', eventId)
+}
+
+// Subscribe to live cross-device changes on the event row (flow step, status).
+export function subscribeToEventChanges(onChange: () =>void): () =>void {
+ const supabase = createClient()
+ const channel = supabase
+ .channel(uniqueChannelName('event-flow-sync'))
+ .on('postgres_changes', { event: '*', schema: 'public', table: 'events'}, onChange)
+ .subscribe()
+ return () =>{ supabase.removeChannel(channel) }
 }

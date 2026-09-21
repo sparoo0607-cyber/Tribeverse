@@ -281,8 +281,8 @@ function EventPassContent() {
               <div className="flex items-center gap-2.5 text-white/70">
                 <span className="text-base">📅</span>
                 <div>
-                  <span className="text-[10px] text-white/40 uppercase font-bold block">Date & Time</span>
-                  <strong>Wednesday, Sep 23, 2026 · 09:00 AM IST</strong>
+                  <span className="text-[10px] text-white/40 uppercase font-bold block">Event Date</span>
+                  <strong>Wednesday, Sep 23, 2026</strong>
                 </div>
               </div>
 

@@ -57,11 +57,11 @@ export default function AdminDashboardPage() {
  <h2 className="text-xl font-black text-white font-display">Quick Stage Actions</h2>
  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
  {[
- { name: 'Playground', route: '/admin/games', color: '#1A6FFF'},
- { name: 'Detective', route: '/admin/games', color: '#00FFD1'},
+ { name: 'Playground', route: '/event-control', color: '#1A6FFF'},
+ { name: 'Detective', route: '/event-control/detective', color: '#00FFD1'},
  { name: 'Lunch Break', route: '/admin/event', color: '#FF6B1A'},
- { name: 'Arcade', route: '/admin/games', color: '#7B2FFF'},
- { name: 'Impossible', route: '/admin/games', color: '#FF2D87'},
+ { name: 'Jam', route: '/event-flow#jam', color: '#7B2FFF'},
+ { name: 'Wall', route: '/event-flow#wall', color: '#D4FF00'},
  { name: 'Reveal', route: '/admin/reveal', color: '#FFE600'},
  ].map((act, i) =>(
  <Link

@@ -1,0 +1,107 @@
+/* ============================================================
+   EVENT FLOW — incremental styles on top of landing.css
+   (topnav, journey stepper, expandable control panels)
+   ============================================================ */
+
+.ef-topnav {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+.ef-topnav-inner {
+  max-width: 1400px; margin: 0 auto;
+  height: 58px; display: flex; align-items: center; justify-content: space-between;
+}
+.ef-topnav-logo { display: flex; align-items: baseline; gap: 6px; }
+.ef-topnav-st { font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--yellow); }
+.ef-topnav-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.ef-topnav-center { font-family: var(--font-display); font-size: 0.75rem; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+.ef-topnav-right { display: flex; align-items: center; gap: 12px; }
+.ef-live-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(0,194,122,0.15); color: #00E68A; border: 1px solid rgba(0,194,122,0.35); }
+.ef-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #00E68A; animation: badge-pulse 1.6s ease-in-out infinite; }
+.ef-exit-btn { font-family: var(--font-display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; padding: 6px 16px; transition: color 0.2s, border-color 0.2s, background 0.2s; }
+.ef-exit-btn:hover { color: #fff; border-color: rgba(255,45,45,0.5); background: rgba(255,45,45,0.1); }
+
+/* ── Journey stepper ── */
+.ef-journey-sec { background: var(--dark); padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem); }
+.ef-journey-inner { max-width: 760px; margin: 0 auto; }
+.ef-journey-title { font-family: var(--font-display); font-size: clamp(0.75rem, 1.5vw, 0.9rem); font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.35); text-align: center; margin-bottom: 3rem; }
+.ef-journey-list { display: flex; flex-direction: column; }
+.ef-journey-item { display: flex; align-items: center; gap: 1.25rem; padding: 0.9rem 0; position: relative; text-decoration: none; }
+.ef-journey-item::before {
+  content: ""; position: absolute; left: 23px; top: -0.2rem; bottom: -0.2rem; width: 2px;
+  background: rgba(255,255,255,0.12);
+}
+.ef-journey-item:first-child::before { top: 50%; }
+.ef-journey-item:last-child::before { bottom: 50%; }
+.ef-journey-num {
+  position: relative; z-index: 2;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 900; font-size: 1rem;
+  background: #16181D; border: 2px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.25s;
+  flex-shrink: 0;
+}
+.ef-journey-item:hover .ef-journey-num { transform: scale(1.08); border-color: var(--yellow); color: var(--yellow); }
+.ef-journey-item.ef-live .ef-journey-num { border-color: #00E68A; color: #00E68A; background: rgba(0,230,138,0.1); }
+.ef-journey-item.ef-done .ef-journey-num { border-color: rgba(212,255,0,0.5); color: var(--lime); background: rgba(212,255,0,0.06); }
+.ef-journey-name { font-family: var(--font-display); font-weight: 800; font-size: clamp(1rem, 2.2vw, 1.3rem); color: rgba(255,255,255,0.85); letter-spacing: 0.01em; }
+.ef-journey-item:hover .ef-journey-name { color: #fff; }
+.ef-journey-status { margin-left: auto; font-family: var(--font-display); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.ef-journey-item.ef-live .ef-journey-status { color: #00E68A; }
+.ef-journey-item.ef-done .ef-journey-status { color: var(--lime); }
+
+/* ── Section anchor offset (sticky topnav) ── */
+.ef-anchor { scroll-margin-top: 58px; }
+
+/* ── Open/close control affordance ── */
+.ef-open-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-size: 0.8rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.25);
+  padding: 12px 26px; border-radius: 100px; cursor: pointer;
+  transition: transform 0.25s var(--ease-bounce), background 0.25s, border-color 0.25s;
+  position: relative; z-index: 2;
+}
+.ef-open-btn:hover { transform: scale(1.04); background: rgba(255,255,255,0.18); }
+.ef-open-btn.ef-active { background: var(--yellow); color: #000; border-color: var(--yellow); }
+
+/* ── Expandable live control panel ── */
+.ef-panel {
+  position: relative; z-index: 2;
+  margin-top: 2.5rem;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  backdrop-filter: blur(10px);
+  animation: ef-panel-in 0.35s var(--ease-out);
+}
+@keyframes ef-panel-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ef-panel-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+
+/* Generic control button set reused inside panels */
+.ef-btn {
+  font-family: var(--font-display); font-weight: 900; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
+  transition: transform 0.15s, background 0.2s, border-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.ef-btn:hover:not(:disabled) { transform: translateY(-1px); background: rgba(255,255,255,0.14); }
+.ef-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.ef-btn-primary { background: var(--yellow); color: #000; border-color: var(--yellow); }
+.ef-btn-primary:hover:not(:disabled) { background: var(--lime); }
+.ef-btn-live { background: #00C27A; color: #000; border-color: #00C27A; }
+.ef-btn-danger { background: rgba(255,45,45,0.15); color: #FF8080; border-color: rgba(255,45,45,0.3); }
+
+@media (max-width: 700px) {
+  .ef-topnav-center { display: none; }
+  .ef-journey-name { font-size: 0.95rem; }
+}

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
-  const [tab, setTab] = useState<'student' | 'admin'>('student')
+  const [tab, setTab] = useState<'student' | 'admin' | 'host'>('student')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -16,29 +16,51 @@ export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
 
+  function redirectFor(role: string | undefined) {
+    if (role === 'admin') router.push('/admin')
+    else if (role === 'host') router.push('/event-flow')
+    else router.push('/dashboard/pass?welcome=true')
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     if (isSignUp) {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            role: tab === 'admin' ? 'admin' : 'student',
-          },
-        },
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+          role: tab,
+        }),
       })
-      if (signUpError) {
-        setError(signUpError.message)
+
+      const registerData = await res.json()
+      if (!res.ok && !registerData.exists) {
+        setError(registerData.error || 'Sign up failed')
         setLoading(false)
         return
       }
-      setError('Check your email for the confirmation link!')
-      setLoading(false)
+
+      // Automatically sign in
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+      if (signInError) {
+        setError(signInError.message)
+        setLoading(false)
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', signInData.user.id)
+        .single()
+
+      redirectFor(profile?.role ?? tab)
       return
     }
 
@@ -56,11 +78,7 @@ export default function LoginPage() {
       .eq('id', data.user.id)
       .single()
 
-    if (profile?.role === 'admin') {
-      router.push('/admin')
-    } else {
-      router.push('/dashboard/pass?welcome=true')
-    }
+    redirectFor(profile?.role)
   }
 
   return (
@@ -117,7 +135,7 @@ export default function LoginPage() {
 
         {/* Tab Switcher */}
         <div className="flex rounded-2xl bg-white/5 border border-white/10 p-1 mb-6">
-          {(['student', 'admin'] as const).map((t) => (
+          {(['student', 'admin', 'host'] as const).map((t) => (
             <button
               key={t}
               onClick={() => {
@@ -128,12 +146,14 @@ export default function LoginPage() {
                 tab === t
                   ? t === 'admin'
                     ? 'bg-[#FF2D87] text-white shadow-lg'
+                    : t === 'host'
+                    ? 'bg-[#7B2FFF] text-white shadow-lg'
                     : 'bg-[#1A6FFF] text-white shadow-lg'
                   : 'text-white/40 hover:text-white/70'
               }`}
               style={{ fontFamily: 'Outfit,sans-serif' }}
             >
-              {t === 'student' ? 'Student Login' : 'Admin Login'}
+              {t === 'student' ? 'Student Login' : t === 'admin' ? 'Admin Login' : 'Host Login'}
             </button>
           ))}
         </div>
@@ -171,7 +191,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={tab === 'admin' ? 'admin@studenttribe.in' : 'student@college.edu'}
+                placeholder={tab === 'admin' ? 'admin@studenttribe.in' : tab === 'host' ? 'host@studenttribe.in' : 'student@college.edu'}
                 required
                 className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-[#1A6FFF] transition-colors"
               />
@@ -214,6 +234,8 @@ export default function LoginPage() {
               } ${
                 tab === 'admin'
                   ? 'bg-[#FF2D87] text-white shadow-[0_8px_32px_rgba(255,45,135,0.3)]'
+                  : tab === 'host'
+                  ? 'bg-[#7B2FFF] text-white shadow-[0_8px_32px_rgba(123,47,255,0.3)]'
                   : 'bg-[#FFE600] text-black shadow-[0_8px_32px_rgba(255,230,0,0.25)]'
               }`}
               style={{ fontFamily: 'Outfit,sans-serif' }}
@@ -224,6 +246,8 @@ export default function LoginPage() {
                 ? 'Create Account'
                 : tab === 'admin'
                 ? 'Admin Login'
+                : tab === 'host'
+                ? 'Host Login'
                 : 'Sign In & View Pass'}
             </button>
           </form>

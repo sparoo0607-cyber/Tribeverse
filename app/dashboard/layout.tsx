@@ -12,6 +12,7 @@ const NAV = [
   { href: '/dashboard/pass', label: 'Event Pass', icon: '🎟️' },
   { href: '/dashboard/event', label: 'Event Guide', icon: '📖' },
   { href: '/dashboard/play', label: 'Play Arena', icon: '🎮' },
+  { href: '/dashboard/bonus/cipher-hunt', label: 'Bonus: Cipher Hunt', icon: '🔍' },
   { href: '/dashboard/leaderboard', label: 'Leaderboard', icon: '🏆' },
   { href: '/dashboard/wall', label: 'Tribe Wall', icon: '💬' },
   { href: '/dashboard/profile', label: 'My Profile', icon: '👤' },

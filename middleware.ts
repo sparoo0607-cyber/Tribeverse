@@ -22,12 +22,21 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
 
-  // Public routes — no auth needed
+  // API routes manage their own auth (e.g. /api/auth/register runs
+  // unauthenticated with the service-role key) — never gate them here.
+  if (pathname.startsWith('/api/')) {
+    return supabaseResponse
+  }
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Public routes — no auth needed. /display is the passive projector/LED
+  // screen (event_state is public-readable) — it's meant to be opened on a
+  // venue laptop without anyone signing in.
   const publicRoutes = ['/', '/login', '/register', '/auth/callback']
-  if (publicRoutes.includes(pathname)) {
+  if (publicRoutes.includes(pathname) || pathname.startsWith('/display')) {
     return supabaseResponse
   }
 
@@ -44,15 +53,22 @@ export async function middleware(request: NextRequest) {
     .single()
 
   const role = profile?.role || 'student'
+  const homeFor = (r: string) => (r === 'admin' ? '/admin' : r === 'host' ? '/event-flow' : '/dashboard')
 
-  // Student trying to access admin routes → redirect to dashboard
-  if (pathname.startsWith('/admin') && role !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Only admins may access the admin desk or the per-stage Event Control cockpit
+  if ((pathname.startsWith('/admin') || pathname.startsWith('/event-control')) && role !== 'admin') {
+    return NextResponse.redirect(new URL(homeFor(role), request.url))
   }
 
-  // Admin trying to access student dashboard → redirect to admin
+  // The one-page Event Flow cockpit: admins and hosts both run the show from here
+  if (pathname.startsWith('/event-flow') && role !== 'admin' && role !== 'host') {
+    return NextResponse.redirect(new URL(homeFor(role), request.url))
+  }
+
+  // Admins use the admin desk instead; students and hosts (who embed the
+  // live stage pages inside the Event Flow cockpit) may both view it
   if (pathname.startsWith('/dashboard') && role === 'admin') {
-    return NextResponse.redirect(new URL('/admin', request.url))
+    return NextResponse.redirect(new URL(homeFor(role), request.url))
   }
 
   return supabaseResponse

@@ -6,12 +6,17 @@ import { createClient } from '@/lib/supabase/client'
 
 const NAV = [
  { href: '/admin', label: 'Control Center', icon: ''},
- { href: '/admin/event', label: 'Event Control', icon: ''},
+ { href: '/admin/event', label: 'Global Event State', icon: ''},
  { href: '/admin/teams', label: 'Teams', icon: ''},
- { href: '/admin/games', label: 'Game Manager', icon: ''},
  { href: '/admin/scores', label: 'Live Scores', icon: ''},
  { href: '/admin/monitor', label: 'Monitor', icon: ''},
  { href: '/admin/reveal', label: 'Reveal Control', icon: ''},
+]
+
+const EXTERNAL_NAV = [
+ { href: '/event-flow', label: 'Event Flow (One-Page Cockpit)', icon: ''},
+ { href: '/event-control', label: 'Event Control (Per-Stage Cockpit)', icon: ''},
+ { href: '/display', label: 'Display / Projector Screen', icon: ''},
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -68,6 +73,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  </li>
  )
  })}
+ </ul>
+ <p className="px-4 mt-6 mb-2 text-[10px] font-bold text-white/30 uppercase tracking-widest">Event Day Tools</p>
+ <ul className="space-y-1">
+ {EXTERNAL_NAV.map(item =>(
+ <li key={item.href}>
+ <Link href={item.href} onClick={()=>setSidebarOpen(false)}
+ className="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all font-display text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/10">
+ <span className="text-xl">{item.icon}</span> {item.label}
+ </Link>
+ </li>
+ ))}
  </ul>
  </nav>
  <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06]">
