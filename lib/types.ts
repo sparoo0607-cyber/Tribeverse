@@ -3,12 +3,34 @@
 export type UserRole ='student'|'admin'|'host'
 
 export interface Profile {
- id: string
- full_name: string
- student_id?: string
- role: UserRole
- avatar_url?: string
- created_at: string
+  id: string
+  full_name: string
+  student_id?: string
+  role: UserRole
+  phone?: string
+  branch?: string
+  section?: string
+  tag_issued?: boolean
+  tag_issued_at?: string
+  avatar_url?: string
+  created_at: string
+}
+
+export interface TeamMemberCard {
+  id: string
+  slug?: string
+  name: string
+  teamIdBadge: string
+  role: string
+  branch: string
+  college?: string
+  location?: string
+  phone?: string
+  experience: string
+  avatarUrl?: string | null
+  linkedinUrl?: string | null
+  instagramUrl?: string | null
+  category?: 'Lead' | 'Tech' | 'Operations' | 'Design' | 'Host' | 'Core' | string
 }
 
 export interface Team {

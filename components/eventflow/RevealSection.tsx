@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import StageRow from './StageRow'
 import { setStageStatus } from '@/lib/stageStore'
 
 const LINES = [
@@ -27,51 +28,45 @@ export default function RevealSection({ status }: { status: string }) {
   }
 
   return (
-    <section className="section reveal-final ef-anchor" id="reveal">
-      <div className="rf-bg"></div>
-      <div className="section-inner rf-inner">
-        <div className="sec-num light-num" aria-hidden="true">08</div>
-        <div className="rf-header">
-          <span className="rf-label">TRIBEVERSE REVEAL</span>
-        </div>
-        <div className="rf-lines">
-          {LINES.slice(0, open ? revealedCount : LINES.length).map((line, i) => (
-            <p key={i} className={`rf-line ${i === LINES.length - 1 ? 'rf-highlight' : ''}`}>{line}</p>
-          ))}
-        </div>
-
-        {status === 'completed' && (
-          <>
-            <div className="rf-divider"></div>
-            <div className="rf-welcome show">
-              <h2 className="rf-welcome-title">WELCOME TO TRIBEVERSE.</h2>
-              <p className="rf-welcome-sub">YOUR JOURNEY STARTS HERE.</p>
-              <div className="rf-logo">
-                <span className="rfl-st">st.</span>
-                <span className="rfl-txt">Student Tribe</span>
-              </div>
+    <div className="ef-anchor" id="reveal">
+      <StageRow
+        num="08"
+        color="dark"
+        title="Tribeverse Reveal"
+        desc="You came as strangers. Now you leave as a tribe."
+        sideNote="Same Tribe. Bigger World"
+        sideIcon="🚀"
+      >
+        <div className="efb-card-head">🎬 Final Sequence</div>
+        <div className="efb-card-body">
+          <div className="efb-slide-preview">
+            <button className="efb-slide-arrow" onClick={() => setRevealedCount((c) => Math.max(1, c - 1))} disabled={revealedCount === 1}>←</button>
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <div className="efb-slide-meta">Slide {revealedCount} of {LINES.length}</div>
+              <div className="efb-slide-title">{LINES[revealedCount - 1]}</div>
             </div>
-          </>
-        )}
-
-        <div style={{ marginTop: '3rem' }}>
-          <button onClick={() => setOpen((v) => !v)} className={`ef-open-btn ${open ? 'ef-active' : ''}`}>
-            {open ? '✕ Close Control' : '▶ Run Cinematic Reveal'}
-          </button>
+            <button className="efb-slide-arrow" onClick={() => setRevealedCount((c) => Math.min(LINES.length, c + 1))} disabled={revealedCount === LINES.length}>→</button>
+          </div>
+        </div>
+        <div className="efb-card-foot">
+          <button className="efb-btn-play dark" onClick={() => setOpen((v) => !v)}>▶ Play Sequence</button>
+          <button className="efb-btn-full" onClick={() => setOpen((v) => !v)}>{open ? 'Close Full Control' : 'Open Full Control'}</button>
         </div>
 
         {open && (
-          <div className="ef-panel" style={{ textAlign: 'left', maxWidth: 480, marginInline: 'auto' }}>
-            <p className="ef-panel-label">Line {revealedCount} / {LINES.length}</p>
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <button className="ef-btn" onClick={() => setRevealedCount((c) => Math.max(1, c - 1))} disabled={revealedCount === 1}>← Back</button>
-              <button className="ef-btn ef-btn-primary" onClick={() => setRevealedCount((c) => Math.min(LINES.length, c + 1))} disabled={revealedCount === LINES.length}>Next Line →</button>
+          <div className="efb-detail">
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
               <button className="ef-btn ef-btn-live" disabled={busy || status === 'completed'} onClick={activateFinal}>Activate Final Reveal</button>
               <Link href="/admin/scores" target="_blank" className="ef-btn">View Final Leaderboard →</Link>
             </div>
+            {status === 'completed' && (
+              <p style={{ marginTop: '1rem', color: 'var(--lime)', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '0.8rem', letterSpacing: '0.05em' }}>
+                WELCOME TO TRIBEVERSE. YOUR JOURNEY STARTS HERE.
+              </p>
+            )}
           </div>
         )}
-      </div>
-    </section>
+      </StageRow>
+    </div>
   )
 }

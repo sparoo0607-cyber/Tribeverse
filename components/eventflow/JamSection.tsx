@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import StageRow from './StageRow'
 import { fetchJamQueue, subscribeToJamQueue, startNext, pauseCurrent, removeFromQueue, JamEntry } from '@/lib/jam'
 
 export default function JamSection() {
-  const [open, setOpen] = useState(false)
   const [nowPlaying, setNowPlaying] = useState<JamEntry | null>(null)
   const [upNext, setUpNext] = useState<JamEntry[]>([])
   const [busy, setBusy] = useState(false)
@@ -27,69 +27,47 @@ export default function JamSection() {
   }
 
   return (
-    <section className="section jam-sec ef-anchor" id="jam">
-      <div className="jam-wavy-top"></div>
-      <div className="section-inner">
-        <div className="sec-num" aria-hidden="true">06</div>
-        <div className="jam-header">
-          <h2 className="sec-title jam-t">TRIBE JAM</h2>
-          <p className="jam-sub">Music. Expression. Vibes. This is the beat of TRIBEVERSE.</p>
-        </div>
-        <div className="jam-layout">
-          <div className="jam-visual">
-            <div className="equalizer">
-              {Array.from({ length: 12 }).map((_, i) => <div key={i} className="eq-bar"></div>)}
-            </div>
-          </div>
-          <div className="jam-info">
-            <div className="jd">
-              <span className="ji">🎤</span>
-              <div>
-                <strong>Now Playing</strong>
-                <p>{nowPlaying ? `${nowPlaying.title}${nowPlaying.artist ? ' — ' + nowPlaying.artist : ''}${nowPlaying.teamName ? ` (${nowPlaying.teamName})` : ''}` : 'Nobody yet — hit Start on the queue below.'}</p>
+    <div className="ef-anchor" id="jam">
+      <StageRow
+        num="06"
+        color="red"
+        title="Tribe Jam"
+        desc="Music. People. Energy. The stage is yours."
+        sideNote="Good Music. Brighter People"
+        sideIcon="🎵"
+      >
+        <div className="efb-card-head">🎤 Live Queue</div>
+        <div className="efb-card-body">
+          <div className="efb-queue">
+            {nowPlaying && (
+              <div className="efb-queue-row">
+                <span className="efb-queue-idx">1</span>
+                <span className="efb-queue-name">{nowPlaying.title}</span>
+                <span className="efb-queue-sub">{nowPlaying.artist}</span>
+                <span className="efb-tag efb-tag-now">Now</span>
               </div>
-            </div>
-            <div className="jd">
-              <span className="ji">🎶</span>
-              <div>
-                <strong>Up Next ({upNext.length})</strong>
-                <p>{upNext.slice(0, 3).map((s) => s.title).join(' · ') || 'Queue is empty'}</p>
+            )}
+            {upNext.slice(0, 4).map((s, i) => (
+              <div key={s.id} className="efb-queue-row">
+                <span className="efb-queue-idx">{i + (nowPlaying ? 2 : 1)}</span>
+                <span className="efb-queue-name">{s.title}</span>
+                <span className="efb-queue-sub">{s.artist}</span>
+                <span className={`efb-tag ${i === 0 ? 'efb-tag-next' : 'efb-tag-queue'}`}>{i === 0 ? 'Up Next' : 'In Queue'}</span>
+                <button className="ef-btn ef-btn-danger" style={{ padding: '3px 10px', fontSize: '0.6rem' }} onClick={() => removeFromQueue(s.id)}>Remove</button>
               </div>
-            </div>
+            ))}
+            {!nowPlaying && upNext.length === 0 && (
+              <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem' }}>Queue is empty.</p>
+            )}
           </div>
         </div>
-
-        <div style={{ textAlign: 'center', position: 'relative', zIndex: 2, marginTop: '2.5rem' }}>
-          <button onClick={() => setOpen((v) => !v)} className={`ef-open-btn ${open ? 'ef-active' : ''}`}>
-            {open ? '✕ Close Control' : '▶ Open Control'}
+        <div className="efb-card-foot">
+          <button className="efb-btn-play red" disabled={busy || upNext.length === 0} onClick={handleNext}>
+            ▶ {nowPlaying ? 'Call Next' : 'Start'}
           </button>
+          <button className="efb-btn-full" disabled={busy || !nowPlaying} onClick={() => pauseCurrent()}>⏸ Pause</button>
         </div>
-
-        {open && (
-          <div className="ef-panel">
-            <p className="ef-panel-label">Queue Controller</p>
-            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <button className="ef-btn ef-btn-primary" disabled={busy || upNext.length === 0} onClick={handleNext}>
-                {nowPlaying ? 'Next →' : 'Start →'}
-              </button>
-              <button className="ef-btn" disabled={busy || !nowPlaying} onClick={() => pauseCurrent()}>Pause</button>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {upNext.map((s, i) => (
-                <div key={s.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: '0.6rem 1rem' }}>
-                  <span style={{ color: '#fff', fontSize: '0.85rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.4)', marginRight: 8 }}>{String(i + 1).padStart(2, '0')}</span>
-                    {s.title}{s.artist ? ` — ${s.artist}` : ''}{s.teamName ? ` (${s.teamName})` : ''}
-                  </span>
-                  <button className="ef-btn ef-btn-danger" style={{ padding: '4px 12px' }} onClick={() => removeFromQueue(s.id)}>Remove</button>
-                </div>
-              ))}
-              {upNext.length === 0 && <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem' }}>No songs queued.</p>}
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="jam-wavy-bottom"></div>
-    </section>
+      </StageRow>
+    </div>
   )
 }

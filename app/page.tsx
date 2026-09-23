@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import './landing.css'
+import TeamCard from '@/components/TeamCard'
+import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
 
 interface Note {
  id: number
@@ -69,6 +71,7 @@ export default function LandingPage() {
  <li><a href="#detective" className="nav-link" onClick={() => setMenuOpen(false)}>Detective</a></li>
  <li><a href="#jam" className="nav-link" onClick={() => setMenuOpen(false)}>Jam</a></li>
  <li><a href="#wall" className="nav-link" onClick={() => setMenuOpen(false)}>Wall</a></li>
+ <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
  <li><a href="#reveal" className="nav-link" onClick={() => setMenuOpen(false)}>Reveal</a></li>
  <li>
  <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
@@ -506,7 +509,38 @@ export default function LandingPage() {
  </div>
  </section>
 
- {/* ── 10. TRIBEVERSE REVEAL ── */}
+ {/* ── 10. TRIBE LEADERSHIP & SQUAD (HOVER SHOWCASE) ── */}
+ <section className="section py-20 px-4 relative z-10 max-w-7xl mx-auto w-full" id="team">
+ <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+ <span className="inline-block px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
+ ✦ THE SQUAD BEHIND TRIBEVERSE
+ </span>
+ <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-display">
+ MEET THE <span className="text-[#FFE600]">TRIBE TEAM</span>
+ </h2>
+ <p className="text-white/60 text-xs sm:text-sm max-w-xl mx-auto">
+ Hover on the ID cards to explore team member roles, branches, experience, and direct LinkedIn & Instagram profiles.
+ </p>
+ </div>
+
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+ {TRIBE_TEAM_MEMBERS.map((member) => (
+ <TeamCard key={member.id} member={member} />
+ ))}
+ </div>
+
+ <div className="text-center mt-10">
+ <Link
+ href="/team"
+ className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs uppercase tracking-wider font-display transition-all hover:scale-105"
+ >
+ <span>View Full Team Directory & Connect</span>
+ <span>→</span>
+ </Link>
+ </div>
+ </section>
+
+ {/* ── 11. TRIBEVERSE REVEAL ── */}
  <section className="section reveal-final" id="reveal">
  <div className="rf-bg"></div>
  <div className="rf-particles" aria-hidden="true">

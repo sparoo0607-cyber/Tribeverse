@@ -5,12 +5,13 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 const NAV = [
- { href: '/admin', label: 'Control Center', icon: ''},
- { href: '/admin/event', label: 'Global Event State', icon: ''},
- { href: '/admin/teams', label: 'Teams', icon: ''},
- { href: '/admin/scores', label: 'Live Scores', icon: ''},
- { href: '/admin/monitor', label: 'Monitor', icon: ''},
- { href: '/admin/reveal', label: 'Reveal Control', icon: ''},
+  { href: '/admin', label: 'Control Center', icon: '⚡' },
+  { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: '📷' },
+  { href: '/admin/teams', label: 'Teams & Roster', icon: '👥' },
+  { href: '/admin/event', label: 'Global Event State', icon: '🌐' },
+  { href: '/admin/scores', label: 'Live Scores', icon: '🏆' },
+  { href: '/admin/monitor', label: 'Monitor', icon: '📊' },
+  { href: '/admin/reveal', label: 'Reveal Control', icon: '✨' },
 ]
 
 const EXTERNAL_NAV = [

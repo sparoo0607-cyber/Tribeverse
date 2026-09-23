@@ -16,7 +16,15 @@ const ROUND_NAMES: Record<number, string> = {
 import { Suspense } from 'react'
 
 function EventPassContent() {
-  const [profile, setProfile] = useState<{ full_name: string; student_id?: string; email?: string } | null>(null)
+  const [profile, setProfile] = useState<{ 
+    full_name: string; 
+    student_id?: string; 
+    email?: string;
+    branch?: string;
+    section?: string;
+    phone?: string;
+    tag_issued?: boolean;
+  } | null>(null)
   const [team, setTeam] = useState<{ name: string; team_number: number; color: string; total_score: number } | null>(null)
   const [assignedRound, setAssignedRound] = useState<number>(3)
   const [copied, setCopied] = useState(false)
@@ -41,8 +49,11 @@ function EventPassContent() {
             const parsed = JSON.parse(cached)
             setProfile({
               full_name: parsed.fullName || 'Rohan Varma',
-              student_id: parsed.studentId || 'ST-2026-TITAN-03',
+              student_id: parsed.studentId || 'ST-2026-TRB-1001',
               email: parsed.email,
+              branch: parsed.branch,
+              section: parsed.section,
+              phone: parsed.phone,
             })
             if (parsed.assignedRound) setAssignedRound(parsed.assignedRound)
           } catch (e) {}
@@ -56,8 +67,12 @@ function EventPassContent() {
         if (!profile) {
           setProfile({
             full_name: 'Rohan Varma',
-            student_id: 'ST-2026-TITAN-03',
+            student_id: 'ST-2026-TRB-1001',
             email: 'rohan.varma@studenttribe.in',
+            branch: 'CSE (Computer Science)',
+            section: 'Section A',
+            phone: '9876543210',
+            tag_issued: false,
           })
           setTeam({
             name: 'Team Titans',
@@ -75,8 +90,12 @@ function EventPassContent() {
       if (p) {
         setProfile({
           full_name: p.full_name,
-          student_id: p.student_id || `ST-2026-TRB-${user.id.substring(0, 4).toUpperCase()}`,
+          student_id: p.student_id || user.user_metadata?.student_id || `ST-2026-TRB-${user.id.substring(0, 4).toUpperCase()}`,
           email: user.email,
+          branch: p.branch || user.user_metadata?.branch,
+          section: p.section || user.user_metadata?.section,
+          phone: p.phone || user.user_metadata?.phone,
+          tag_issued: p.tag_issued || false,
         })
       }
 
@@ -251,27 +270,43 @@ function EventPassContent() {
             </div>
 
             {/* Grid of Event Data */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
+                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Branch & Section</span>
+                <strong className="text-xs font-black text-white font-display mt-1 block truncate">
+                  {profile?.branch || 'CSE'} · {profile?.section || 'Sec A'}
+                </strong>
+              </div>
+
               <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
                 <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Assigned Team</span>
                 <div className="flex items-center gap-1.5 mt-1">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: teamColor }}></span>
-                  <strong className="text-sm font-black text-white font-display truncate">{teamName}</strong>
+                  <strong className="text-xs font-black text-white font-display truncate">{teamName}</strong>
                 </div>
               </div>
 
               <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Assigned Ability</span>
+                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Arena Ability</span>
                 <strong className="text-xs font-bold text-[#FFE600] font-display mt-1 block truncate">
                   {ROUND_NAMES[assignedRound] || `Round ${assignedRound}`}
                 </strong>
               </div>
 
-              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl col-span-2 sm:col-span-1">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Status</span>
+              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
+                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Physical Tag</span>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
-                  <strong className="text-xs font-bold text-green-400 font-display">CONFIRMED & ACTIVE</strong>
+                  {profile?.tag_issued ? (
+                    <>
+                      <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                      <strong className="text-xs font-black text-green-400 font-display">🏷️ ISSUED</strong>
+                    </>
+                  ) : (
+                    <>
+                      <span className="w-2 h-2 rounded-full bg-[#FFE600] animate-pulse"></span>
+                      <strong className="text-xs font-bold text-[#FFE600] font-display">SCAN AT ENTRY</strong>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

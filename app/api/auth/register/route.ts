@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { email, password, fullName, phone, college, assignedRound, role = 'student' } = body
+    const { email, password, fullName, phone, branch, section, role = 'student' } = body
 
     if (!email || !password) {
       return Response.json({ error: 'Email and password are required' }, { status: 400 })
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const passSuffix = Math.floor(1000 + Math.random() * 9000)
     const studentId = `ST-2026-TRB-${passSuffix}`
 
-    // 1. Create user with email_confirm: true (Never sends email, avoids all rate limits)
+    // 1. Create user with email_confirm: true (Pre-confirms email, avoids all rate limits & verification walls)
     const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -37,9 +37,10 @@ export async function POST(request: Request) {
         full_name: fullName || 'Tribe Member',
         student_id: studentId,
         phone: phone || '',
-        college: college || '',
-        assigned_round: assignedRound || 3,
+        branch: branch || '',
+        section: section || '',
         role: role,
+        tag_issued: false,
       },
     })
 
@@ -55,12 +56,26 @@ export async function POST(request: Request) {
 
     // 2. Insert / Upsert Profile in profiles table
     if (user) {
-      await supabaseAdmin.from('profiles').upsert({
-        id: user.id,
-        full_name: fullName || 'Tribe Member',
-        student_id: studentId,
-        role: role,
-      })
+      try {
+        await supabaseAdmin.from('profiles').upsert({
+          id: user.id,
+          full_name: fullName || 'Tribe Member',
+          student_id: studentId,
+          phone: phone || '',
+          branch: branch || '',
+          section: section || '',
+          tag_issued: false,
+          role: role,
+        })
+      } catch (e) {
+        // Fallback for base profile if custom columns aren't migrated yet
+        await supabaseAdmin.from('profiles').upsert({
+          id: user.id,
+          full_name: fullName || 'Tribe Member',
+          student_id: studentId,
+          role: role,
+        })
+      }
 
       // 3. Assign to a team if teams exist
       const { data: teams } = await supabaseAdmin.from('teams').select('id, name, team_number').order('team_number')
@@ -69,7 +84,7 @@ export async function POST(request: Request) {
         await supabaseAdmin.from('team_members').upsert({
           team_id: pickedTeam.id,
           user_id: user.id,
-          assigned_round: assignedRound || 3,
+          assigned_round: Math.floor(1 + Math.random() * 5),
         }, { onConflict: 'user_id' })
       }
     }
@@ -79,7 +94,11 @@ export async function POST(request: Request) {
       user: {
         id: user.id,
         email: user.email,
+        fullName: fullName || 'Tribe Member',
         studentId,
+        phone: phone || '',
+        branch: branch || '',
+        section: section || '',
       },
     })
   } catch (err: any) {
