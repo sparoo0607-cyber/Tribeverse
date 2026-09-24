@@ -28,6 +28,7 @@ export interface TeamMemberCard {
   phone?: string
   experience: string
   avatarUrl?: string | null
+  backAvatarUrl?: string | null
   linkedinUrl?: string | null
   instagramUrl?: string | null
   category?: 'Lead' | 'Tech' | 'Operations' | 'Design' | 'Host' | 'Core' | string

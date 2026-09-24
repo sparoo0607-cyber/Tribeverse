@@ -12,7 +12,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Tagarapuvalasa",
     "phone": "7.416777852E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (Tagarapuvalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/1.png",
+    "avatarUrl": "/id-cards-v2/nithin-reddy-jeeru-front.png",
+    "backAvatarUrl": "/id-cards-v2/nithin-reddy-jeeru-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/nithin-reddy-jeeru-a68b35380?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/nithin_reddy__06_?stkn=MWRlczF4ZTRxY3c5aw==",
     "category": "Lead"
@@ -28,7 +29,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "P.M.Palem",
     "phone": "9.86607847E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (P.M.Palem). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/22.png",
+    "avatarUrl": "/id-cards-v2/varun-ramisetty-front.png",
+    "backAvatarUrl": "/id-cards-v2/varun-ramisetty-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/varun-ramisetty-2oo8?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/varun_v_2008?stkn=eW4zZmNya2cxZWlz",
     "category": "Operations"
@@ -44,7 +46,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Kancharapalem",
     "phone": "8.341374037E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (Kancharapalem). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/14.png",
+    "avatarUrl": "/id-cards-v2/praveen-raj-savarapu-front.png",
+    "backAvatarUrl": "/id-cards-v2/praveen-raj-savarapu-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/praveen-raj-savarapu-b418a6395?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/the_praaveen?stkn=N2ZsaXd0ZHZuNnJi",
     "category": "Operations"
@@ -60,7 +63,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Akkayapalem",
     "phone": "7.893956533E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (Akkayapalem). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/11.png",
+    "avatarUrl": "/id-cards-v2/karakana-siva-sai-anudeep-front.png",
+    "backAvatarUrl": "/id-cards-v2/karakana-siva-sai-anudeep-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/anudeep-karakana-984b23420?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/anudeeep.3?stkn=MWZxNmhvdTJxYnhhaQ==",
     "category": "Operations"
@@ -76,7 +80,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Sangivalasa",
     "phone": "8.790726339E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (Sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/4.png",
+    "avatarUrl": "/id-cards-v2/kotni-reshma-front.png",
+    "backAvatarUrl": "/id-cards-v2/kotni-reshma-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/reshma-kotni-b85660321/",
     "instagramUrl": "https://www.instagram.com/reshma__kotni_/",
     "category": "Core"
@@ -92,7 +97,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Sangivalasa",
     "phone": "9.491521412E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (Sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/10.png",
+    "avatarUrl": "/id-cards-v2/kokkili-laxmi-front.png",
+    "backAvatarUrl": "/id-cards-v2/kokkili-laxmi-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/laxmikokkili1221",
     "instagramUrl": null,
     "category": "Core"
@@ -108,7 +114,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Tagarapuvalasa",
     "phone": "9.03056903E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (Tagarapuvalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/7.png",
+    "avatarUrl": "/id-cards-v2/jyostna-mayee-sahu-front.png",
+    "backAvatarUrl": "/id-cards-v2/jyostna-mayee-sahu-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/jyostnamayeesahu",
     "instagramUrl": null,
     "category": "Core"
@@ -124,7 +131,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Pm palem",
     "phone": "9.966730844E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (Pm palem). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/5.png",
+    "avatarUrl": "/id-cards-v2/karubothu-yaswanth-front.png",
+    "backAvatarUrl": "/id-cards-v2/karubothu-yaswanth-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/yaswanth-k-02562b3b0?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/yaswanth__000?stkn=MXE3OHo4eGh2MDMwZg==&utm_source=ig_contact_invite",
     "category": "Operations"
@@ -140,7 +148,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "pendurthi",
     "phone": "8.309290045E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (pendurthi). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/18.png",
+    "avatarUrl": "/id-cards-v2/pilla-purnendra-pathrudu-front.png",
+    "backAvatarUrl": "/id-cards-v2/pilla-purnendra-pathrudu-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/purnendra-pilla-a2a0ba3a0?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/mr__devil53?stkn=MW8yZ3FoN3hueGc2dw==",
     "category": "Operations"
@@ -156,7 +165,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Tagarapuvalasa",
     "phone": "9.491263939E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (Tagarapuvalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/8.png",
+    "avatarUrl": "/id-cards-v2/boddepalli-somanaadhan-front.png",
+    "backAvatarUrl": "/id-cards-v2/boddepalli-somanaadhan-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/somanaadhan-boddepalli-017080396?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/somu_boddepalli?stkn=bmhybjd6YTFoMWk4",
     "category": "Tech"
@@ -172,7 +182,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "srikakulam",
     "phone": "9.391190959E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and sciences (srikakulam). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/3.png",
+    "avatarUrl": "/id-cards-v2/raghupatruni-santhwana-front.png",
+    "backAvatarUrl": "/id-cards-v2/raghupatruni-santhwana-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/santhwana-undefined-808b02396?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/santhwana_sagar?stkn=cnQyb3l1aXZwaHIx",
     "category": "Core"
@@ -188,7 +199,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "kopperla",
     "phone": "9.381316553E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of technology and sciences (kopperla). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/6.png",
+    "avatarUrl": "/id-cards-v2/krovvidi-sameera-front.png",
+    "backAvatarUrl": "/id-cards-v2/krovvidi-sameera-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/sameera-k-6133b5400?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": null,
     "category": "Design"
@@ -204,7 +216,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "srikakulam",
     "phone": "7.386544538E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of technology and sciences (srikakulam). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/9.png",
+    "avatarUrl": "/id-cards-v2/kondala-sonali-front.png",
+    "backAvatarUrl": "/id-cards-v2/kondala-sonali-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/sonali-k-b67192401?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/sonalirohan_?stkn=bml0NnE4NXBoejRy",
     "category": "Design"
@@ -220,7 +233,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "sangivalasa",
     "phone": "6.303321896E9",
     "experience": "Official Student Tribe College Ambassador representing Anil neerukonda institute of technology and sciences (sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/17.png",
+    "avatarUrl": "/id-cards-v2/m-dhanush-kumar-front.png",
+    "backAvatarUrl": "/id-cards-v2/m-dhanush-kumar-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/medisetti-dhanush-9814a4381?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/dhanu_0318?stkn=dDd3MTdqMzNnaG85",
     "category": "Design"
@@ -236,7 +250,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Sangivalasa",
     "phone": "6.309389573E9",
     "experience": "Official Student Tribe College Ambassador representing Anil neerukonda institute of technology and sciences (Sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/13.png",
+    "avatarUrl": "/id-cards-v2/m-purnakanth-front.png",
+    "backAvatarUrl": "/id-cards-v2/m-purnakanth-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/purna-kanth-m-959b65383/",
     "instagramUrl": "https://www.instagram.com/_______chandu_______76/",
     "category": "Core"
@@ -252,7 +267,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Sangivalasa",
     "phone": "8.121381457E9",
     "experience": "Official Student Tribe College Ambassador representing Anil neerukonda institute of technology and sciences (Sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/19.png",
+    "avatarUrl": "/id-cards-v2/k-manas-front.png",
+    "backAvatarUrl": "/id-cards-v2/k-manas-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/manas-komma-8595ba423?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/manas_555_?stkn=OGlhd3oxd2gzMGdn",
     "category": "Core"
@@ -268,7 +284,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Sangivalasa",
     "phone": "9.381128773E9",
     "experience": "Official Student Tribe College Ambassador representing Anil neerukonda institute of technology and sciences (Sangivalasa). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/12.png",
+    "avatarUrl": "/id-cards-v2/sarika-manoj-front.png",
+    "backAvatarUrl": "/id-cards-v2/sarika-manoj-back.png",
     "linkedinUrl": null,
     "instagramUrl": "https://www.instagram.com/_manoj_sarika/",
     "category": "Core"
@@ -284,7 +301,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Visakhapatnam",
     "phone": "7.794800102E9",
     "experience": "Official Student Tribe College Ambassador representing Anil neerukonda institute of technology and sciences (Visakhapatnam). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/16.png",
+    "avatarUrl": "/id-cards-v2/bobbadi-vamsi-rithvik-front.png",
+    "backAvatarUrl": "/id-cards-v2/bobbadi-vamsi-rithvik-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/vamsi-rithvik-265105381?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": "https://www.instagram.com/vammmsii._?stkn=MTVqMDQ2ZHNjYzZ2eQ==",
     "category": "Core"
@@ -300,7 +318,8 @@ export const TRIBE_TEAM_MEMBERS: TeamMemberCard[] = [
     "location": "Pedawaltair",
     "phone": "9.059961049E9",
     "experience": "Official Student Tribe College Ambassador representing Anil Neerukonda Institute of Technology and Sciences (Pedawaltair). Spearheading Tribeverse engagement and campus community leadership.",
-    "avatarUrl": "/id-cards/15.png",
+    "avatarUrl": "/id-cards-v2/barla-maanasa-reddy-front.png",
+    "backAvatarUrl": "/id-cards-v2/barla-maanasa-reddy-back.png",
     "linkedinUrl": "https://www.linkedin.com/in/barla-maanasa-reddy2812?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     "instagramUrl": null,
     "category": "Core"

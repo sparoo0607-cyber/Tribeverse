@@ -7,16 +7,20 @@ import { TeamMemberCard } from '@/lib/types'
 
 interface TeamCardProps {
   member: TeamMemberCard
+  index?: number
 }
 
-export default function TeamCard({ member }: TeamCardProps) {
+export default function TeamCard({ member, index = 0 }: TeamCardProps) {
   const [imageError, setImageError] = useState(false)
+  const [backImageError, setBackImageError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [qrModalOpen, setQrModalOpen] = useState(false)
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('')
   const [copied, setCopied] = useState(false)
+  const [flipped, setFlipped] = useState(false)
 
   const profilePath = `/team/${member.id}`
+  const hasBack = !!member.backAvatarUrl && !backImageError
 
   useEffect(() => {
     if (qrModalOpen && !qrCodeDataUrl) {
@@ -39,24 +43,54 @@ export default function TeamCard({ member }: TeamCardProps) {
 
   return (
     <>
-      <div className="group relative w-full h-[450px] rounded-3xl overflow-hidden bg-[#10141D] border border-white/10 hover:border-[#FFE600] transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(255,230,0,0.3)] flex flex-col justify-end">
-        
-        {/* Background ID Card Image */}
-        <div className="absolute inset-0 w-full h-full bg-[#151A26] overflow-hidden flex items-center justify-center">
-          {!imageError && member.avatarUrl ? (
-            <img
-              src={member.avatarUrl}
-              alt={member.name}
-              onError={() => setImageError(true)}
-              className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 filter brightness-95 group-hover:brightness-105"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1E2433] to-[#0D1017] text-white/40 p-6 text-center">
-              <span className="text-6xl font-black text-[#FFE600]/50 font-display">
-                {member.name.charAt(0)}
-              </span>
+      <div
+        className="group relative w-full h-[450px] rounded-3xl overflow-hidden bg-[#10141D] border border-white/10 hover:border-[#FFE600] transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(255,230,0,0.3)] flex flex-col justify-end animate-card-in"
+        style={{ animationDelay: `${Math.min(index, 12) * 60}ms` }}
+      >
+
+        {/* Background ID Card Image — flips between front & back on click */}
+        <div className="absolute inset-0 w-full h-full bg-[#151A26] overflow-hidden [perspective:1200px]">
+          <div
+            className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.4,0.2,0.2,1)] [transform-style:preserve-3d] group-hover:scale-105"
+            style={{ transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+          >
+            {/* Front Face */}
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center [backface-visibility:hidden]">
+              {!imageError && member.avatarUrl ? (
+                <img
+                  src={member.avatarUrl}
+                  alt={member.name}
+                  onError={() => setImageError(true)}
+                  className="w-full h-full object-cover object-top filter brightness-95 group-hover:brightness-105 transition-[filter] duration-700"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1E2433] to-[#0D1017] text-white/40 p-6 text-center">
+                  <span className="text-6xl font-black text-[#FFE600]/50 font-display">
+                    {member.name.charAt(0)}
+                  </span>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Back Face */}
+            <div
+              className="absolute inset-0 w-full h-full flex items-center justify-center [backface-visibility:hidden]"
+              style={{ transform: 'rotateY(180deg)' }}
+            >
+              {hasBack ? (
+                <img
+                  src={member.backAvatarUrl!}
+                  alt={`${member.name} — ID back`}
+                  onError={() => setBackImageError(true)}
+                  className="w-full h-full object-cover object-top filter brightness-95 group-hover:brightness-105 transition-[filter] duration-700"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1E2433] to-[#0D1017] text-white/30 text-xs font-mono">
+                  No back side
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Subtle Vignette Gradients */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#080B10] via-[#080B10]/70 to-transparent pointer-events-none" />
@@ -66,6 +100,20 @@ export default function TeamCard({ member }: TeamCardProps) {
         {/* Top Quick Action Icons */}
         <div className="absolute top-4 left-4 right-4 flex items-center justify-end z-10">
           <div className="flex items-center gap-1.5">
+            {/* Flip Card Button */}
+            {hasBack && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setFlipped((f) => !f)
+                }}
+                className="p-1.5 bg-black/80 hover:bg-[#FFE600] hover:text-black text-white text-xs rounded-full backdrop-blur-md border border-white/20 transition-all cursor-pointer shadow-md active:rotate-180 duration-300"
+                title="Flip ID Card"
+              >
+                🔄
+              </button>
+            )}
+
             {/* Quick QR Button */}
             <button
               onClick={(e) => {
@@ -202,7 +250,7 @@ export default function TeamCard({ member }: TeamCardProps) {
                 ✕
               </button>
             </div>
-            <div className="p-2 max-h-[80vh] overflow-y-auto flex items-center justify-center">
+            <div className="p-2 max-h-[80vh] overflow-y-auto flex flex-col items-center justify-center gap-3">
               {member.avatarUrl ? (
                 <img
                   src={member.avatarUrl}
@@ -210,6 +258,13 @@ export default function TeamCard({ member }: TeamCardProps) {
                   className="w-full rounded-2xl object-contain shadow-lg"
                 />
               ) : null}
+              {hasBack && (
+                <img
+                  src={member.backAvatarUrl!}
+                  alt={`${member.name} — ID back`}
+                  className="w-full rounded-2xl object-contain shadow-lg"
+                />
+              )}
             </div>
           </div>
         </div>

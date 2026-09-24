@@ -29,6 +29,11 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('')
   const [profileUrl, setProfileUrl] = useState<string>('')
   const [copied, setCopied] = useState(false)
+  const [flipped, setFlipped] = useState(false)
+
+  useEffect(() => {
+    setFlipped(false)
+  }, [member.id])
 
   useEffect(() => {
     const url = typeof window !== 'undefined' ? `${window.location.origin}/team/${member.id}` : `https://tribeverse.in/team/${member.id}`
@@ -132,20 +137,52 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left: Official ID Card View (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="relative w-full max-w-sm rounded-3xl overflow-hidden bg-[#11141D] border-2 border-[#FFE600] shadow-[0_0_50px_rgba(255,230,0,0.25)] p-2">
-              {member.avatarUrl ? (
-                <img
-                  src={member.avatarUrl}
-                  alt={member.name}
-                  className="w-full rounded-2xl object-cover object-top shadow-xl"
-                />
-              ) : (
-                <div className="aspect-[3/4] flex items-center justify-center bg-white/5 rounded-2xl text-6xl font-black text-[#FFE600]">
-                  {member.name.charAt(0)}
+          <div className="lg:col-span-5 flex flex-col items-center animate-card-in">
+            <div className="relative w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden bg-[#11141D] border-2 border-[#FFE600] shadow-[0_0_50px_rgba(255,230,0,0.25)] p-2 [perspective:1400px]">
+              <div
+                className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.4,0.2,0.2,1)] [transform-style:preserve-3d]"
+                style={{ transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+              >
+                {/* Front */}
+                <div className="absolute inset-0 rounded-2xl overflow-hidden [backface-visibility:hidden]">
+                  {member.avatarUrl ? (
+                    <img
+                      src={member.avatarUrl}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-top shadow-xl"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white/5 text-6xl font-black text-[#FFE600]">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {/* Back */}
+                {member.backAvatarUrl && (
+                  <div
+                    className="absolute inset-0 rounded-2xl overflow-hidden [backface-visibility:hidden]"
+                    style={{ transform: 'rotateY(180deg)' }}
+                  >
+                    <img
+                      src={member.backAvatarUrl}
+                      alt={`${member.name} — ID back`}
+                      className="w-full h-full object-cover object-top shadow-xl"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
+
+            {member.backAvatarUrl && (
+              <button
+                onClick={() => setFlipped((f) => !f)}
+                className="mt-4 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-white/5 hover:bg-[#FFE600] hover:text-black border border-white/10 text-white/80 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <span>🔄</span>
+                <span>{flipped ? 'Show Front' : 'Flip to Back'}</span>
+              </button>
+            )}
 
             <p className="text-[11px] text-white/40 font-mono mt-3 text-center">
               Official Student Tribe Verified Credential
