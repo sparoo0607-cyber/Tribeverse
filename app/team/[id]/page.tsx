@@ -107,7 +107,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
           <div className="flex items-center gap-2 text-xs text-white/50 font-mono">
             <Link href="/team" className="hover:text-white">Tribeverse Squad</Link>
             <span>/</span>
-            <span className="text-[#FFE600] font-bold">{member.teamIdBadge}</span>
+            <span className="text-[#FFE600] font-bold">{member.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -134,11 +134,6 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
           {/* Left: Official ID Card View (5 Cols) */}
           <div className="lg:col-span-5 flex flex-col items-center">
             <div className="relative w-full max-w-sm rounded-3xl overflow-hidden bg-[#11141D] border-2 border-[#FFE600] shadow-[0_0_50px_rgba(255,230,0,0.25)] p-2">
-              <div className="absolute top-4 left-4 z-10">
-                <span className="px-3 py-1 bg-black/80 backdrop-blur-md border border-[#FFE600]/50 rounded-full text-[11px] font-mono font-black text-[#FFE600]">
-                  🆔 {member.teamIdBadge}
-                </span>
-              </div>
               {member.avatarUrl ? (
                 <img
                   src={member.avatarUrl}

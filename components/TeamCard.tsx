@@ -55,21 +55,16 @@ export default function TeamCard({ member }: TeamCardProps) {
               <span className="text-6xl font-black text-[#FFE600]/50 font-display">
                 {member.name.charAt(0)}
               </span>
-              <span className="text-xs font-mono mt-2 text-white/60">{member.teamIdBadge}</span>
             </div>
           )}
-          
+
           {/* Subtle Vignette Gradients */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#080B10] via-[#080B10]/70 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        {/* Top Badges & Quick Action Icons */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-          <span className="px-3 py-1 bg-black/80 backdrop-blur-md border border-[#FFE600]/40 rounded-full text-[11px] font-mono font-black text-[#FFE600] tracking-wider shadow-lg">
-            🆔 {member.teamIdBadge}
-          </span>
-          
+        {/* Top Quick Action Icons */}
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-end z-10">
           <div className="flex items-center gap-1.5">
             {/* Quick QR Button */}
             <button
@@ -198,7 +193,7 @@ export default function TeamCard({ member }: TeamCardProps) {
           >
             <div className="flex items-center justify-between p-3 border-b border-white/10">
               <span className="font-mono text-xs font-bold text-[#FFE600]">
-                🆔 {member.teamIdBadge} · {member.name}
+                {member.name}
               </span>
               <button
                 onClick={() => setModalOpen(false)}
@@ -232,7 +227,7 @@ export default function TeamCard({ member }: TeamCardProps) {
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <span className="font-mono text-xs font-black text-[#FFE600] uppercase">
-                📱 {member.teamIdBadge} QR
+                📱 Individual QR Code
               </span>
               <button
                 onClick={() => setQrModalOpen(false)}

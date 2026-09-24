@@ -34,9 +34,11 @@ export async function middleware(request: NextRequest) {
 
   // Public routes — no auth needed. /display is the passive projector/LED
   // screen (event_state is public-readable) — it's meant to be opened on a
-  // venue laptop without anyone signing in.
+  // venue laptop without anyone signing in. /team is the public ambassador
+  // directory — scanning a member's QR code must open their page directly,
+  // not bounce through login.
   const publicRoutes = ['/', '/login', '/register', '/auth/callback']
-  if (publicRoutes.includes(pathname) || pathname.startsWith('/display')) {
+  if (publicRoutes.includes(pathname) || pathname.startsWith('/display') || pathname.startsWith('/team')) {
     return supabaseResponse
   }
 

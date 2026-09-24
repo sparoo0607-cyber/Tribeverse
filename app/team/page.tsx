@@ -1,17 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
 import TeamCard from '@/components/TeamCard'
 
 const CATEGORIES = ['All', 'Lead', 'Tech', 'Operations', 'Design', 'Host', 'Core'] as const
 
+function shuffle<T>(items: T[]): T[] {
+  const arr = [...items]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 export default function TeamPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [search, setSearch] = useState('')
+  // Start with the source order for a stable server render, then shuffle
+  // client-side after mount to avoid a hydration mismatch.
+  const [shuffledMembers, setShuffledMembers] = useState(TRIBE_TEAM_MEMBERS)
 
-  const filteredMembers = TRIBE_TEAM_MEMBERS.filter((m) => {
+  useEffect(() => {
+    setShuffledMembers(shuffle(TRIBE_TEAM_MEMBERS))
+  }, [])
+
+  const filteredMembers = shuffledMembers.filter((m) => {
     const matchesCat = selectedCategory === 'All' || m.category === selectedCategory
     const matchesSearch =
       m.name.toLowerCase().includes(search.toLowerCase()) ||
