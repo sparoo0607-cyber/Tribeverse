@@ -1,15 +1,16 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import Icon, { IconName } from '@/components/icons/Icon'
 
-const SCHEDULE = [
-  { stage: 'STAGE 01', name: '🎬 Inauguration · Welcome to TRIBEVERSE', type: 'Launch', badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', desc: 'Introduction → Tribe Intro → Team Reveal → Interactive Opening → Launch' },
-  { stage: 'STAGE 02', name: '🎮 Tribe Playground (5 Rounds)', type: 'Playground', badgeBg: 'bg-pink-500/20 text-pink-300 border-pink-500/30', desc: '5 Members · 5 Abilities: Quick Eyes 👀, Quick Draw 🎨, Think Fast 🧠, Sound Check 🎧, Reaction Game ⚡' },
-  { stage: 'STAGE 03', name: '🕵️ The Tribe Detective (5 Rounds)', type: 'Mystery', badgeBg: 'bg-purple-500/20 text-purple-300 border-purple-500/30', desc: 'Secret Roles • Guess • Reveal: Professions, Characters, Superpowers, Campus Roles, Wild Card' },
-  { stage: 'BREAK', name: '🍕 Lunch / Free Tribe Time', type: 'Break', badgeBg: 'bg-green-500/20 text-green-300 border-green-500/30', desc: 'Eat → Talk → Meet New People → Photos → Music → Explore' },
-  { stage: 'STAGE 04', name: '🎹 Tribe Jam', type: 'Music', badgeBg: 'bg-teal-500/20 text-teal-300 border-teal-500/30', desc: 'Keyboard → Guitar → Singing → Open Participation → TRIBE JAM SWITCH' },
-  { stage: 'STAGE 05', name: '🧱 The Tribe Wall', type: 'Interactive', badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', desc: '“BEFORE I GRADUATE, I WANT TO…” — 100 Students → 100 Dreams → One Tribe Wall' },
-  { stage: 'FINALE', name: '🌐 TRIBEVERSE REVEAL', type: 'Finale', badgeBg: 'bg-[#FFE600] text-black font-black', desc: 'You came as strangers. You played together. AND SOMEWHERE ALONG THE WAY... YOU FOUND YOUR TRIBE.' },
+const SCHEDULE: { stage: string; name: string; icon: IconName; type: string; badgeBg: string; desc: string }[] = [
+  { stage: 'STAGE 01', name: 'Inauguration · Welcome to TRIBEVERSE', icon: 'clapperboard', type: 'Launch', badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', desc: 'Introduction → Tribe Intro → Team Reveal → Interactive Opening → Launch' },
+  { stage: 'STAGE 02', name: 'Tribe Playground (5 Rounds)', icon: 'game-controller', type: 'Playground', badgeBg: 'bg-pink-500/20 text-pink-300 border-pink-500/30', desc: '5 Members · 5 Abilities: Quick Eyes, Quick Draw, Think Fast, Sound Check, Reaction Game' },
+  { stage: 'STAGE 03', name: 'The Tribe Detective (5 Rounds)', icon: 'hat', type: 'Mystery', badgeBg: 'bg-purple-500/20 text-purple-300 border-purple-500/30', desc: 'Secret Roles • Guess • Reveal: Professions, Characters, Superpowers, Campus Roles, Wild Card' },
+  { stage: 'BREAK', name: 'Lunch / Free Tribe Time', icon: 'pizza', type: 'Break', badgeBg: 'bg-green-500/20 text-green-300 border-green-500/30', desc: 'Eat → Talk → Meet New People → Photos → Music → Explore' },
+  { stage: 'STAGE 04', name: 'Tribe Jam', icon: 'piano', type: 'Music', badgeBg: 'bg-teal-500/20 text-teal-300 border-teal-500/30', desc: 'Keyboard → Guitar → Singing → Open Participation → TRIBE JAM SWITCH' },
+  { stage: 'STAGE 05', name: 'The Tribe Wall', icon: 'brick', type: 'Interactive', badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', desc: '“BEFORE I GRADUATE, I WANT TO…” — 100 Students → 100 Dreams → One Tribe Wall' },
+  { stage: 'FINALE', name: 'TRIBEVERSE REVEAL', icon: 'globe', type: 'Finale', badgeBg: 'bg-[#FFE600] text-black font-black', desc: 'You came as strangers. You played together. AND SOMEWHERE ALONG THE WAY... YOU FOUND YOUR TRIBE.' },
 ]
 
 export default function EventGuidePage() {
@@ -41,7 +42,10 @@ export default function EventGuidePage() {
               <div className="flex items-start sm:items-center gap-4">
                 <span className="font-mono font-bold text-xs text-[#FFE600] bg-white/5 px-2.5 py-1 rounded border border-white/10 min-w-[85px] text-center">{item.stage}</span>
                 <div>
-                  <p className="font-bold text-white font-display text-base">{item.name}</p>
+                  <p className="font-bold text-white font-display text-base flex items-center gap-2">
+                    <Icon name={item.icon} />
+                    {item.name}
+                  </p>
                   <p className="text-white/50 text-xs mt-0.5">{item.desc}</p>
                 </div>
               </div>

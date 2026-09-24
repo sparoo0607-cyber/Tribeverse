@@ -2,6 +2,7 @@
 
 import StageGuard from '@/components/StageGuard'
 import { useState, useEffect } from 'react'
+import Icon from '@/components/icons/Icon'
 
 export default function TribeJamPage() {
   const [isPlaying, setIsPlaying] = useState(true)
@@ -39,7 +40,7 @@ export default function TribeJamPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFE600]/10 border border-[#FFE600]/30 rounded-full text-[#FFE600] text-xs font-black font-display uppercase tracking-widest mb-3">
-                ✦ STAGE 06 · LIVE MUSIC ARENA ✦
+                <Icon name="sparkle" /> STAGE 06 · LIVE MUSIC ARENA <Icon name="sparkle" />
               </div>
               <h1 className="text-4xl md:text-6xl font-black font-display tracking-tight bg-gradient-to-r from-[#FFE600] via-[#FF6B1A] to-[#FF2D87] bg-clip-text text-transparent">
                 TRIBE JAM
@@ -52,15 +53,15 @@ export default function TribeJamPage() {
             <div className="flex items-center gap-4 bg-white/[0.04] border border-white/10 p-4 rounded-2xl">
               <div className="text-center">
                 <span className="text-[10px] uppercase font-bold tracking-widest text-white/40 block">Tribe Vibe Index</span>
-                <span className="text-3xl font-black font-mono text-[#FFE600]">{vibePoints} 🔥</span>
+                <span className="text-3xl font-black font-mono text-[#FFE600] inline-flex items-center gap-1">{vibePoints} <Icon name="fire" /></span>
               </div>
               <button
                 onClick={triggerBeat}
-                className={`px-4 py-3 bg-gradient-to-r from-[#FF2D87] to-[#FF6B1A] hover:scale-105 active:scale-95 text-white font-black text-xs uppercase font-display rounded-xl shadow-lg transition-all ${
+                className={`px-4 py-3 bg-gradient-to-r from-[#FF2D87] to-[#FF6B1A] hover:scale-105 active:scale-95 text-white font-black text-xs uppercase font-display rounded-xl shadow-lg transition-all inline-flex items-center gap-1.5 ${
                   isBeating ? 'scale-110 ring-2 ring-[#FFE600]' : ''
                 }`}
               >
-                🥁 Drop Beat
+                <Icon name="drum" /> Drop Beat
               </button>
             </div>
           </div>
@@ -73,10 +74,10 @@ export default function TribeJamPage() {
           <div className="lg:col-span-6 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-white/[0.03] to-transparent border border-white/5 rounded-2xl relative min-h-[320px]">
             {/* Floating Music Notes */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
-              <span className="absolute top-4 left-6 text-2xl text-[#FFE600] opacity-60 animate-bounce" style={{ animationDuration: '3s' }}>♪</span>
-              <span className="absolute top-8 right-8 text-3xl text-[#FF2D87] opacity-60 animate-bounce" style={{ animationDuration: '2.4s', animationDelay: '0.7s' }}>♫</span>
-              <span className="absolute bottom-16 left-10 text-2xl text-[#FF6B1A] opacity-50 animate-bounce" style={{ animationDuration: '3.2s', animationDelay: '1.4s' }}>♪</span>
-              <span className="absolute top-1/2 right-12 text-2xl text-[#00FFD1] opacity-60 animate-bounce" style={{ animationDuration: '2.8s', animationDelay: '2.1s' }}>♬</span>
+              <Icon name="music-note" className="absolute top-4 left-6 w-6 h-6 text-[#FFE600] opacity-60 animate-bounce" style={{ animationDuration: '3s' }} />
+              <Icon name="music-notes" className="absolute top-8 right-8 w-7 h-7 text-[#FF2D87] opacity-60 animate-bounce" style={{ animationDuration: '2.4s', animationDelay: '0.7s' }} />
+              <Icon name="music-note" className="absolute bottom-16 left-10 w-6 h-6 text-[#FF6B1A] opacity-50 animate-bounce" style={{ animationDuration: '3.2s', animationDelay: '1.4s' }} />
+              <Icon name="music-notes" className="absolute top-1/2 right-12 w-6 h-6 text-[#00FFD1] opacity-60 animate-bounce" style={{ animationDuration: '2.8s', animationDelay: '2.1s' }} />
             </div>
 
             {/* The 12-Bar Equalizer */}
@@ -113,7 +114,7 @@ export default function TribeJamPage() {
                 onClick={() => setIsPlaying(!isPlaying)}
                 className="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-black font-display uppercase tracking-wider transition-colors"
               >
-                {isPlaying ? '⏸ Pause EQ' : '▶ Play EQ'}
+                {isPlaying ? <span className="inline-flex items-center gap-1"><Icon name="pause" /> Pause EQ</span> : <span className="inline-flex items-center gap-1"><Icon name="play" /> Play EQ</span>}
               </button>
               <div className="flex items-center gap-1 bg-black/40 border border-white/10 p-1 rounded-lg">
                 {(['chill', 'hype', 'fire'] as const).map((mode) => (
@@ -135,8 +136,8 @@ export default function TribeJamPage() {
           <div className="lg:col-span-6 space-y-4">
             {/* Card 1: Performance Round */}
             <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FFE600]/40 rounded-2xl transition-all group">
-              <span className="text-3xl p-3 bg-[#FFE600]/10 border border-[#FFE600]/20 rounded-xl group-hover:scale-110 transition-transform">
-                🎤
+              <span className="p-3 bg-[#FFE600]/10 border border-[#FFE600]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FFE600]">
+                <Icon name="mic" className="w-7 h-7" />
               </span>
               <div>
                 <strong className="block text-lg font-black text-[#FFE600] font-display mb-1">
@@ -150,8 +151,8 @@ export default function TribeJamPage() {
 
             {/* Card 2: Team Vibe */}
             <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF6B1A]/40 rounded-2xl transition-all group">
-              <span className="text-3xl p-3 bg-[#FF6B1A]/10 border border-[#FF6B1A]/20 rounded-xl group-hover:scale-110 transition-transform">
-                🎸
+              <span className="p-3 bg-[#FF6B1A]/10 border border-[#FF6B1A]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF6B1A]">
+                <Icon name="guitar" className="w-7 h-7" />
               </span>
               <div>
                 <strong className="block text-lg font-black text-[#FF6B1A] font-display mb-1">
@@ -165,8 +166,8 @@ export default function TribeJamPage() {
 
             {/* Card 3: Music is Tribe Language */}
             <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF2D87]/40 rounded-2xl transition-all group">
-              <span className="text-3xl p-3 bg-[#FF2D87]/10 border border-[#FF2D87]/20 rounded-xl group-hover:scale-110 transition-transform">
-                🎶
+              <span className="p-3 bg-[#FF2D87]/10 border border-[#FF2D87]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF2D87]">
+                <Icon name="music-notes" className="w-7 h-7" />
               </span>
               <div>
                 <strong className="block text-lg font-black text-[#FF2D87] font-display mb-1">
@@ -199,8 +200,8 @@ export default function TribeJamPage() {
           {submittedEntry ? (
             <div className="p-6 bg-gradient-to-r from-[#FFE600]/10 via-[#FF6B1A]/10 to-transparent border border-[#FFE600]/30 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in">
               <div className="space-y-1">
-                <span className="text-xs text-[#FFE600] font-black uppercase tracking-wider font-display">
-                  ✓ Slot Confirmed & Registered
+                <span className="inline-flex items-center gap-1.5 text-xs text-[#FFE600] font-black uppercase tracking-wider font-display">
+                  <Icon name="check" /> Slot Confirmed & Registered
                 </span>
                 <h4 className="text-xl font-black text-white font-display">{submittedEntry.performer}</h4>
                 <p className="text-white/60 text-sm">
@@ -226,11 +227,11 @@ export default function TribeJamPage() {
                   onChange={(e) => setPerfType(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#FFE600]"
                 >
-                  <option value="Singing / Vocals" className="bg-[#111418] text-white">🎤 Singing / Vocals</option>
-                  <option value="Rap / Freestyle" className="bg-[#111418] text-white">🎙 Rap / Freestyle</option>
-                  <option value="Beatboxing" className="bg-[#111418] text-white">🎧 Beatboxing</option>
-                  <option value="Acoustic / Instrument" className="bg-[#111418] text-white">🎸 Acoustic / Instrument</option>
-                  <option value="Group Vibe Anthem" className="bg-[#111418] text-white">👥 Group Vibe Anthem</option>
+                  <option value="Singing / Vocals" className="bg-[#111418] text-white">Singing / Vocals</option>
+                  <option value="Rap / Freestyle" className="bg-[#111418] text-white">Rap / Freestyle</option>
+                  <option value="Beatboxing" className="bg-[#111418] text-white">Beatboxing</option>
+                  <option value="Acoustic / Instrument" className="bg-[#111418] text-white">Acoustic / Instrument</option>
+                  <option value="Group Vibe Anthem" className="bg-[#111418] text-white">Group Vibe Anthem</option>
                 </select>
               </div>
 

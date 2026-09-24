@@ -57,7 +57,7 @@ function mapRound(row: RoundRow): DetectiveRound {
     roundNumber: row.round_number,
     name: row.name,
     slug: row.slug,
-    icon: row.icon ?? '🕵️',
+    icon: row.icon ?? '',
     description: row.description,
     scenarioText: row.scenario_text,
     rolePool: Array.isArray(row.role_pool) ? (row.role_pool as string[]) : [],

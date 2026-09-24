@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import StageRow from './StageRow'
 import { fetchJamQueue, subscribeToJamQueue, startNext, pauseCurrent, removeFromQueue, JamEntry } from '@/lib/jam'
+import Icon from '@/components/icons/Icon'
 
 export default function JamSection() {
   const [nowPlaying, setNowPlaying] = useState<JamEntry | null>(null)
@@ -34,9 +35,9 @@ export default function JamSection() {
         title="Tribe Jam"
         desc="Music. People. Energy. The stage is yours."
         sideNote="Good Music. Brighter People"
-        sideIcon="🎵"
+        sideIcon={<Icon name="music-note" />}
       >
-        <div className="efb-card-head">🎤 Live Queue</div>
+        <div className="efb-card-head"><Icon name="mic" /> Live Queue</div>
         <div className="efb-card-body">
           <div className="efb-queue">
             {nowPlaying && (
@@ -63,9 +64,9 @@ export default function JamSection() {
         </div>
         <div className="efb-card-foot">
           <button className="efb-btn-play red" disabled={busy || upNext.length === 0} onClick={handleNext}>
-            ▶ {nowPlaying ? 'Call Next' : 'Start'}
+            <Icon name="play" /> {nowPlaying ? 'Call Next' : 'Start'}
           </button>
-          <button className="efb-btn-full" disabled={busy || !nowPlaying} onClick={() => pauseCurrent()}>⏸ Pause</button>
+          <button className="efb-btn-full" disabled={busy || !nowPlaying} onClick={() => pauseCurrent()}><Icon name="pause" /> Pause</button>
         </div>
       </StageRow>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
 import TeamCard from '@/components/TeamCard'
+import Icon from '@/components/icons/Icon'
 
 const CATEGORIES = ['All', 'Lead', 'Tech', 'Operations', 'Design', 'Host', 'Core'] as const
 
@@ -76,8 +77,8 @@ export default function TeamPage() {
         
         {/* Title & Description */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="inline-block px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
-            ✦ TRIBE ORGANIZING COMMITTEE & LEADS
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
+            <Icon name="sparkle" /> TRIBE ORGANIZING COMMITTEE & LEADS
           </span>
           <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white font-display">
             MEET THE <span className="text-[#FFE600]">TRIBE TEAM</span>

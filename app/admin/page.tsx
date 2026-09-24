@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({
@@ -39,8 +40,8 @@ export default function AdminDashboardPage() {
       {/* Spotlight: Gate Check-in & QR Scanner */}
       <div className="bg-gradient-to-r from-[#1A6FFF]/20 via-[#FFE600]/15 to-[#FF2D87]/20 border-2 border-[#FFE600]/40 rounded-3xl p-6 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFE600] text-black flex items-center justify-center text-3xl font-bold shadow-lg">
-            📷
+          <div className="w-14 h-14 rounded-2xl bg-[#FFE600] text-black flex items-center justify-center shadow-lg">
+            <Icon name="camera" className="w-7 h-7" />
           </div>
           <div>
             <span className="text-[10px] font-mono tracking-widest text-[#FFE600] font-black uppercase">
@@ -66,14 +67,14 @@ export default function AdminDashboardPage() {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Registered Teams', val: stats.teams, icon: '👥', color: '#1A6FFF', link: '/admin/teams' },
-          { label: 'Active Students', val: stats.students, icon: '🎓', color: '#00FFD1', link: '/admin/teams' },
-          { label: 'Tags / Wristbands Issued', val: stats.tagsIssued, icon: '🏷️', color: '#00FF88', link: '/admin/scanner' },
-          { label: 'Wall Photos & Posts', val: stats.wallPosts, icon: '💬', color: '#FF2D87', link: '/admin/monitor' },
+          { label: 'Registered Teams', val: stats.teams, icon: 'users' as const, color: '#1A6FFF', link: '/admin/teams' },
+          { label: 'Active Students', val: stats.students, icon: 'graduation-cap' as const, color: '#00FFD1', link: '/admin/teams' },
+          { label: 'Tags / Wristbands Issued', val: stats.tagsIssued, icon: 'tag' as const, color: '#00FF88', link: '/admin/scanner' },
+          { label: 'Wall Photos & Posts', val: stats.wallPosts, icon: 'chat' as const, color: '#FF2D87', link: '/admin/monitor' },
         ].map((m, i) => (
           <Link key={i} href={m.link} className="bg-white/[0.03] border border-white/10 p-5 rounded-2xl hover:border-white/20 transition-all">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl">{m.icon}</span>
+              <Icon name={m.icon} className="w-6 h-6" style={{ color: m.color }} />
               <span className="text-xs font-bold text-white/40 font-display">VIEW</span>
             </div>
             <p className="text-3xl font-black text-white font-display mb-1">{m.val}</p>

@@ -4,15 +4,16 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { fetchStageStates, subscribeToStageChanges } from '@/lib/stageStore'
+import Icon, { IconName } from '@/components/icons/Icon'
 
 // /event-control (index) already lists and controls all 8 stages in one
 // screen. Only stages with a dedicated per-round controller drill further —
 // today that's just Playground → Quick Eyes. Add an entry here once a
 // stage gets its own route so the sidebar never links to a 404.
-const STAGES = [
-  { href: '/event-control', label: 'All Stages', slug: null, icon: '🎬' },
-  { href: '/event-control/playground/quick-eyes', label: 'Playground · Quick Eyes', slug: 'playground', icon: '🎮' },
-  { href: '/event-control/detective', label: 'Detective', slug: 'detective', icon: '🕵️' },
+const STAGES: { href: string; label: string; slug: string | null; icon: IconName }[] = [
+  { href: '/event-control', label: 'All Stages', slug: null, icon: 'clapperboard' },
+  { href: '/event-control/playground/quick-eyes', label: 'Playground · Quick Eyes', slug: 'playground', icon: 'game-controller' },
+  { href: '/event-control/detective', label: 'Detective', slug: 'detective', icon: 'hat' },
 ]
 
 export default function EventControlLayout({ children }: { children: React.ReactNode }) {
@@ -83,7 +84,7 @@ export default function EventControlLayout({ children }: { children: React.React
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all font-display ${active ? 'bg-[#00FFD1] text-black' : 'text-white/50 hover:text-white hover:bg-white/[0.06]'}`}
                   >
-                    <span className="flex items-center gap-3"><span className="text-lg">{item.icon}</span>{item.label}</span>
+                    <span className="flex items-center gap-3"><Icon name={item.icon} className="w-5 h-5" />{item.label}</span>
                     {status && (
                       <span className={`w-2 h-2 rounded-full ${status === 'live' ? 'bg-green-400' : status === 'completed' ? 'bg-emerald-500' : 'bg-white/20'}`} />
                     )}
@@ -108,7 +109,7 @@ export default function EventControlLayout({ children }: { children: React.React
       <div className="flex-1 flex flex-col lg:flex-row min-w-0">
         <div className="flex-1 min-w-0">
           <header className="lg:hidden sticky top-0 z-30 bg-[#050505]/90 backdrop-blur border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
-            <button onClick={() => setSidebarOpen(true)} className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center text-white">☰</button>
+            <button onClick={() => setSidebarOpen(true)} className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center text-white"><Icon name="menu" className="w-5 h-5" /></button>
             <span className="font-black text-[#00FFD1] font-display">EVENT CONTROL</span>
             <div className="w-9 h-9" />
           </header>

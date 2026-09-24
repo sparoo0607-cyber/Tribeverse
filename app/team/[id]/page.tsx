@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import QRCode from 'qrcode'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
+import Icon from '@/components/icons/Icon'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -179,7 +180,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                 onClick={() => setFlipped((f) => !f)}
                 className="mt-4 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-white/5 hover:bg-[#FFE600] hover:text-black border border-white/10 text-white/80 transition-all flex items-center gap-2 cursor-pointer"
               >
-                <span>🔄</span>
+                <Icon name="refresh" />
                 <span>{flipped ? 'Show Front' : 'Flip to Back'}</span>
               </button>
             )}
@@ -195,8 +196,8 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
             {/* Header Badge & Name */}
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
-                  ✦ {member.role}
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
+                  <Icon name="sparkle" /> {member.role}
                 </span>
                 {member.category && (
                   <span className="px-2.5 py-1 bg-[#FF2D87]/20 border border-[#FF2D87]/40 text-[#FF2D87] rounded-full text-[10px] font-black uppercase">
@@ -210,7 +211,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
               </h1>
 
               <div className="flex items-center gap-2 text-sm text-[#00FFD1] font-bold font-display">
-                <span>🎓</span>
+                <Icon name="graduation-cap" />
                 <span>{member.branch}</span>
               </div>
             </div>
@@ -236,7 +237,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                     Scan to Open {member.name}&apos;s Official Profile
                   </h3>
                 </div>
-                <span className="text-2xl">📱</span>
+                <Icon name="phone" className="w-6 h-6 text-[#FFE600]" />
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-6 pt-2">
@@ -269,7 +270,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                       onClick={handleCopy}
                       className="flex-1 py-2.5 px-4 bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl text-xs font-bold font-display uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>{copied ? '✓' : '📋'}</span>
+                      {copied ? <Icon name="check" /> : <Icon name="clipboard" />}
                       <span>{copied ? 'Link Copied!' : 'Copy Link'}</span>
                     </button>
 
@@ -277,7 +278,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                       onClick={handleDownloadQR}
                       className="flex-1 py-2.5 px-4 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black rounded-xl text-xs font-black font-display uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>📥</span>
+                      <Icon name="download" />
                       <span>Download QR</span>
                     </button>
                   </div>

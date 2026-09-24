@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import QRCode from 'qrcode'
 import { TeamMemberCard } from '@/lib/types'
+import Icon from '@/components/icons/Icon'
 
 interface TeamCardProps {
   member: TeamMemberCard
@@ -110,7 +111,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                 className="p-1.5 bg-black/80 hover:bg-[#FFE600] hover:text-black text-white text-xs rounded-full backdrop-blur-md border border-white/20 transition-all cursor-pointer shadow-md active:rotate-180 duration-300"
                 title="Flip ID Card"
               >
-                🔄
+                <Icon name="refresh" />
               </button>
             )}
 
@@ -123,7 +124,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
               className="p-1.5 bg-black/80 hover:bg-[#FFE600] hover:text-black text-white text-xs rounded-full backdrop-blur-md border border-white/20 transition-all cursor-pointer shadow-md"
               title="View Individual QR Code"
             >
-              📱
+              <Icon name="phone" />
             </button>
 
             {/* Quick Zoom Card Button */}
@@ -135,7 +136,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
               className="px-2.5 py-1 bg-black/70 hover:bg-[#FFE600] hover:text-black text-white/80 text-[10px] font-bold uppercase tracking-wider rounded-full backdrop-blur-md border border-white/20 transition-all cursor-pointer flex items-center gap-1"
               title="View Full ID Card"
             >
-              <span>🔍</span>
+              <Icon name="search" />
               <span>Card</span>
             </button>
           </div>
@@ -146,7 +147,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
           
           {/* Branch Tag */}
           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#00FFD1]/15 border border-[#00FFD1]/30 text-[11px] font-bold text-[#00FFD1] mb-1.5 font-display">
-            <span>🎓</span>
+            <Icon name="graduation-cap" />
             <span className="truncate max-w-[220px]">{member.branch}</span>
           </div>
 
@@ -188,7 +189,11 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                 className="py-1.5 px-3 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded-xl text-[11px] font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
                 title="Copy Individual Profile Link"
               >
-                {copied ? '✓ Copied' : '🔗 Link'}
+                {copied ? (
+                  <span className="inline-flex items-center gap-1"><Icon name="check" /> Copied</span>
+                ) : (
+                  <span className="inline-flex items-center gap-1"><Icon name="link" /> Link</span>
+                )}
               </button>
             </div>
 
@@ -247,7 +252,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                 onClick={() => setModalOpen(false)}
                 className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs font-bold"
               >
-                ✕
+                <Icon name="close" />
               </button>
             </div>
             <div className="p-2 max-h-[80vh] overflow-y-auto flex flex-col items-center justify-center gap-3">
@@ -281,14 +286,14 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <span className="font-mono text-xs font-black text-[#FFE600] uppercase">
-                📱 Individual QR Code
+              <span className="font-mono text-xs font-black text-[#FFE600] uppercase inline-flex items-center gap-1.5">
+                <Icon name="phone" /> Individual QR Code
               </span>
               <button
                 onClick={() => setQrModalOpen(false)}
                 className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs font-bold"
               >
-                ✕
+                <Icon name="close" />
               </button>
             </div>
 
@@ -316,7 +321,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                 onClick={handleCopy}
                 className="py-2.5 px-3 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded-xl text-xs font-bold font-display uppercase tracking-wider"
               >
-                {copied ? '✓' : 'Copy'}
+                {copied ? <Icon name="check" /> : 'Copy'}
               </button>
             </div>
           </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import StageRow from './StageRow'
 import { fetchAllWallPosts, subscribeToWallPosts, approvePost, hidePost, togglePin, WallPostRow } from '@/lib/wall'
+import Icon from '@/components/icons/Icon'
 
 export default function WallSection() {
   const [open, setOpen] = useState(false)
@@ -28,9 +29,9 @@ export default function WallSection() {
         title="The Tribe Wall"
         desc={`"Before I graduate, I want to..."`}
         sideNote={`${approved.length} Dreams. One Tribe`}
-        sideIcon="👑"
+        sideIcon={<Icon name="crown" />}
       >
-        <div className="efb-card-head">📝 Live Submissions</div>
+        <div className="efb-card-head"><Icon name="pencil" /> Live Submissions</div>
         <div className="efb-card-body">
           <div className="efb-submissions-grid">
             {approved.slice(0, 5).map((p) => (
@@ -42,7 +43,7 @@ export default function WallSection() {
         </div>
         <div className="efb-card-foot">
           <button className="efb-btn-play teal" onClick={() => setOpen((v) => !v)}>
-            📋 Review Submissions{pending.length ? ` (${pending.length})` : ''}
+            <Icon name="clipboard" /> Review Submissions{pending.length ? ` (${pending.length})` : ''}
           </button>
           <button className="efb-btn-full" onClick={() => setOpen((v) => !v)}>{open ? 'Close Wall' : 'Open Wall'}</button>
         </div>

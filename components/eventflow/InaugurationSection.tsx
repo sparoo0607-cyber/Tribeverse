@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import StageRow from './StageRow'
+import Icon from '@/components/icons/Icon'
 
 const SLIDES = [
   { badge: 'FRESHERS EDITION', title: 'TRIBEVERSE V1', body: 'ONE TEAM. FIVE PEOPLE. FIVE EXPERIENCES.' },
@@ -25,7 +26,7 @@ export default function InaugurationSection() {
         desc="Welcome to TRIBEVERSE. The beginning of the journey."
         sideNote="A New Chapter Begins"
       >
-        <div className="efb-card-head">🖥️ Event Control</div>
+        <div className="efb-card-head"><Icon name="monitor" /> Event Control</div>
         <div className="efb-card-body">
           <div className="efb-slide-preview">
             <button className="efb-slide-arrow" onClick={() => setSlide((i) => Math.max(0, i - 1))} disabled={slide === 0}>←</button>
@@ -37,7 +38,7 @@ export default function InaugurationSection() {
           </div>
         </div>
         <div className="efb-card-foot">
-          <button className="efb-btn-play pink" onClick={() => setOpen((v) => !v)}>▶ Play</button>
+          <button className="efb-btn-play pink" onClick={() => setOpen((v) => !v)}><Icon name="play" /> Play</button>
           <button className="efb-btn-full" onClick={() => setOpen((v) => !v)}>{open ? 'Close Full Control' : 'Open Full Control'}</button>
         </div>
 

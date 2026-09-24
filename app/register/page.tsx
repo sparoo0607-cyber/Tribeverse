@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 const BRANCH_OPTIONS = [
   'CSE (Computer Science & Engg)',
@@ -157,8 +158,8 @@ export default function RegisterPage() {
           
           {/* Header */}
           <div className="text-center mb-7">
-            <span className="inline-block px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-[11px] font-black uppercase tracking-widest mb-3" style={{ fontFamily: 'Outfit, sans-serif' }}>
-              ✦ OFFICIAL EVENT REGISTRATION
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-[11px] font-black uppercase tracking-widest mb-3" style={{ fontFamily: 'Outfit, sans-serif' }}>
+              <Icon name="sparkle" /> OFFICIAL EVENT REGISTRATION
             </span>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white uppercase" style={{ fontFamily: 'Outfit, sans-serif' }}>
               REGISTER FOR <span className="text-[#FFE600]">TRIBEVERSE V1</span>
@@ -289,13 +290,13 @@ export default function RegisterPage() {
             {/* Feedback Messages */}
             {error && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl font-medium flex items-center gap-2">
-                <span>⚠️</span>
+                <Icon name="warning" />
                 <span>{error}</span>
               </div>
             )}
             {success && (
               <div className="p-3 bg-green-500/10 border border-green-500/30 text-green-400 text-xs rounded-xl font-medium flex items-center gap-2">
-                <span>✅</span>
+                <Icon name="check-circle" />
                 <span>{success}</span>
               </div>
             )}
@@ -316,7 +317,8 @@ export default function RegisterPage() {
                 </>
               ) : (
                 <>
-                  <span>🎟️ Register & Get Event Pass</span>
+                  <Icon name="ticket" />
+                  <span>Register & Get Event Pass</span>
                   <span>→</span>
                 </>
               )}

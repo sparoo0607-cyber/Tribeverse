@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 const ROUND_NAMES: Record<number, string> = {
   1: 'Round 1: Quick Eyes (Visual & Memory)',
@@ -151,7 +152,7 @@ function EventPassContent() {
       {isNewRegistration && (
         <div className="bg-gradient-to-r from-[#FFE600]/20 via-[#FF6B1A]/20 to-[#FF2D87]/20 border border-[#FFE600]/40 rounded-2xl p-4 sm:p-6 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">🎉</span>
+            <Icon name="confetti" className="w-8 h-8 text-[#FFE600]" />
             <div>
               <h3 className="font-black text-white text-base font-display">
                 REGISTRATION SUCCESSFUL! YOUR EVENT PASS IS READY!
@@ -163,9 +164,9 @@ function EventPassContent() {
           </div>
           <button
             onClick={() => setIsNewRegistration(false)}
-            className="text-xs text-white/50 hover:text-white px-3 py-1.5 bg-black/40 rounded-lg border border-white/10"
+            className="text-xs text-white/50 hover:text-white px-3 py-1.5 bg-black/40 rounded-lg border border-white/10 inline-flex items-center gap-1"
           >
-            Dismiss ✕
+            Dismiss <Icon name="close" />
           </button>
         </div>
       )}
@@ -173,8 +174,8 @@ function EventPassContent() {
       {/* Header & Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-[11px] font-black uppercase tracking-widest text-[#FFE600] font-display">
-            ✦ OFFICIAL CREDENTIAL
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#FFE600] font-display">
+            <Icon name="sparkle" /> OFFICIAL CREDENTIAL
           </span>
           <h1 className="text-3xl font-black text-white font-display uppercase tracking-tight">
             YOUR DIGITAL EVENT PASS
@@ -189,14 +190,14 @@ function EventPassContent() {
             onClick={handlePrint}
             className="px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded-xl text-xs font-bold font-display uppercase tracking-wider transition-all flex items-center gap-2"
           >
-            <span>🖨️</span>
+            <Icon name="printer" />
             <span>Download / Print</span>
           </button>
           <Link
             href="/dashboard/play"
             className="px-4 py-2.5 bg-[#FFE600] hover:bg-[#ffe600]/90 text-black rounded-xl text-xs font-black font-display uppercase tracking-wider transition-all shadow-lg flex items-center gap-2"
           >
-            <span>🎮</span>
+            <Icon name="game-controller" />
             <span>Enter Arena →</span>
           </Link>
         </div>
@@ -228,8 +229,8 @@ function EventPassContent() {
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="px-3.5 py-1.5 bg-gradient-to-r from-[#FF2D87]/20 to-[#1A6FFF]/20 border border-white/20 rounded-full text-xs font-black font-display uppercase tracking-widest text-[#00FFD1] shadow-inner">
-              ⭐ ALL-ACCESS PASS
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#FF2D87]/20 to-[#1A6FFF]/20 border border-white/20 rounded-full text-xs font-black font-display uppercase tracking-widest text-[#00FFD1] shadow-inner">
+              <Icon name="star" /> ALL-ACCESS PASS
             </span>
           </div>
         </div>
@@ -263,7 +264,7 @@ function EventPassContent() {
                     onClick={handleCopyPassId}
                     className="text-[11px] text-white/50 hover:text-white underline cursor-pointer"
                   >
-                    {copied ? '✓ Copied' : 'Copy ID'}
+                    {copied ? <span className="inline-flex items-center gap-1"><Icon name="check" /> Copied</span> : 'Copy ID'}
                   </button>
                 </div>
               </div>
@@ -299,7 +300,7 @@ function EventPassContent() {
                   {profile?.tag_issued ? (
                     <>
                       <span className="w-2 h-2 rounded-full bg-green-400"></span>
-                      <strong className="text-xs font-black text-green-400 font-display">🏷️ ISSUED</strong>
+                      <strong className="text-xs font-black text-green-400 font-display inline-flex items-center gap-1"><Icon name="tag" /> ISSUED</strong>
                     </>
                   ) : (
                     <>
@@ -314,7 +315,7 @@ function EventPassContent() {
             {/* Event Schedule & Location */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
               <div className="flex items-center gap-2.5 text-white/70">
-                <span className="text-base">📅</span>
+                <Icon name="calendar" className="w-5 h-5" />
                 <div>
                   <span className="text-[10px] text-white/40 uppercase font-bold block">Event Date</span>
                   <strong>Wednesday, Sep 23, 2026</strong>
@@ -322,7 +323,7 @@ function EventPassContent() {
               </div>
 
               <div className="flex items-center gap-2.5 text-white/70">
-                <span className="text-base">📍</span>
+                <Icon name="pin" className="w-5 h-5" />
                 <div>
                   <span className="text-[10px] text-white/40 uppercase font-bold block">Venue Location</span>
                   <strong>Main Campus Auditorium · Hyderabad</strong>
@@ -420,7 +421,7 @@ function EventPassContent() {
           href="/dashboard/play" 
           className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
         >
-          <span className="text-2xl group-hover:scale-110 transition-transform inline-block mb-2">🎯</span>
+          <Icon name="target" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
           <h4 className="font-bold text-white text-sm font-display">1. Tribe Playground</h4>
           <p className="text-white/50 text-xs mt-1">Practice your round challenge and master the countdown mechanics.</p>
         </Link>
@@ -429,7 +430,7 @@ function EventPassContent() {
           href="/dashboard/leaderboard" 
           className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
         >
-          <span className="text-2xl group-hover:scale-110 transition-transform inline-block mb-2">🏆</span>
+          <Icon name="trophy" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
           <h4 className="font-bold text-white text-sm font-display">2. Team Leaderboard</h4>
           <p className="text-white/50 text-xs mt-1">Check current rankings of all 20 teams and race to the top.</p>
         </Link>
@@ -438,7 +439,7 @@ function EventPassContent() {
           href="/dashboard/wall" 
           className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
         >
-          <span className="text-2xl group-hover:scale-110 transition-transform inline-block mb-2">💬</span>
+          <Icon name="chat" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
           <h4 className="font-bold text-white text-sm font-display">3. The Tribe Wall</h4>
           <p className="text-white/50 text-xs mt-1">Post your freshers dream note and connect with 100 participants.</p>
         </Link>

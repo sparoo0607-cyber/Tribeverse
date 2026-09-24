@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import StageRow from './StageRow'
+import Icon from '@/components/icons/Icon'
 import {
   fetchDetectiveRounds,
   subscribeToDetectiveRounds,
@@ -63,9 +64,9 @@ export default function DetectiveSection() {
         title="The Tribe Detective"
         desc="Play. Think the person. Five rounds. Five abilities?"
         sideNote="Same People. Different Stories"
-        sideIcon="🔍"
+        sideIcon={<Icon name="search" />}
       >
-        <div className="efb-card-head">🕵️ Select Round</div>
+        <div className="efb-card-head"><Icon name="hat" /> Select Round</div>
         <div className="efb-card-body">
           <div className="efb-grid-mini">
             {rounds.map((r) => (
@@ -82,7 +83,7 @@ export default function DetectiveSection() {
           </div>
         </div>
         <div className="efb-card-foot">
-          <button className="efb-btn-play purple" onClick={() => setOpen((v) => !v)}>🎩 Open Control</button>
+          <button className="efb-btn-play purple" onClick={() => setOpen((v) => !v)}><Icon name="hat" /> Open Control</button>
         </div>
 
         {open && round && (

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import StageRow from './StageRow'
+import Icon from '@/components/icons/Icon'
 
 const DIVISIONS = ['Content', 'Commerce', 'Community', 'Care', 'Clothing', 'Careers']
 
@@ -29,7 +30,7 @@ export default function BriefsSection() {
         desc="Meet the tribe. Understand the tribe. Become part of the tribe."
         sideNote="Different People. Same Tribe"
       >
-        <div className="efb-card-head">📖 The 6 Divisions</div>
+        <div className="efb-card-head"><Icon name="book" /> The 6 Divisions</div>
         <div className="efb-card-body">
           <div className="efb-grid-mini">
             {DIVISIONS.map((d, i) => (
@@ -38,7 +39,7 @@ export default function BriefsSection() {
           </div>
         </div>
         <div className="efb-card-foot">
-          <button className="efb-btn-play blue" onClick={() => setOpen((v) => !v)}>▶ Play</button>
+          <button className="efb-btn-play blue" onClick={() => setOpen((v) => !v)}><Icon name="play" /> Play</button>
           <button className="efb-btn-full" onClick={() => setOpen((v) => !v)}>{open ? 'Close Full Control' : 'Open Full Control'}</button>
         </div>
 

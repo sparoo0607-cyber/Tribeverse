@@ -6,16 +6,17 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import LiveBroadcastBanner from '@/components/LiveBroadcastBanner'
 import type { Profile, Team, TeamMember } from '@/lib/types'
+import Icon, { IconName } from '@/components/icons/Icon'
 
-const NAV = [
-  { href: '/dashboard', label: 'Home', icon: '🏠' },
-  { href: '/dashboard/pass', label: 'Event Pass', icon: '🎟️' },
-  { href: '/dashboard/event', label: 'Event Guide', icon: '📖' },
-  { href: '/dashboard/play', label: 'Play Arena', icon: '🎮' },
-  { href: '/dashboard/bonus/cipher-hunt', label: 'Bonus: Cipher Hunt', icon: '🔍' },
-  { href: '/dashboard/leaderboard', label: 'Leaderboard', icon: '🏆' },
-  { href: '/dashboard/wall', label: 'Tribe Wall', icon: '💬' },
-  { href: '/dashboard/profile', label: 'My Profile', icon: '👤' },
+const NAV: { href: string; label: string; icon: IconName }[] = [
+  { href: '/dashboard', label: 'Home', icon: 'home' },
+  { href: '/dashboard/pass', label: 'Event Pass', icon: 'ticket' },
+  { href: '/dashboard/event', label: 'Event Guide', icon: 'book' },
+  { href: '/dashboard/play', label: 'Play Arena', icon: 'game-controller' },
+  { href: '/dashboard/bonus/cipher-hunt', label: 'Bonus: Cipher Hunt', icon: 'search' },
+  { href: '/dashboard/leaderboard', label: 'Leaderboard', icon: 'trophy' },
+  { href: '/dashboard/wall', label: 'Tribe Wall', icon: 'chat' },
+  { href: '/dashboard/profile', label: 'My Profile', icon: 'user' },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -103,7 +104,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  }
 `}
  >
- <span className="text-lg">{item.icon}</span>
+ <Icon name={item.icon} className="w-5 h-5" />
  {item.label}
  </Link>
  </li>
@@ -129,7 +130,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  className="text-white/40 hover:text-red-400 text-xs p-1.5 rounded-lg hover:bg-white/5 transition-colors font-mono"
  title="Sign out"
  >
- 
+ <Icon name="logout" className="w-4 h-4" />
  </button>
  </div>
  </div>
@@ -147,7 +148,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  onClick={() =>setSidebarOpen(true)}
  className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white"
  >
- 
+ <Icon name="menu" className="w-5 h-5" />
  </button>
  <span className="font-black text-lg text-white font-display">
  <span className="text-[#FFE600]">TRIBE</span>VERSE

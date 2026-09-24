@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import StageGuard from '@/components/StageGuard'
 import { createClient } from '@/lib/supabase/client'
 import { fetchAllWallPosts, subscribeToWallPosts, submitWallPost, likePost, WallPostRow } from '@/lib/wall'
+import Icon from '@/components/icons/Icon'
 
 const COLORS = ['#FFE600', '#FF6BDE', '#00FFD1', '#FF8C42', '#6BFFA0']
 const DEGS = ['-3deg', '-2deg', '-1deg', '1deg', '2deg', '3deg']
@@ -119,9 +120,9 @@ function WallGame() {
                 onClick={() => likePost(post.id, post.likesCount)}
                 className="flex items-center gap-1.5 px-3 py-1 bg-black/10 hover:bg-black/20 rounded-full text-xs font-bold transition-colors"
               >
-                ❤️ {post.likesCount}
+                <Icon name="heart" /> {post.likesCount}
               </button>
-              <span className="text-[10px] font-mono opacity-50">{post.isPinned ? '★ Featured' : 'Student Tribe'}</span>
+              <span className="text-[10px] font-mono opacity-50 inline-flex items-center gap-1">{post.isPinned ? <><Icon name="star" /> Featured</> : 'Student Tribe'}</span>
             </div>
           </div>
         ))}

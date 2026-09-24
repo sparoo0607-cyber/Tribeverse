@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import StageRow from './StageRow'
 import { setStageStatus } from '@/lib/stageStore'
+import Icon from '@/components/icons/Icon'
 
 const LINES = [
   'YOU CAME AS STRANGERS.',
@@ -35,9 +36,9 @@ export default function RevealSection({ status }: { status: string }) {
         title="Tribeverse Reveal"
         desc="You came as strangers. Now you leave as a tribe."
         sideNote="Same Tribe. Bigger World"
-        sideIcon="🚀"
+        sideIcon={<Icon name="rocket" />}
       >
-        <div className="efb-card-head">🎬 Final Sequence</div>
+        <div className="efb-card-head"><Icon name="clapperboard" /> Final Sequence</div>
         <div className="efb-card-body">
           <div className="efb-slide-preview">
             <button className="efb-slide-arrow" onClick={() => setRevealedCount((c) => Math.max(1, c - 1))} disabled={revealedCount === 1}>←</button>
@@ -49,7 +50,7 @@ export default function RevealSection({ status }: { status: string }) {
           </div>
         </div>
         <div className="efb-card-foot">
-          <button className="efb-btn-play dark" onClick={() => setOpen((v) => !v)}>▶ Play Sequence</button>
+          <button className="efb-btn-play dark" onClick={() => setOpen((v) => !v)}><Icon name="play" /> Play Sequence</button>
           <button className="efb-btn-full" onClick={() => setOpen((v) => !v)}>{open ? 'Close Full Control' : 'Open Full Control'}</button>
         </div>
 

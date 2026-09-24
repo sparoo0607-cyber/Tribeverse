@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 interface StudentProfile {
   id: string
@@ -168,8 +169,8 @@ export default function AdminScannerPage() {
       setFeedback({
         type: 'success',
         message: issue
-          ? `🎉 TAG ISSUED to ${student.full_name}! (${student.student_id})`
-          : `↩️ Tag revoked for ${student.full_name}`,
+          ? `TAG ISSUED to ${student.full_name}! (${student.student_id})`
+          : `Tag revoked for ${student.full_name}`,
       })
 
       // Update local state instantly
@@ -206,8 +207,8 @@ export default function AdminScannerPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
-              ✦ ARENA ENTRY COCKPIT
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
+              <Icon name="sparkle" /> ARENA ENTRY COCKPIT
             </span>
             <span className="px-2.5 py-0.5 bg-green-500/20 text-green-400 text-xs font-bold rounded-full">
               LIVE SYNC
@@ -228,7 +229,7 @@ export default function AdminScannerPage() {
               onClick={startCamera}
               className="px-4 py-2.5 rounded-xl bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black text-xs uppercase tracking-wider font-display transition-all shadow-lg flex items-center gap-2 cursor-pointer"
             >
-              <span>📷</span>
+              <Icon name="camera" />
               <span>Start Camera Scanner</span>
             </button>
           ) : (
@@ -236,7 +237,7 @@ export default function AdminScannerPage() {
               onClick={stopCamera}
               className="px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-black text-xs uppercase tracking-wider font-display transition-all shadow-lg flex items-center gap-2 cursor-pointer"
             >
-              <span>✕</span>
+              <Icon name="close" />
               <span>Stop Camera</span>
             </button>
           )}
@@ -287,8 +288,8 @@ export default function AdminScannerPage() {
       )}
 
       {cameraError && (
-        <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl font-medium">
-          ⚠️ {cameraError}
+        <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl font-medium flex items-center gap-2">
+          <Icon name="warning" /> {cameraError}
         </div>
       )}
 
@@ -296,7 +297,7 @@ export default function AdminScannerPage() {
       <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-4 sm:p-5 backdrop-blur-md">
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 relative">
-            <span className="absolute left-4 top-3.5 text-white/40 text-sm">🔍</span>
+            <Icon name="search" className="absolute left-4 top-3.5 text-white/40 w-4 h-4" />
             <input
               type="text"
               placeholder="Scan or enter Pass ID (e.g. ST-2026-TRB-1234), Name, or Mobile Number…"
@@ -325,9 +326,12 @@ export default function AdminScannerPage() {
               : 'bg-red-500/15 border-red-500/40 text-red-300'
           }`}
         >
-          <span>{feedback.message}</span>
+          <span className="inline-flex items-center gap-2">
+            <Icon name={feedback.type === 'success' ? 'check-circle' : 'warning'} />
+            {feedback.message}
+          </span>
           <button onClick={() => setFeedback(null)} className="text-white/60 hover:text-white ml-3">
-            ✕
+            <Icon name="close" />
           </button>
         </div>
       )}
@@ -353,7 +357,9 @@ export default function AdminScannerPage() {
                     {selectedStudent.student_id}
                   </span>
                   {selectedStudent.phone && (
-                    <span className="text-xs text-white/50">📱 {selectedStudent.phone}</span>
+                    <span className="text-xs text-white/50 inline-flex items-center gap-1">
+                      <Icon name="phone" /> {selectedStudent.phone}
+                    </span>
                   )}
                 </div>
               </div>
@@ -364,12 +370,12 @@ export default function AdminScannerPage() {
               {selectedStudent.tag_issued ? (
                 <div className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-2xl text-green-400 text-xs font-black font-display uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(34,197,94,0.25)]">
                   <span className="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                  <span>🏷️ TAG ISSUED</span>
+                  <Icon name="tag" /><span>TAG ISSUED</span>
                 </div>
               ) : (
                 <div className="px-4 py-2 bg-[#FFE600]/20 border border-[#FFE600]/50 rounded-2xl text-[#FFE600] text-xs font-black font-display uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(255,230,0,0.2)] animate-pulse">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#FFE600]"></span>
-                  <span>⚠️ TAG NOT ISSUED</span>
+                  <Icon name="warning" /><span>TAG NOT ISSUED</span>
                 </div>
               )}
             </div>
@@ -416,16 +422,16 @@ export default function AdminScannerPage() {
                 disabled={actionLoading}
                 className="flex-1 py-4 px-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-black font-black text-sm uppercase tracking-widest rounded-2xl shadow-[0_8px_30px_rgba(34,197,94,0.4)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer font-display"
               >
-                <span>🏷️ ISSUE WRISTBAND / PHYSICAL TAG</span>
-                <span>✓</span>
+                <Icon name="tag" /><span>ISSUE WRISTBAND / PHYSICAL TAG</span>
+                <Icon name="check" />
               </button>
             ) : (
               <button
                 onClick={() => handleToggleTag(selectedStudent, false)}
                 disabled={actionLoading}
-                className="py-3 px-6 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-display"
+                className="py-3 px-6 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-display inline-flex items-center justify-center gap-2"
               >
-                ↩️ Revoke / Unmark Tag
+                <Icon name="refresh" /> Revoke / Unmark Tag
               </button>
             )}
 
@@ -514,7 +520,7 @@ export default function AdminScannerPage() {
                       className="px-3 py-1.5 bg-green-500/20 hover:bg-red-500/20 text-green-400 hover:text-red-300 border border-green-500/40 hover:border-red-500/40 rounded-xl text-xs font-bold font-display transition-colors"
                       title="Click to Revoke"
                     >
-                      ✓ Tag Issued
+                      <Icon name="check" /> Tag Issued
                     </button>
                   ) : (
                     <button
@@ -522,9 +528,9 @@ export default function AdminScannerPage() {
                         e.stopPropagation()
                         handleToggleTag(student, true)}
                       }
-                      className="px-3.5 py-1.5 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black text-xs uppercase tracking-wider rounded-xl font-display transition-transform hover:scale-105 shadow-md cursor-pointer"
+                      className="px-3.5 py-1.5 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black text-xs uppercase tracking-wider rounded-xl font-display transition-transform hover:scale-105 shadow-md cursor-pointer inline-flex items-center gap-1"
                     >
-                      🏷️ Issue Tag
+                      <Icon name="tag" /> Issue Tag
                     </button>
                   )}
                 </div>

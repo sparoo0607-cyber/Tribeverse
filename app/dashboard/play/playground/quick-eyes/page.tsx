@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import StageGuard from '@/components/StageGuard'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 import {
   fetchQuickEyesState,
   subscribeToQuickEyesRound,
@@ -105,7 +106,7 @@ function QuickEyesGame() {
   return (
     <div className="max-w-lg mx-auto space-y-6 text-center py-6">
       <div>
-        <span className="text-6xl block mb-2">👁</span>
+        <Icon name="eye" className="w-14 h-14 mx-auto mb-2 text-[#FFE600]" />
         <h1 className="text-3xl font-black text-white font-display">Quick Eyes</h1>
         <p className="text-white/50 text-sm">Round 1 · Tribe Playground</p>
       </div>
@@ -118,7 +119,7 @@ function QuickEyesGame() {
 
       {(state.phase === 'visual' || state.phase === 'timer') && (
         <div className="bg-gradient-to-b from-[#1A6FFF]/20 to-black/40 border border-[#1A6FFF]/30 rounded-3xl p-10 space-y-4">
-          <span className="text-5xl block">📺</span>
+          <Icon name="tv" className="w-12 h-12 mx-auto text-[#1A6FFF]" />
           <p className="text-2xl font-black text-white font-display">LOOK AT THE MAIN SCREEN!</p>
           {state.phase === 'timer' && (
             <p className="text-6xl font-black text-[#FFE600] font-display tabular-nums">{remaining}</p>
@@ -160,7 +161,7 @@ function QuickEyesGame() {
           </div>
 
           {selected && state.phase !== 'revealed' && (
-            <p className="text-white/50 text-sm font-display">Answer Submitted ✓ — waiting for host to reveal…</p>
+            <p className="text-white/50 text-sm font-display inline-flex items-center gap-1">Answer Submitted <Icon name="check" /> — waiting for host to reveal…</p>
           )}
 
           {state.phase === 'revealed' && (

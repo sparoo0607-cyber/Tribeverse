@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import StageGuard from '@/components/StageGuard'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 import {
   fetchLiveDetectiveRound,
   subscribeToDetectiveRounds,
@@ -91,7 +92,7 @@ function DetectiveGame() {
   if (round === 'none') {
     return (
       <div className="max-w-2xl mx-auto text-center bg-white/[0.03] border border-white/10 rounded-3xl p-10 space-y-4">
-        <span className="text-4xl">🕵️</span>
+        <Icon name="hat" className="w-10 h-10 mx-auto text-[#FFE600]" />
         <h2 className="text-2xl font-black text-white font-display">No Round Live Yet</h2>
         <p className="text-white/50 text-sm">The Event Controller hasn&apos;t started a Detective round. Check back once they announce it, or try the Bonus Cipher Hunt while you wait.</p>
         <Link href="/dashboard/bonus/cipher-hunt" className="inline-block px-5 py-2.5 bg-[#FFE600] text-black font-black text-xs uppercase rounded-xl font-display hover:scale-105 transition-transform">
@@ -122,7 +123,7 @@ function DetectiveGame() {
 
       {round.phase === 'scenario' && (
         <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 text-center space-y-3">
-          <span className="text-3xl">🎬</span>
+          <Icon name="clapperboard" className="w-8 h-8 mx-auto text-[#FFE600]" />
           <p className="text-white text-lg font-bold font-display max-w-lg mx-auto">{round.scenarioText}</p>
           <p className="text-white/40 text-xs uppercase tracking-widest font-display">Guessing opens shortly…</p>
         </div>

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 export default function ProfilePage() {
  const router = useRouter()
@@ -21,9 +22,9 @@ export default function ProfilePage() {
  </div>
  <a
  href="/dashboard/pass"
- className="px-4 py-2 bg-[#FFE600] text-black font-black font-display text-xs uppercase tracking-wider rounded-xl shadow-lg hover:scale-105 transition-transform"
+ className="px-4 py-2 bg-[#FFE600] text-black font-black font-display text-xs uppercase tracking-wider rounded-xl shadow-lg hover:scale-105 transition-transform inline-flex items-center gap-1.5"
  >
- 🎟️ View Full Pass
+ <Icon name="ticket" /> View Full Pass
  </a>
  </div>
 

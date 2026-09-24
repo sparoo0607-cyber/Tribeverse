@@ -3,21 +3,22 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Icon, { IconName } from '@/components/icons/Icon'
 
-const NAV = [
-  { href: '/admin', label: 'Control Center', icon: '⚡' },
-  { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: '📷' },
-  { href: '/admin/teams', label: 'Teams & Roster', icon: '👥' },
-  { href: '/admin/event', label: 'Global Event State', icon: '🌐' },
-  { href: '/admin/scores', label: 'Live Scores', icon: '🏆' },
-  { href: '/admin/monitor', label: 'Monitor', icon: '📊' },
-  { href: '/admin/reveal', label: 'Reveal Control', icon: '✨' },
+const NAV: { href: string; label: string; icon: IconName }[] = [
+  { href: '/admin', label: 'Control Center', icon: 'bolt' },
+  { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: 'camera' },
+  { href: '/admin/teams', label: 'Teams & Roster', icon: 'users' },
+  { href: '/admin/event', label: 'Global Event State', icon: 'globe' },
+  { href: '/admin/scores', label: 'Live Scores', icon: 'trophy' },
+  { href: '/admin/monitor', label: 'Monitor', icon: 'chart-bar' },
+  { href: '/admin/reveal', label: 'Reveal Control', icon: 'sparkles' },
 ]
 
-const EXTERNAL_NAV = [
- { href: '/event-flow', label: 'Event Flow (One-Page Cockpit)', icon: ''},
- { href: '/event-control', label: 'Event Control (Per-Stage Cockpit)', icon: ''},
- { href: '/display', label: 'Display / Projector Screen', icon: ''},
+const EXTERNAL_NAV: { href: string; label: string; icon: IconName }[] = [
+ { href: '/event-flow', label: 'Event Flow (One-Page Cockpit)', icon: 'clapperboard'},
+ { href: '/event-control', label: 'Event Control (Per-Stage Cockpit)', icon: 'monitor'},
+ { href: '/display', label: 'Display / Projector Screen', icon: 'tv'},
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -69,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  <li key={item.href}>
  <Link href={item.href} onClick={()=>setSidebarOpen(false)}
  className={` flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all font-display ${active? 'bg-[#FF2D87] text-white': 'text-white/50 hover:text-white hover:bg-white/[0.06]'}`}>
- <span className="text-xl">{item.icon}</span> {item.label}
+ <Icon name={item.icon} className="w-5 h-5" /> {item.label}
  </Link>
  </li>
  )
@@ -81,7 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  <li key={item.href}>
  <Link href={item.href} onClick={()=>setSidebarOpen(false)}
  className="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all font-display text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/10">
- <span className="text-xl">{item.icon}</span> {item.label}
+ <Icon name={item.icon} className="w-5 h-5" /> {item.label}
  </Link>
  </li>
  ))}
@@ -98,7 +99,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
  <div className="flex-1 flex flex-col min-w-0">
  <header className="lg:hidden sticky top-0 z-30 bg-[#050505]/90 backdrop-blur border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
- <button onClick={()=>setSidebarOpen(true)} className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center text-white"></button>
+ <button onClick={()=>setSidebarOpen(true)} className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center text-white"><Icon name="menu" className="w-5 h-5" /></button>
  <span className="font-black text-[#FF2D87] font-display">ADMIN</span>
  <div className="w-9 h-9 rounded-xl bg-[#FF2D87] flex items-center justify-center text-white font-bold">{name.charAt(0)}</div>
  </header>

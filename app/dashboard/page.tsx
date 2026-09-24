@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { fetchStageStates, subscribeToStageChanges } from '@/lib/stageStore'
+import Icon from '@/components/icons/Icon'
 
 const EVENT_DATE = new Date('2026-09-23T09:00:00+05:30')
 
@@ -138,13 +139,13 @@ export default function DashboardPage() {
       {/* Official Event Pass Ready Banner */}
       <div className="bg-gradient-to-r from-[#FFE600]/15 via-[#FF6B1A]/10 to-[#FF2D87]/15 border border-[#FFE600]/30 rounded-3xl p-5 sm:p-6 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFE600] text-black font-black text-2xl font-display flex items-center justify-center flex-shrink-0 shadow-lg">
-            🎟️
+          <div className="w-14 h-14 rounded-2xl bg-[#FFE600] text-black font-display flex items-center justify-center flex-shrink-0 shadow-lg">
+            <Icon name="ticket" className="w-7 h-7" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase tracking-widest text-[#FFE600] font-display">
-                ✦ OFFICIAL PASS GENERATED
+              <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#FFE600] font-display">
+                <Icon name="sparkle" /> OFFICIAL PASS GENERATED
               </span>
               <span className="px-2 py-0.5 bg-green-500/20 text-green-400 font-bold text-[10px] rounded-full">
                 ACTIVE

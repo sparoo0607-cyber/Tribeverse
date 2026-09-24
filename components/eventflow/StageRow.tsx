@@ -16,7 +16,7 @@ export default function StageRow({
   title: string
   desc: string
   sideNote?: string
-  sideIcon?: string
+  sideIcon?: ReactNode
   children: ReactNode
 }) {
   return (

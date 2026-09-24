@@ -4,13 +4,14 @@ import { useState } from 'react'
 import Link from 'next/link'
 import StageRow from './StageRow'
 import { setStageStatus } from '@/lib/stageStore'
+import Icon, { IconName } from '@/components/icons/Icon'
 
-const ROUNDS = [
-  { icon: '👀', name: 'Quick Eyes', sub: 'Observation', live: true },
-  { icon: '🎨', name: 'Quick Draw', sub: 'Creativity', live: false },
-  { icon: '🧠', name: 'Think Fast', sub: 'Logic', live: false },
-  { icon: '🎧', name: 'Sound Check', sub: 'Listening', live: false },
-  { icon: '⚡', name: 'Reaction Game', sub: 'Reflex', live: false },
+const ROUNDS: { icon: IconName; name: string; sub: string; live: boolean }[] = [
+  { icon: 'eye', name: 'Quick Eyes', sub: 'Observation', live: true },
+  { icon: 'palette', name: 'Quick Draw', sub: 'Creativity', live: false },
+  { icon: 'brain', name: 'Think Fast', sub: 'Logic', live: false },
+  { icon: 'headphones', name: 'Sound Check', sub: 'Listening', live: false },
+  { icon: 'bolt', name: 'Reaction Game', sub: 'Reflex', live: false },
 ]
 
 export default function PlaygroundSection({ status }: { status: string }) {
@@ -32,9 +33,9 @@ export default function PlaygroundSection({ status }: { status: string }) {
         title="Tribe Playground"
         desc="Play. Think. Create. React. Five rounds. Five abilities."
         sideNote="Play. Learn. Connect"
-        sideIcon="🙂"
+        sideIcon={<Icon name="smiley" />}
       >
-        <div className="efb-card-head">🎮 Select Round</div>
+        <div className="efb-card-head"><Icon name="game-controller" /> Select Round</div>
         <div className="efb-card-body">
           <div className="efb-grid-mini">
             {ROUNDS.map((r, i) => (
@@ -44,13 +45,13 @@ export default function PlaygroundSection({ status }: { status: string }) {
                 className={`efb-chip ${selected === i ? 'efb-chip-active' : ''}`}
                 style={selected === i ? { background: '#FFE600' } : undefined}
               >
-                {r.icon} {r.name}<br /><span style={{ opacity: 0.6, fontWeight: 600 }}>{r.sub}</span>
+                <Icon name={r.icon} /> {r.name}<br /><span style={{ opacity: 0.6, fontWeight: 600 }}>{r.sub}</span>
               </div>
             ))}
           </div>
         </div>
         <div className="efb-card-foot">
-          <button className="efb-btn-play yellow" onClick={() => setOpen((v) => !v)}>🎮 Open Control</button>
+          <button className="efb-btn-play yellow" onClick={() => setOpen((v) => !v)}><Icon name="game-controller" /> Open Control</button>
         </div>
 
         {open && (

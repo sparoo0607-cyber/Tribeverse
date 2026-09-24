@@ -5,6 +5,7 @@ import Link from 'next/link'
 import './landing.css'
 import TeamCard from '@/components/TeamCard'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
+import Icon from '@/components/icons/Icon'
 
 interface Note {
  id: number
@@ -148,33 +149,33 @@ export default function LandingPage() {
  </div>
  <div className="overview-grid">
  <div className="ov-card">
- <div className="ov-icon">🌐</div>
+ <div className="ov-icon"><Icon name="globe" /></div>
  <h3>The Concept</h3>
  <p>TRIBEVERSE is a one-day freshers experience where 20 teams of 5 compete across multiple unique challenges — each designed to unlock a different skill and personality.</p>
  </div>
  <div className="ov-card">
- <div className="ov-icon">⚡</div>
+ <div className="ov-icon"><Icon name="bolt" /></div>
  <h3>The Format</h3>
  <p>Each team member takes on a different ability round, contributing to the team's overall score. One team. Five experiences. Infinite memories.</p>
  </div>
  <div className="ov-card">
- <div className="ov-icon">❤️</div>
+ <div className="ov-icon"><Icon name="heart" /></div>
  <h3>The Destination</h3>
  <p>You came as strangers. You played together. You met people. And somewhere along the way... you found your Tribe.</p>
  </div>
  </div>
  <div className="marquee-wrapper">
  <div className="marquee-track">
- <span>TRIBEVERSE V1</span><span className="mx">✦</span>
- <span>FRESHERS EDITION</span><span className="mx">✦</span>
- <span>20 TEAMS</span><span className="mx">✦</span>
- <span>100 PARTICIPANTS</span><span className="mx">✦</span>
- <span>ONE DAY</span><span className="mx">✦</span>
- <span>FIND YOUR TRIBE</span><span className="mx">✦</span>
- <span>TRIBEVERSE V1</span><span className="mx">✦</span>
- <span>FRESHERS EDITION</span><span className="mx">✦</span>
- <span>20 TEAMS</span><span className="mx">✦</span>
- <span>100 PARTICIPANTS</span><span className="mx">✦</span>
+ <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>20 TEAMS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>100 PARTICIPANTS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>ONE DAY</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>FIND YOUR TRIBE</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>20 TEAMS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>100 PARTICIPANTS</span><span className="mx"><Icon name="sparkle" /></span>
  </div>
  </div>
  </div>
@@ -198,7 +199,7 @@ export default function LandingPage() {
  <div className="srow">
  <div className="stime">STAGE 01</div>
  <div className="sevent">
- <span className="sname">🎬 Inauguration · Welcome to TRIBEVERSE</span>
+ <span className="sname"><Icon name="clapperboard" /> Inauguration · Welcome to TRIBEVERSE</span>
  <span className="sdetail">Introduction → Tribe Intro → Team Reveal → Interactive Opening → TRIBEVERSE Launch</span>
  </div>
  <div className="stype"><span className="sbadge sb-yellow">Launch</span></div>
@@ -206,15 +207,15 @@ export default function LandingPage() {
  <div className="srow">
  <div className="stime">STAGE 02</div>
  <div className="sevent">
- <span className="sname">🎮 Tribe Playground</span>
- <span className="sdetail">5 Rounds • 5 Members • 5 Abilities (Quick Eyes 👀 · Quick Draw 🎨 · Think Fast 🧠 · Sound Check 🎧 · Reaction Game ⚡)</span>
+ <span className="sname"><Icon name="game-controller" /> Tribe Playground</span>
+ <span className="sdetail">5 Rounds • 5 Members • 5 Abilities (Quick Eyes <Icon name="eye" /> · Quick Draw <Icon name="palette" /> · Think Fast <Icon name="brain" /> · Sound Check <Icon name="headphones" /> · Reaction Game <Icon name="bolt" />)</span>
  </div>
  <div className="stype"><span className="sbadge sb-pink">Playground</span></div>
  </div>
  <div className="srow">
  <div className="stime">STAGE 03</div>
  <div className="sevent">
- <span className="sname">🕵️ The Tribe Detective</span>
+ <span className="sname"><Icon name="hat" /> The Tribe Detective</span>
  <span className="sdetail">5 Rounds • Secret Roles • Guess • Reveal (Professions · Characters · Superpowers · Campus Roles · Wild Card)</span>
  </div>
  <div className="stype"><span className="sbadge sb-purple">Mystery</span></div>
@@ -222,7 +223,7 @@ export default function LandingPage() {
  <div className="srow srow-lunch">
  <div className="stime">BREAK</div>
  <div className="sevent">
- <span className="sname">🍕 Lunch / Free Tribe Time</span>
+ <span className="sname"><Icon name="pizza" /> Lunch / Free Tribe Time</span>
  <span className="sdetail">Eat → Talk → Meet New People → Photos → Music → Explore</span>
  </div>
  <div className="stype"><span className="sbadge sb-green">Social</span></div>
@@ -230,7 +231,7 @@ export default function LandingPage() {
  <div className="srow">
  <div className="stime">STAGE 04</div>
  <div className="sevent">
- <span className="sname">🎹 Tribe Jam</span>
+ <span className="sname"><Icon name="piano" /> Tribe Jam</span>
  <span className="sdetail">Keyboard → Guitar → Singing → Open Participation → TRIBE JAM SWITCH</span>
  </div>
  <div className="stype"><span className="sbadge sb-teal">Music</span></div>
@@ -238,7 +239,7 @@ export default function LandingPage() {
  <div className="srow">
  <div className="stime">STAGE 05</div>
  <div className="sevent">
- <span className="sname">🧱 The Tribe Wall</span>
+ <span className="sname"><Icon name="brick" /> The Tribe Wall</span>
  <span className="sdetail">“BEFORE I GRADUATE, I WANT TO…” — 100 Students → 100 Dreams → One Tribe Wall</span>
  </div>
  <div className="stype"><span className="sbadge sb-yellow">Interactive</span></div>
@@ -246,10 +247,10 @@ export default function LandingPage() {
  <div className="srow srow-final">
  <div className="stime">FINALE</div>
  <div className="sevent">
- <span className="sname">🌐 TRIBEVERSE REVEAL</span>
+ <span className="sname"><Icon name="globe" /> TRIBEVERSE REVEAL</span>
  <span className="sdetail">You came as strangers. You played together. AND SOMEWHERE ALONG THE WAY... YOU FOUND YOUR TRIBE.</span>
  </div>
- <div className="stype"><span className="sbadge sb-glow">REVEAL 🔥</span></div>
+ <div className="stype"><span className="sbadge sb-glow">REVEAL <Icon name="fire" /></span></div>
  </div>
  </div>
  </div>
@@ -273,7 +274,7 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="px-5 py-2.5 bg-black/40 border border-white/20 rounded-xl text-xs font-mono text-white/80">
-            <span>✦ 6 Core Divisions</span> · <span>1 Unified Tribe ✦</span>
+            <span className="inline-flex items-center gap-1"><Icon name="sparkle" /> 6 Core Divisions</span> · <span className="inline-flex items-center gap-1">1 Unified Tribe <Icon name="sparkle" /></span>
           </div>
         </div>
 
@@ -431,7 +432,7 @@ export default function LandingPage() {
  <section className="section lunch-sec" id="lunch">
  <div className="lunch-inner">
  <div className="lunch-content">
-        <div className="lunch-emoji">🍕</div>
+        <div className="lunch-emoji"><Icon name="pizza" className="w-[1em] h-[1em]" /></div>
         <h2 className="lunch-title">LUNCH &amp; FREE TRIBE TIME</h2>
         <p className="lunch-time text-sm uppercase tracking-wider font-bold text-[#FFE600]">Eat → Talk → Meet New People → Photos → Music → Explore</p>
         <p className="lunch-vibe">Recharge. Reconnect. Discover your tribe.</p>
@@ -512,8 +513,8 @@ export default function LandingPage() {
  {/* ── 10. TRIBE LEADERSHIP & SQUAD (HOVER SHOWCASE) ── */}
  <section className="section py-20 px-4 relative z-10 max-w-7xl mx-auto w-full" id="team">
  <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
- <span className="inline-block px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
- ✦ THE SQUAD BEHIND TRIBEVERSE
+ <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
+ <Icon name="sparkle" /> THE SQUAD BEHIND TRIBEVERSE
  </span>
  <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-display">
  MEET THE <span className="text-[#FFE600]">TRIBE TEAM</span>

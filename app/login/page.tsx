@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import Icon from '@/components/icons/Icon'
 
 export default function LoginPage() {
   const [tab, setTab] = useState<'student' | 'admin' | 'host'>('student')
@@ -128,7 +129,8 @@ export default function LoginPage() {
             href="/register"
             className="inline-flex items-center gap-1 text-xs font-black text-black bg-[#FFE600] px-4 py-2 rounded-xl mt-1 font-display uppercase tracking-widest hover:scale-105 transition-transform"
           >
-            <span>🎟️ Register & Generate Pass</span>
+            <Icon name="ticket" />
+            <span>Register & Generate Pass</span>
             <span>→</span>
           </Link>
         </div>
