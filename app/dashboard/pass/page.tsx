@@ -1,427 +1,376 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import QRCode from 'qrcode'
 import { createClient } from '@/lib/supabase/client'
 import Icon from '@/components/icons/Icon'
 
-const ROUND_NAMES: Record<number, string> = {
-  1: 'Round 1: Quick Eyes (Visual & Memory)',
-  2: 'Round 2: Quick Draw (Cipher & Logic)',
-  3: 'Round 3: Reaction Challenge (Reflexes)',
-  4: 'Round 4: Sound Check (Music & Rhythm)',
-  5: 'Round 5: Think Fast (Strategy & Puzzle)',
+const EVENT = {
+  name: 'TRIBEVERSE V1',
+  date: 'Wednesday, 23 Sep 2026',
+  time: '9:30 AM to 3:30 PM',
+  venue: 'ANITS, Visakhapatnam',
 }
 
-import { Suspense } from 'react'
+const ROUND_NAMES: Record<number, string> = {
+  1: 'Quick Eyes',
+  2: 'Quick Draw',
+  3: 'Reaction Challenge',
+  4: 'Sound Check',
+  5: 'Think Fast',
+}
+
+interface PassProfile {
+  full_name: string
+  student_id: string
+  branch?: string
+  section?: string
+  tag_issued?: boolean
+  assigned_round?: number | null
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath()
+  ctx.moveTo(x + r, y)
+  ctx.arcTo(x + w, y, x + w, y + h, r)
+  ctx.arcTo(x + w, y + h, x, y + h, r)
+  ctx.arcTo(x, y + h, x, y, r)
+  ctx.arcTo(x, y, x + w, y, r)
+  ctx.closePath()
+}
+
+// Draws the pass to a canvas and returns it as a PNG data URL.
+async function renderPassPng(p: PassProfile, qrDataUrl: string): Promise<string> {
+  const W = 1080
+  const H = 1680
+  const canvas = document.createElement('canvas')
+  canvas.width = W
+  canvas.height = H
+  const ctx = canvas.getContext('2d')!
+  const font = '"Helvetica Neue", Arial, sans-serif'
+
+  // Background
+  ctx.fillStyle = '#0A0D14'
+  ctx.fillRect(0, 0, W, H)
+
+  // Ticket body
+  const x = 60
+  const y = 60
+  const w = W - 120
+  const h = H - 120
+  roundRect(ctx, x, y, w, h, 48)
+  ctx.fillStyle = '#151A24'
+  ctx.fill()
+
+  // Header band
+  ctx.save()
+  roundRect(ctx, x, y, w, h, 48)
+  ctx.clip()
+  const grad = ctx.createLinearGradient(x, y, x + w, y)
+  grad.addColorStop(0, '#FFE600')
+  grad.addColorStop(0.55, '#FF6B1A')
+  grad.addColorStop(1, '#FF2D87')
+  ctx.fillStyle = grad
+  ctx.fillRect(x, y, w, 250)
+  ctx.restore()
+
+  ctx.fillStyle = '#0A0D14'
+  ctx.font = `900 84px ${font}`
+  ctx.textAlign = 'left'
+  ctx.fillText('st.', x + 60, y + 120)
+  ctx.font = `800 34px ${font}`
+  ctx.fillText('STUDENT TRIBE', x + 190, y + 100)
+  ctx.font = `600 28px ${font}`
+  ctx.fillText('OFFICIAL PARTICIPANT PASS', x + 190, y + 140)
+  ctx.font = `900 64px ${font}`
+  ctx.fillText(EVENT.name, x + 60, y + 218)
+
+  // Participant
+  ctx.fillStyle = '#FFE600'
+  ctx.font = `700 28px ${font}`
+  ctx.fillText('PARTICIPANT', x + 60, y + 340)
+  ctx.fillStyle = '#FFFFFF'
+  let nameSize = 76
+  ctx.font = `900 ${nameSize}px ${font}`
+  while (ctx.measureText(p.full_name).width > w - 120 && nameSize > 40) {
+    nameSize -= 4
+    ctx.font = `900 ${nameSize}px ${font}`
+  }
+  ctx.fillText(p.full_name, x + 60, y + 340 + nameSize + 8)
+  ctx.fillStyle = '#00FFD1'
+  ctx.font = `700 40px "Courier New", monospace`
+  ctx.fillText(p.student_id, x + 60, y + 340 + nameSize + 76)
+
+  // Details
+  const rows: [string, string][] = [
+    ['DATE', EVENT.date],
+    ['TIME', EVENT.time],
+    ['VENUE', EVENT.venue],
+    ['BRANCH', [p.branch, p.section].filter(Boolean).join('  |  ') || 'Freshers'],
+  ]
+  let ry = y + 340 + nameSize + 150
+  for (const [label, value] of rows) {
+    ctx.fillStyle = 'rgba(255,255,255,0.45)'
+    ctx.font = `700 24px ${font}`
+    ctx.fillText(label, x + 60, ry)
+    ctx.fillStyle = '#FFFFFF'
+    ctx.font = `700 38px ${font}`
+    ctx.fillText(value, x + 60, ry + 46)
+    ry += 100
+  }
+
+  // Tear line
+  const ty = ry + 10
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)'
+  ctx.lineWidth = 3
+  ctx.setLineDash([16, 14])
+  ctx.beginPath()
+  ctx.moveTo(x + 40, ty)
+  ctx.lineTo(x + w - 40, ty)
+  ctx.stroke()
+  ctx.setLineDash([])
+  ctx.fillStyle = '#0A0D14'
+  ctx.beginPath()
+  ctx.arc(x, ty, 30, 0, Math.PI * 2)
+  ctx.arc(x + w, ty, 30, 0, Math.PI * 2)
+  ctx.fill()
+
+  // QR
+  const qr = await new Promise<HTMLImageElement>((res, rej) => {
+    const img = new Image()
+    img.onload = () => res(img)
+    img.onerror = rej
+    img.src = qrDataUrl
+  })
+  const qs = 440
+  const qx = (W - qs) / 2
+  const qy = ty + 60
+  roundRect(ctx, qx - 30, qy - 30, qs + 60, qs + 60, 32)
+  ctx.fillStyle = '#FFFFFF'
+  ctx.fill()
+  ctx.imageSmoothingEnabled = false
+  ctx.drawImage(qr, qx, qy, qs, qs)
+
+  ctx.textAlign = 'center'
+  ctx.fillStyle = '#FFE600'
+  ctx.font = `800 32px ${font}`
+  ctx.fillText('SCAN AT THE ENTRY GATE', W / 2, qy + qs + 100)
+  ctx.fillStyle = 'rgba(255,255,255,0.5)'
+  ctx.font = `600 26px ${font}`
+  ctx.fillText('Non-transferable. Carry your college ID.', W / 2, qy + qs + 148)
+
+  return canvas.toDataURL('image/png')
+}
 
 function EventPassContent() {
-  const [profile, setProfile] = useState<{ 
-    full_name: string; 
-    student_id?: string; 
-    email?: string;
-    branch?: string;
-    section?: string;
-    phone?: string;
-    tag_issued?: boolean;
-  } | null>(null)
-  const [assignedRound, setAssignedRound] = useState<number>(3)
+  const [profile, setProfile] = useState<PassProfile | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [qrUrl, setQrUrl] = useState<string>('')
   const [copied, setCopied] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [isNewRegistration, setIsNewRegistration] = useState(false)
-  const passRef = useRef<HTMLDivElement>(null)
-  
+
   const searchParams = useSearchParams()
-  const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
-    if (searchParams.get('welcome') === 'true') {
-      setIsNewRegistration(true)
-    }
+    if (searchParams.get('welcome') === 'true') setIsNewRegistration(true)
 
-    async function loadPassData() {
-      // 1. Check local storage cache for instant rendering
-      if (typeof window !== 'undefined') {
+    async function load() {
+      // Instant render from the registration cache, then replace with the real profile.
+      try {
         const cached = localStorage.getItem('tribeverse_pass_data')
         if (cached) {
-          try {
-            const parsed = JSON.parse(cached)
+          const c = JSON.parse(cached)
+          if (c.fullName && c.studentId) {
             setProfile({
-              full_name: parsed.fullName || 'Rohan Varma',
-              student_id: parsed.studentId || 'ST-2026-TRB-1001',
-              email: parsed.email,
-              branch: parsed.branch,
-              section: parsed.section,
-              phone: parsed.phone,
+              full_name: c.fullName,
+              student_id: c.studentId,
+              branch: c.branch,
+              section: c.section,
+              assigned_round: c.assignedRound,
             })
-            if (parsed.assignedRound) setAssignedRound(parsed.assignedRound)
-          } catch (e) {}
+            setLoading(false)
+          }
         }
-      }
+      } catch {}
 
-      // 2. Fetch authenticated Supabase user
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        // Default preview state if not logged in
-        if (!profile) {
-          setProfile({
-            full_name: 'Rohan Varma',
-            student_id: 'ST-2026-TRB-1001',
-            email: 'rohan.varma@studenttribe.in',
-            branch: 'CSE (Computer Science)',
-            section: 'Section A',
-            phone: '9876543210',
-            tag_issued: false,
-          })
-          setAssignedRound(3)
-        }
-        return
-      }
+      if (!user) { setLoading(false); return }
 
-      // Fetch profile
       const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
-      if (p) {
-        setProfile({
-          full_name: p.full_name,
-          student_id: p.student_id || user.user_metadata?.student_id || `ST-2026-TRB-${user.id.substring(0, 4).toUpperCase()}`,
-          email: user.email,
-          branch: p.branch || user.user_metadata?.branch,
-          section: p.section || user.user_metadata?.section,
-          phone: p.phone || user.user_metadata?.phone,
-          tag_issued: p.tag_issued || false,
-        })
-      }
-
-      // Assigned round
-      if (p?.assigned_round) setAssignedRound(p.assigned_round)
+      setProfile({
+        full_name: p?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Participant',
+        student_id: p?.student_id || user.user_metadata?.student_id || `ST-2026-TRB-${user.id.substring(0, 4).toUpperCase()}`,
+        branch: p?.branch || user.user_metadata?.branch,
+        section: p?.section || user.user_metadata?.section,
+        tag_issued: p?.tag_issued || false,
+        assigned_round: p?.assigned_round ?? null,
+      })
+      setLoading(false)
     }
-
-    loadPassData()
+    load()
   }, [searchParams])
 
-  const studentName = profile?.full_name || 'Rohan Varma'
-  const passId = profile?.student_id || 'ST-2026-TRB-0001'
+  // The QR encodes the pass ID, which is exactly what the gate scanner searches by.
+  useEffect(() => {
+    if (!profile?.student_id) return
+    QRCode.toDataURL(profile.student_id, {
+      width: 640,
+      margin: 1,
+      errorCorrectionLevel: 'H',
+      color: { dark: '#000000', light: '#FFFFFF' },
+    }).then(setQrUrl).catch(() => setQrUrl(''))
+  }, [profile?.student_id])
 
-  function handleCopyPassId() {
-    navigator.clipboard.writeText(passId)
+  function handleCopy() {
+    if (!profile) return
+    navigator.clipboard.writeText(profile.student_id)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
-  function handlePrint() {
-    window.print()
+  async function handleDownload() {
+    if (!profile || !qrUrl) return
+    setDownloading(true)
+    try {
+      const png = await renderPassPng(profile, qrUrl)
+      const a = document.createElement('a')
+      a.href = png
+      a.download = `tribeverse-pass-${profile.student_id}.png`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+    } finally {
+      setDownloading(false)
+    }
   }
 
+  if (loading) {
+    return <div className="p-12 text-center text-white/50 font-display">Loading your pass…</div>
+  }
+
+  if (!profile) {
+    return (
+      <div className="max-w-md mx-auto text-center bg-white/[0.03] border border-white/10 rounded-3xl p-10 space-y-4">
+        <Icon name="ticket" className="w-10 h-10 mx-auto text-[#FFE600]" />
+        <h2 className="text-2xl font-black text-white font-display">Sign in to see your pass</h2>
+        <p className="text-white/50 text-sm">Your personal QR pass appears here once you are logged in.</p>
+        <Link href="/register" className="inline-block px-6 py-3 bg-[#FFE600] text-black font-black text-xs uppercase rounded-xl font-display">
+          Register / Login
+        </Link>
+      </div>
+    )
+  }
+
+  const details: { label: string; value: string }[] = [
+    { label: 'Date', value: EVENT.date },
+    { label: 'Time', value: EVENT.time },
+    { label: 'Venue', value: EVENT.venue },
+    { label: 'Branch', value: [profile.branch, profile.section].filter(Boolean).join(' · ') || 'Freshers' },
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
-      {/* Welcome Alert if newly registered */}
+    <div className="max-w-md mx-auto space-y-5 pb-12">
       {isNewRegistration && (
-        <div className="bg-gradient-to-r from-[#FFE600]/20 via-[#FF6B1A]/20 to-[#FF2D87]/20 border border-[#FFE600]/40 rounded-2xl p-4 sm:p-6 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="flex items-center gap-3">
-            <Icon name="confetti" className="w-8 h-8 text-[#FFE600]" />
-            <div>
-              <h3 className="font-black text-white text-base font-display">
-                REGISTRATION SUCCESSFUL! YOUR EVENT PASS IS READY!
-              </h3>
-              <p className="text-white/70 text-xs mt-0.5">
-                Welcome to <strong>TRIBEVERSE V1</strong>. Your official digital pass is confirmed below.
-              </p>
-            </div>
+        <div className="bg-[#FFE600]/10 border border-[#FFE600]/40 rounded-2xl p-4 flex items-start justify-between gap-3">
+          <div>
+            <h3 className="font-black text-white text-sm font-display">You are registered!</h3>
+            <p className="text-white/70 text-xs mt-0.5">Download your pass and show the QR at the entry gate.</p>
           </div>
-          <button
-            onClick={() => setIsNewRegistration(false)}
-            className="text-xs text-white/50 hover:text-white px-3 py-1.5 bg-black/40 rounded-lg border border-white/10 inline-flex items-center gap-1"
-          >
-            Dismiss <Icon name="close" />
+          <button onClick={() => setIsNewRegistration(false)} className="text-white/50 hover:text-white" aria-label="Dismiss">
+            <Icon name="close" />
           </button>
         </div>
       )}
 
-      {/* Header & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#FFE600] font-display">
-            <Icon name="sparkle" /> OFFICIAL CREDENTIAL
-          </span>
-          <h1 className="text-3xl font-black text-white font-display uppercase tracking-tight">
-            YOUR DIGITAL EVENT PASS
-          </h1>
-          <p className="text-white/50 text-xs sm:text-sm">
-            Present this scannable digital ticket at the campus arena entrance on Sep 23, 2026.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={handlePrint}
-            className="px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded-xl text-xs font-bold font-display uppercase tracking-wider transition-all flex items-center gap-2"
-          >
-            <Icon name="printer" />
-            <span>Download / Print</span>
-          </button>
-          <Link
-            href="/dashboard/play"
-            className="px-4 py-2.5 bg-[#FFE600] hover:bg-[#ffe600]/90 text-black rounded-xl text-xs font-black font-display uppercase tracking-wider transition-all shadow-lg flex items-center gap-2"
-          >
-            <Icon name="game-controller" />
-            <span>Enter Arena →</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* ── THE MASTER EVENT PASS CARD ── */}
-      <div 
-        ref={passRef}
-        className="relative rounded-3xl overflow-hidden bg-[#0A0D14] border-2 border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] text-white select-none print:shadow-none print:border-black"
-      >
-        {/* Holographic Top Glow */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#FFE600] via-[#FF2D87] to-[#00FFD1]" />
-
-        {/* Pass Top Ribbon */}
-        <div className="p-6 sm:p-8 border-b border-dashed border-white/15 bg-gradient-to-br from-white/[0.06] to-transparent flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Ticket */}
+      <div className="rounded-[28px] overflow-hidden bg-[#151A24] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+        <div className="bg-gradient-to-r from-[#FFE600] via-[#FF6B1A] to-[#FF2D87] p-6 text-[#0A0D14]">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#FFE600] text-black font-black text-2xl font-display flex items-center justify-center shadow-lg">
-              st.
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-widest uppercase font-display text-white">STUDENT TRIBE</span>
-                <span className="px-2 py-0.5 bg-[#FFE600]/20 border border-[#FFE600]/40 text-[#FFE600] rounded text-[10px] font-black font-display">
-                  FRESHERS 2026
-                </span>
-              </div>
-              <p className="text-white/50 text-xs font-mono">TRIBEVERSE V1 · OFFICIAL PARTICIPANT PASS</p>
+            <span className="font-black text-4xl font-display leading-none">st.</span>
+            <div className="leading-tight">
+              <p className="font-black text-sm tracking-widest uppercase font-display">Student Tribe</p>
+              <p className="font-bold text-[11px] tracking-wider uppercase">Official Participant Pass</p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2 self-start sm:self-auto">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#FF2D87]/20 to-[#1A6FFF]/20 border border-white/20 rounded-full text-xs font-black font-display uppercase tracking-widest text-[#00FFD1] shadow-inner">
-              <Icon name="star" /> ALL-ACCESS PASS
-            </span>
-          </div>
+          <h1 className="font-black text-3xl font-display mt-4">{EVENT.name}</h1>
         </div>
 
-        {/* Main Pass Body: 2 Columns */}
-        <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* Left Side: Participant Info */}
-          <div className="lg:col-span-8 space-y-6">
-            
-            {/* Participant Profile Banner */}
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-tr from-[#1A6FFF] via-[#FF2D87] to-[#FFE600] p-[2px] flex-shrink-0 shadow-xl">
-                <div className="w-full h-full bg-[#111418] rounded-[14px] flex items-center justify-center text-3xl sm:text-4xl font-black text-white font-display">
-                  {studentName.charAt(0)}
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[10px] font-mono tracking-widest text-[#FFE600] uppercase font-bold">
-                  REGISTERED PARTICIPANT
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-white font-display tracking-tight">
-                  {studentName}
-                </h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs font-mono font-bold text-white/70 bg-white/10 px-2.5 py-1 rounded-md">
-                    {passId}
-                  </span>
-                  <button
-                    onClick={handleCopyPassId}
-                    className="text-[11px] text-white/50 hover:text-white underline cursor-pointer"
-                  >
-                    {copied ? <span className="inline-flex items-center gap-1"><Icon name="check" /> Copied</span> : 'Copy ID'}
-                  </button>
-                </div>
-              </div>
+        <div className="p-6 space-y-5">
+          <div>
+            <span className="text-[10px] font-black tracking-widest text-[#FFE600] uppercase">Participant</span>
+            <h2 className="text-2xl font-black text-white font-display break-words">{profile.full_name}</h2>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="font-mono font-bold text-[#00FFD1] text-sm">{profile.student_id}</span>
+              <button onClick={handleCopy} className="text-[11px] text-white/50 hover:text-white underline">
+                {copied ? 'Copied' : 'Copy ID'}
+              </button>
             </div>
-
-            {/* Grid of Event Data */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Branch & Section</span>
-                <strong className="text-xs font-black text-white font-display mt-1 block truncate">
-                  {profile?.branch || 'CSE'} · {profile?.section || 'Sec A'}
-                </strong>
-              </div>
-
-              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Participation Mode</span>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00FFD1]"></span>
-                  <strong className="text-xs font-black text-white font-display truncate">Open Fresher Access</strong>
-                </div>
-              </div>
-
-              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Arena Ability</span>
-                <strong className="text-xs font-bold text-[#FFE600] font-display mt-1 block truncate">
-                  {ROUND_NAMES[assignedRound] || `Round ${assignedRound}`}
-                </strong>
-              </div>
-
-              <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Physical Tag</span>
-                <div className="flex items-center gap-1.5 mt-1">
-                  {profile?.tag_issued ? (
-                    <>
-                      <span className="w-2 h-2 rounded-full bg-green-400"></span>
-                      <strong className="text-xs font-black text-green-400 font-display inline-flex items-center gap-1"><Icon name="tag" /> ISSUED</strong>
-                    </>
-                  ) : (
-                    <>
-                      <span className="w-2 h-2 rounded-full bg-[#FFE600] animate-pulse"></span>
-                      <strong className="text-xs font-bold text-[#FFE600] font-display">SCAN AT ENTRY</strong>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Event Schedule & Location */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/10 text-xs">
-              <div className="flex items-center gap-2.5 text-white/70">
-                <Icon name="calendar" className="w-5 h-5" />
-                <div>
-                  <span className="text-[10px] text-white/40 uppercase font-bold block">Event Date</span>
-                  <strong>Wednesday, Sep 23, 2026</strong>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 text-white/70">
-                <Icon name="pin" className="w-5 h-5" />
-                <div>
-                  <span className="text-[10px] text-white/40 uppercase font-bold block">Venue Location</span>
-                  <strong>Main Campus Auditorium · Hyderabad</strong>
-                </div>
-              </div>
-            </div>
-
           </div>
 
-          {/* Right Side: QR Code & Security Barcode */}
-          <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 bg-white/[0.03] border border-white/10 rounded-2xl text-center space-y-4">
-            
-            {/* Dynamic Scannable QR Code */}
-            <div className="p-3 bg-white rounded-2xl shadow-xl flex items-center justify-center">
-              <svg 
-                className="w-36 h-36 sm:w-40 sm:h-40 text-black" 
-                viewBox="0 0 100 100" 
-                fill="currentColor"
-              >
-                {/* Clean Decorative Scannable QR Matrix Representation */}
-                <rect x="5" y="5" width="28" height="28" fill="black" />
-                <rect x="9" y="9" width="20" height="20" fill="white" />
-                <rect x="13" y="13" width="12" height="12" fill="black" />
-
-                <rect x="67" y="5" width="28" height="28" fill="black" />
-                <rect x="71" y="9" width="20" height="20" fill="white" />
-                <rect x="75" y="13" width="12" height="12" fill="black" />
-
-                <rect x="5" y="67" width="28" height="28" fill="black" />
-                <rect x="9" y="71" width="20" height="20" fill="white" />
-                <rect x="13" y="75" width="12" height="12" fill="black" />
-
-                {/* Data Points */}
-                <rect x="38" y="8" width="6" height="6" />
-                <rect x="48" y="8" width="6" height="6" />
-                <rect x="38" y="18" width="6" height="12" />
-                <rect x="48" y="24" width="8" height="6" />
-                <rect x="8" y="38" width="6" height="6" />
-                <rect x="18" y="38" width="12" height="6" />
-                <rect x="8" y="48" width="12" height="8" />
-                <rect x="24" y="48" width="6" height="16" />
-                <rect x="38" y="38" width="10" height="10" />
-                <rect x="52" y="38" width="8" height="8" />
-                <rect x="64" y="38" width="14" height="6" />
-                <rect x="82" y="38" width="8" height="8" />
-                <rect x="38" y="52" width="6" height="14" />
-                <rect x="48" y="50" width="12" height="6" />
-                <rect x="64" y="48" width="8" height="12" />
-                <rect x="76" y="50" width="16" height="6" />
-                <rect x="38" y="70" width="8" height="8" />
-                <rect x="50" y="70" width="6" height="14" />
-                <rect x="60" y="68" width="12" height="6" />
-                <rect x="76" y="68" width="16" height="10" />
-                <rect x="38" y="82" width="10" height="8" />
-                <rect x="60" y="80" width="10" height="10" />
-                <rect x="74" y="82" width="18" height="8" />
-              </svg>
-            </div>
-
-            <div>
-              <span className="text-[11px] font-black font-mono tracking-widest text-[#FFE600] uppercase block">
-                SCAN TO VERIFY ENTRY
-              </span>
-              <span className="text-[10px] text-white/40 font-mono">
-                PASS VERIFICATION: AUTH-OK
-              </span>
-            </div>
-
-            {/* Barcode Strip */}
-            <div className="w-full pt-2 flex flex-col items-center">
-              <div className="flex items-center gap-[2px] h-8 opacity-80">
-                {[3,1,2,4,1,3,2,1,4,2,3,1,2,3,1,4,2,1,3,2,4,1,2,3,1,4,2].map((w, i) => (
-                  <div key={i} className="bg-white h-full" style={{ width: `${w * 1.5}px` }} />
-                ))}
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-4">
+            {details.map((d) => (
+              <div key={d.label} className={d.label === 'Venue' || d.label === 'Branch' ? 'col-span-2' : ''}>
+                <dt className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{d.label}</dt>
+                <dd className="text-sm font-bold text-white mt-0.5">{d.value}</dd>
               </div>
-              <span className="text-[9px] font-mono tracking-widest text-white/50 mt-1">
-                *{passId}*
-              </span>
-            </div>
-
-          </div>
-
+            ))}
+          </dl>
         </div>
 
-        {/* Pass Bottom Foil Security Footer */}
-        <div className="px-6 sm:px-8 py-3 bg-white/[0.02] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/40 font-mono gap-2">
-          <span>ISSUED BY STUDENT TRIBE TECH & OPERATIONS</span>
-          <span className="text-white/60">NON-TRANSFERABLE · PRESENT WITH COLLEGE ID</span>
+        {/* Tear line */}
+        <div className="relative">
+          <div className="border-t-2 border-dashed border-white/20 mx-6" />
+          <span className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-[#111418]" />
+          <span className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-[#111418]" />
+        </div>
+
+        <div className="p-6 flex flex-col items-center gap-3">
+          <div className="p-3 bg-white rounded-2xl">
+            {qrUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={qrUrl} alt={`QR code for ${profile.student_id}`} className="w-56 h-56 sm:w-64 sm:h-64" />
+            ) : (
+              <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center text-black/40 text-xs">Generating QR…</div>
+            )}
+          </div>
+          <p className="text-[#FFE600] font-black text-xs tracking-widest uppercase font-display">Scan at the entry gate</p>
+          <p className="text-white/40 text-[11px] text-center">Non-transferable. Carry your college ID.</p>
         </div>
       </div>
 
-      {/* Next Steps Guide */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link 
-          href="/dashboard/play" 
-          className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
+      {/* Actions */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={handleDownload}
+          disabled={!qrUrl || downloading}
+          className="px-4 py-3 bg-[#FFE600] text-black rounded-xl text-xs font-black font-display uppercase tracking-wider disabled:opacity-50"
         >
-          <Icon name="target" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
-          <h4 className="font-bold text-white text-sm font-display">1. Tribe Playground</h4>
-          <p className="text-white/50 text-xs mt-1">Practice your round challenge and master the countdown mechanics.</p>
-        </Link>
-
-        <Link 
-          href="/dashboard/event" 
-          className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
+          {downloading ? 'Preparing…' : 'Download Pass'}
+        </button>
+        <Link
+          href="/dashboard/event"
+          className="px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/15 text-white rounded-xl text-xs font-bold font-display uppercase tracking-wider text-center"
         >
-          <Icon name="book" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
-          <h4 className="font-bold text-white text-sm font-display">2. Event Guide</h4>
-          <p className="text-white/50 text-xs mt-1">See the full 9:30 AM to 3:30 PM schedule and the ST Playbook.</p>
-        </Link>
-
-        <Link 
-          href="/dashboard/wall" 
-          className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
-        >
-          <Icon name="chat" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
-          <h4 className="font-bold text-white text-sm font-display">3. The Tribe Wall</h4>
-          <p className="text-white/50 text-xs mt-1">Post your freshers dream note and connect with fellow participants.</p>
+          Event Guide
         </Link>
       </div>
+
+      {profile.assigned_round ? (
+        <p className="text-center text-white/50 text-xs">
+          Your Playground round: <strong className="text-[#FFE600]">#{profile.assigned_round} {ROUND_NAMES[profile.assigned_round]}</strong>
+        </p>
+      ) : null}
     </div>
   )
 }
 
 export default function EventPassPage() {
   return (
-    <Suspense fallback={
-      <div className="p-12 text-center text-white/50 font-display">
-        Loading Official Event Pass…
-      </div>
-    }>
+    <Suspense fallback={<div className="p-12 text-center text-white/50 font-display">Loading your pass…</div>}>
       <EventPassContent />
     </Suspense>
   )

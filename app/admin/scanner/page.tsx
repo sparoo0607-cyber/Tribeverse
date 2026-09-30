@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import jsQR from 'jsqr'
 import Icon from '@/components/icons/Icon'
 
 interface StudentProfile {
@@ -97,20 +98,48 @@ export default function AdminScannerPage() {
     setCameraActive(false)
   }
 
-  // Handle Search / Scan Query Submit
-  async function handleSearch(e?: React.FormEvent) {
-    if (e) e.preventDefault()
-    if (!query.trim()) return
+  // Decode QR codes from the live camera feed and look the participant up.
+  useEffect(() => {
+    if (!cameraActive) return
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
+    let last = ''
+    let lastAt = 0
+    const id = setInterval(() => {
+      const video = videoRef.current
+      if (!video || !ctx || video.readyState < 2 || !video.videoWidth) return
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+      const img = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' })
+      const value = code?.data?.trim()
+      if (value && (value !== last || Date.now() - lastAt > 4000)) {
+        last = value
+        lastAt = Date.now()
+        setQuery(value)
+        handleSearch(undefined, value)
+      }
+    }, 300)
+    return () => clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cameraActive, studentsList])
 
-    const trimmed = query.trim().toUpperCase()
+  // Handle Search / Scan Query Submit
+  async function handleSearch(e?: React.FormEvent, override?: string) {
+    if (e) e.preventDefault()
+    const q = (override ?? query).trim()
+    if (!q) return
+
+    const trimmed = q.toUpperCase()
     // 1. Try local match first
     const matched = studentsList.find(
       (s) =>
         s.student_id?.toUpperCase() === trimmed ||
         s.student_id?.toUpperCase().includes(trimmed) ||
-        s.full_name?.toLowerCase().includes(query.toLowerCase()) ||
-        s.phone?.includes(query.trim()) ||
-        s.id === query.trim()
+        s.full_name?.toLowerCase().includes(q.toLowerCase()) ||
+        s.phone?.includes(q) ||
+        s.id === q
     )
 
     if (matched) {
@@ -122,13 +151,13 @@ export default function AdminScannerPage() {
     // 2. Fetch from backend API
     setActionLoading(true)
     try {
-      const res = await fetch(`/api/admin/tag?q=${encodeURIComponent(query.trim())}`)
+      const res = await fetch(`/api/admin/tag?q=${encodeURIComponent(q)}`)
       const data = await res.json()
       if (data.results && data.results.length > 0) {
         setSelectedStudent(data.results[0])
         setFeedback({ type: 'success', message: `Found: ${data.results[0].full_name}` })
       } else {
-        setFeedback({ type: 'error', message: `No participant found matching "${query}"` })
+        setFeedback({ type: 'error', message: `No participant found matching "${q}"` })
       }
     } catch (err) {
       setFeedback({ type: 'error', message: 'Failed to search participant.' })
