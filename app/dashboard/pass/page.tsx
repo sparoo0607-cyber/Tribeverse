@@ -25,6 +25,7 @@ const ROUND_NAMES: Record<number, string> = {
 interface PassProfile {
   full_name: string
   student_id: string
+  roll_number?: string | null
   branch?: string
   section?: string
   tag_issued?: boolean
@@ -44,7 +45,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 // Draws the pass to a canvas and returns it as a PNG data URL.
 async function renderPassPng(p: PassProfile, qrDataUrl: string): Promise<string> {
   const W = 1080
-  const H = 1680
+  const H = 1790
   const canvas = document.createElement('canvas')
   canvas.width = W
   canvas.height = H
@@ -108,6 +109,7 @@ async function renderPassPng(p: PassProfile, qrDataUrl: string): Promise<string>
     ['DATE', EVENT.date],
     ['TIME', EVENT.time],
     ['VENUE', EVENT.venue],
+    ['ROLL NUMBER', p.roll_number || '-'],
     ['BRANCH', [p.branch, p.section].filter(Boolean).join('  |  ') || 'Freshers'],
   ]
   let ry = y + 340 + nameSize + 150
@@ -188,6 +190,7 @@ function EventPassContent() {
             setProfile({
               full_name: c.fullName,
               student_id: c.studentId,
+              roll_number: c.rollNumber,
               branch: c.branch,
               section: c.section,
               assigned_round: c.assignedRound,
@@ -203,6 +206,7 @@ function EventPassContent() {
       const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle()
       setProfile({
         full_name: p?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Participant',
+        roll_number: p?.roll_number || user.user_metadata?.roll_number || null,
         student_id: p?.student_id || user.user_metadata?.student_id || `ST-2026-TRB-${user.id.substring(0, 4).toUpperCase()}`,
         branch: p?.branch || user.user_metadata?.branch,
         section: p?.section || user.user_metadata?.section,
@@ -269,6 +273,7 @@ function EventPassContent() {
     { label: 'Date', value: EVENT.date },
     { label: 'Time', value: EVENT.time },
     { label: 'Venue', value: EVENT.venue },
+    { label: 'Roll Number', value: profile.roll_number || '-' },
     { label: 'Branch', value: [profile.branch, profile.section].filter(Boolean).join(' · ') || 'Freshers' },
   ]
 
@@ -313,7 +318,7 @@ function EventPassContent() {
 
           <dl className="grid grid-cols-2 gap-x-4 gap-y-4">
             {details.map((d) => (
-              <div key={d.label} className={d.label === 'Venue' || d.label === 'Branch' ? 'col-span-2' : ''}>
+              <div key={d.label} className={d.label === 'Venue' || d.label === 'Branch' || d.label === 'Roll Number' ? 'col-span-2' : ''}>
                 <dt className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{d.label}</dt>
                 <dd className="text-sm font-bold text-white mt-0.5">{d.value}</dd>
               </div>

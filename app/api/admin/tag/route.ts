@@ -118,7 +118,7 @@ export async function GET(request: Request) {
     const { data: profiles, error } = await supabaseAdmin
       .from('profiles')
       .select('*')
-      .or(`student_id.ilike.%${queryStr}%,full_name.ilike.%${queryStr}%,phone.ilike.%${queryStr}%,id.eq.${queryStr.length === 36 ? queryStr : '00000000-0000-0000-0000-000000000000'}`)
+      .or(`student_id.ilike.%${queryStr}%,roll_number.ilike.%${queryStr}%,full_name.ilike.%${queryStr}%,phone.ilike.%${queryStr}%,id.eq.${queryStr.length === 36 ? queryStr : '00000000-0000-0000-0000-000000000000'}`)
       .limit(10)
 
     if (error) {

@@ -6,6 +6,7 @@ interface ParticipantRow {
   id: string
   full_name: string
   student_id: string | null
+  roll_number: string | null
   branch: string | null
   section: string | null
   phone: string | null
@@ -28,7 +29,7 @@ export default function AdminParticipantsPage() {
     async function load() {
       const { data } = await supabase
         .from('profiles')
-        .select('id, full_name, student_id, branch, section, phone, tag_issued, created_at')
+        .select('*')
         .eq('role', 'student')
         .order('created_at', { ascending: false })
       if (!cancelled) {
@@ -56,6 +57,7 @@ export default function AdminParticipantsPage() {
       return (
         r.full_name.toLowerCase().includes(q) ||
         (r.student_id ?? '').toLowerCase().includes(q) ||
+        (r.roll_number ?? '').toLowerCase().includes(q) ||
         (r.phone ?? '').includes(q) ||
         (r.branch ?? '').toLowerCase().includes(q)
       )
@@ -65,8 +67,8 @@ export default function AdminParticipantsPage() {
   function exportCsv() {
     const esc = (v: string | null | undefined) => `"${(v ?? '').replace(/"/g, '""')}"`
     const lines = [
-      'Name,Pass ID,Branch,Section,Phone,Checked in',
-      ...filtered.map((r) => [esc(r.full_name), esc(r.student_id), esc(r.branch), esc(r.section), esc(r.phone), r.tag_issued ? 'Yes' : 'No'].join(',')),
+      'Name,Roll Number,Pass ID,Branch,Section,Phone,Checked in',
+      ...filtered.map((r) => [esc(r.full_name), esc(r.roll_number), esc(r.student_id), esc(r.branch), esc(r.section), esc(r.phone), r.tag_issued ? 'Yes' : 'No'].join(',')),
     ]
     const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' })
     const a = document.createElement('a')
@@ -107,7 +109,7 @@ export default function AdminParticipantsPage() {
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
         <input
           type="text"
-          placeholder="Search name, pass ID, phone, branch"
+          placeholder="Search name, roll number, pass ID, phone, branch"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#FF2D87]"
@@ -132,7 +134,8 @@ export default function AdminParticipantsPage() {
               <div key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 sm:px-5 py-3.5">
                 <div className="flex-1 min-w-[160px]">
                   <p className="font-bold text-white font-display text-sm">{r.full_name}</p>
-                  <p className="text-white/40 text-xs font-mono">{r.student_id ?? 'No pass ID'}</p>
+                  <p className="text-[#00FFD1] text-xs font-mono font-bold">{r.roll_number ?? 'No roll number'}</p>
+                  <p className="text-white/40 text-[11px] font-mono">{r.student_id ?? 'No pass ID'}</p>
                 </div>
                 <p className="text-white/50 text-xs">{[r.branch, r.section].filter(Boolean).join(' · ') || '-'}</p>
                 <p className="text-white/40 text-xs font-mono">{r.phone || '-'}</p>

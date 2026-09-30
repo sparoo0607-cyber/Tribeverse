@@ -17,6 +17,7 @@ const ROUND_NAMES: Record<number, string> = {
 interface Me {
   full_name: string
   student_id: string | null
+  roll_number: string | null
   branch: string | null
   section: string | null
   assigned_round: number | null
@@ -34,12 +35,13 @@ export default function ProfilePage() {
       if (!user) { setLoading(false); return }
       const { data } = await supabase
         .from('profiles')
-        .select('full_name, student_id, branch, section, assigned_round')
+        .select('*')
         .eq('id', user.id)
         .maybeSingle()
       setMe({
         full_name: data?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Participant',
         student_id: data?.student_id ?? null,
+        roll_number: data?.roll_number ?? user.user_metadata?.roll_number ?? null,
         branch: data?.branch ?? null,
         section: data?.section ?? null,
         assigned_round: data?.assigned_round ?? null,
@@ -80,6 +82,7 @@ export default function ProfilePage() {
             <div className="min-w-0">
               <h2 className="text-2xl font-black text-white font-display break-words">{me.full_name}</h2>
               {me.student_id && <p className="text-[#00FFD1] text-xs font-mono font-bold">{me.student_id}</p>}
+              {me.roll_number && <p className="text-white/60 text-xs font-mono mt-0.5">Roll No. {me.roll_number}</p>}
             </div>
           </div>
 

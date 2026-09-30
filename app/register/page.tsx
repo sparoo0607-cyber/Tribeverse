@@ -25,6 +25,7 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [rollNumber, setRollNumber] = useState('')
   const [branch, setBranch] = useState('')
   const [customBranch, setCustomBranch] = useState('')
   const [section, setSection] = useState('')
@@ -66,9 +67,9 @@ export default function RegisterPage() {
           email: email.trim().toLowerCase(),
           password,
           phone: phone.trim(),
+          rollNumber: rollNumber.trim().toUpperCase(),
           branch: effectiveBranch,
           section: section.trim(),
-          role: 'student',
         }),
       })
 
@@ -94,6 +95,7 @@ export default function RegisterPage() {
           studentId: data.user?.studentId,
           email: email.trim().toLowerCase(),
           phone: phone.trim(),
+          rollNumber: rollNumber.trim().toUpperCase(),
           branch: effectiveBranch,
           section: section.trim(),
         }))
@@ -184,6 +186,25 @@ export default function RegisterPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="e.g. Rohan Varma"
                 className="w-full bg-white/[0.05] border border-white/10 focus:border-[#FFE600] rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none transition-colors"
+              />
+            </div>
+
+            {/* Roll Number */}
+            <div>
+              <label className="block text-xs font-bold tracking-widest text-white/70 uppercase mb-1.5" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                Roll Number *
+              </label>
+              <input
+                type="text"
+                required
+                value={rollNumber}
+                onChange={(e) => setRollNumber(e.target.value.toUpperCase())}
+                placeholder="e.g. 324126510001"
+                pattern="[A-Za-z0-9][A-Za-z0-9/_\-]{3,24}"
+                title="Letters and digits only, 4 to 25 characters"
+                autoCapitalize="characters"
+                autoComplete="off"
+                className="w-full bg-white/[0.05] border border-white/10 focus:border-[#FFE600] rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm font-mono tracking-wider focus:outline-none transition-colors"
               />
             </div>
 

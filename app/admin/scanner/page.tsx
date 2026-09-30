@@ -9,6 +9,7 @@ interface StudentProfile {
   id: string
   full_name: string
   student_id: string
+  roll_number?: string | null
   phone?: string
   branch?: string
   section?: string
@@ -138,6 +139,7 @@ export default function AdminScannerPage() {
       (s) =>
         s.student_id?.toUpperCase() === trimmed ||
         s.student_id?.toUpperCase().includes(trimmed) ||
+        s.roll_number?.toUpperCase() === trimmed ||
         s.full_name?.toLowerCase().includes(q.toLowerCase()) ||
         s.phone?.includes(q) ||
         s.id === q
@@ -379,6 +381,11 @@ export default function AdminScannerPage() {
                   <span className="text-xs font-mono font-bold text-white/70 bg-white/10 px-2 py-0.5 rounded">
                     {selectedStudent.student_id}
                   </span>
+                  {selectedStudent.roll_number && (
+                    <span className="text-xs font-mono font-bold text-[#00FFD1] bg-[#00FFD1]/10 px-2 py-0.5 rounded">
+                      Roll {selectedStudent.roll_number}
+                    </span>
+                  )}
                   {selectedStudent.phone && (
                     <span className="text-xs text-white/50 inline-flex items-center gap-1">
                       <Icon name="phone" /> {selectedStudent.phone}
@@ -519,6 +526,9 @@ export default function AdminScannerPage() {
                       <span className="font-mono text-[10px] text-white/50 bg-white/5 px-2 py-0.5 rounded">
                         {student.student_id}
                       </span>
+                      {student.roll_number && (
+                        <span className="font-mono text-[10px] text-[#00FFD1] bg-[#00FFD1]/10 px-2 py-0.5 rounded">{student.roll_number}</span>
+                      )}
                     </div>
                     <p className="text-white/40 text-xs mt-0.5">
                       {student.branch || 'CSE'} · {student.section || 'Sec A'} · {student.phone || 'No phone'}
