@@ -3,19 +3,11 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
+import { shuffle } from '@/lib/shuffle'
 import TeamCard from '@/components/TeamCard'
 import Icon from '@/components/icons/Icon'
 
 const CATEGORIES = ['All', 'Lead', 'Tech', 'Operations', 'Design', 'Host', 'Core'] as const
-
-function shuffle<T>(items: T[]): T[] {
-  const arr = [...items]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 export default function TeamPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
@@ -23,9 +15,11 @@ export default function TeamPage() {
   // Start with the source order for a stable server render, then shuffle
   // client-side after mount to avoid a hydration mismatch.
   const [shuffledMembers, setShuffledMembers] = useState(TRIBE_TEAM_MEMBERS)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     setShuffledMembers(shuffle(TRIBE_TEAM_MEMBERS))
+    setReady(true)
   }, [])
 
   const filteredMembers = shuffledMembers.filter((m) => {
@@ -132,7 +126,7 @@ export default function TeamPage() {
         </div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 pt-2" style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.5s ease' }}>
           {filteredMembers.map((member, i) => (
             <TeamCard key={member.id} member={member} index={i} />
           ))}

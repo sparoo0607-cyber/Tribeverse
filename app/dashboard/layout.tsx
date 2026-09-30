@@ -34,11 +34,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  useEffect(() =>{
  async function load() {
  const { data: { user } } = await supabase.auth.getUser()
- if (!user) {
- // Fallback for demo preview
- setProfile({ id: 'demo-student', full_name: 'Rohan Varma', role: 'student', created_at: new Date().toISOString() })
- return
- }
+ if (!user) return
 
  const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single()
  setProfile(p ?? { id: user.id, full_name: user.email?.split('@')[0] ?? 'Student', role: 'student', created_at: new Date().toISOString() })

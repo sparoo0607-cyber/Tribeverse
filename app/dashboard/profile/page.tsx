@@ -1,79 +1,114 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Icon from '@/components/icons/Icon'
 
+const ROUND_NAMES: Record<number, string> = {
+  1: 'Quick Eyes',
+  2: 'Quick Draw',
+  3: 'Reaction Challenge',
+  4: 'Sound Check',
+  5: 'Think Fast',
+}
+
+interface Me {
+  full_name: string
+  student_id: string | null
+  branch: string | null
+  section: string | null
+  assigned_round: number | null
+}
+
 export default function ProfilePage() {
- const router = useRouter()
- const supabase = createClient()
+  const router = useRouter()
+  const supabase = createClient()
+  const [me, setMe] = useState<Me | null>(null)
+  const [loading, setLoading] = useState(true)
 
- const handleSignOut = async () =>{
- await supabase.auth.signOut()
- router.push('/')
- }
+  useEffect(() => {
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { setLoading(false); return }
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, student_id, branch, section, assigned_round')
+        .eq('id', user.id)
+        .maybeSingle()
+      setMe({
+        full_name: data?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Participant',
+        student_id: data?.student_id ?? null,
+        branch: data?.branch ?? null,
+        section: data?.section ?? null,
+        assigned_round: data?.assigned_round ?? null,
+      })
+      setLoading(false)
+    }
+    load()
+  }, [])
 
- return (
- <div className="space-y-6 max-w-2xl mx-auto">
- <div className="flex items-center justify-between">
- <div>
- <h1 className="text-3xl font-black text-white font-display">Participant Profile</h1>
- <p className="text-white/50 text-sm">Your account and participant credential for TRIBEVERSE V1.</p>
- </div>
- <a
- href="/dashboard/pass"
- className="px-4 py-2 bg-[#FFE600] text-black font-black font-display text-xs uppercase tracking-wider rounded-xl shadow-lg hover:scale-105 transition-transform inline-flex items-center gap-1.5"
- >
- <Icon name="ticket" /> View Full Pass
- </a>
- </div>
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
 
- {/* Digital ID Badge */}
- <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1A6FFF] via-[#0D1B4B] to-[#7B2FFF] p-8 border border-white/20 shadow-2xl">
- <div className="flex justify-between items-start mb-6">
- <div className="flex items-baseline gap-2">
- <span className="font-black text-4xl text-[#FFE600] font-display">st.</span>
- <span className="font-bold text-xs uppercase tracking-widest text-white/80 font-display">STUDENT TRIBE</span>
- </div>
- <span className="px-3 py-1 bg-white/20 text-white text-[10px] font-black rounded-full font-display uppercase tracking-widest">
- OFFICIAL PASS
- </span>
- </div>
+  if (loading) return <div className="p-12 text-center text-white/50 font-display">Loading…</div>
 
- <div className="flex items-center gap-5 mb-6">
- <div className="w-16 h-16 rounded-2xl bg-[#FFE600] text-black font-black text-3xl font-display flex items-center justify-center shadow-lg">
- R
- </div>
- <div>
- <h2 className="text-2xl font-black text-white font-display">Rohan Varma</h2>
- <p className="text-[#00FFD1] text-xs font-mono font-bold">ST-2026-TRB-0001</p>
- <p className="text-white/60 text-xs mt-0.5">Role: Participant · Student</p>
- </div>
- </div>
+  return (
+    <div className="space-y-6 max-w-2xl mx-auto">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-black text-white font-display">My Profile</h1>
+          <p className="text-white/50 text-sm">Your TRIBEVERSE V1 participant details.</p>
+        </div>
+        <Link
+          href="/dashboard/pass"
+          className="px-4 py-2 bg-[#FFE600] text-black font-black font-display text-xs uppercase tracking-wider rounded-xl inline-flex items-center gap-1.5 shrink-0"
+        >
+          <Icon name="ticket" /> My Pass
+        </Link>
+      </div>
 
- <div className="grid grid-cols-2 gap-3 bg-black/40 p-4 rounded-2xl border border-white/10 text-xs">
- <div>
- <span className="text-white/40 block font-display uppercase">Participation</span>
- <strong className="text-white font-bold text-sm">Open Fresher Access</strong>
- </div>
- <div>
- <span className="text-white/40 block font-display uppercase">Assigned Ability</span>
- <strong className="text-[#FFE600] font-bold text-sm">Round 03: Reaction</strong>
- </div>
- </div>
+      {me && (
+        <div className="rounded-3xl bg-gradient-to-br from-[#1A6FFF] via-[#0D1B4B] to-[#7B2FFF] p-6 sm:p-8 border border-white/20 shadow-2xl space-y-6">
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 rounded-2xl bg-[#FFE600] text-black font-black text-3xl font-display flex items-center justify-center shrink-0">
+              {me.full_name.charAt(0).toUpperCase()}
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-2xl font-black text-white font-display break-words">{me.full_name}</h2>
+              {me.student_id && <p className="text-[#00FFD1] text-xs font-mono font-bold">{me.student_id}</p>}
+            </div>
+          </div>
 
- <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-[10px] text-white/40 font-mono">
- <span>EVENT: TRIBEVERSE V1</span>
- <span>DATE: SEP 23, 2026</span>
- </div>
- </div>
+          <div className="grid grid-cols-2 gap-3 bg-black/40 p-4 rounded-2xl border border-white/10 text-xs">
+            <div>
+              <span className="text-white/40 block font-display uppercase">Branch</span>
+              <strong className="text-white font-bold text-sm">{[me.branch, me.section].filter(Boolean).join(' · ') || 'Freshers'}</strong>
+            </div>
+            <div>
+              <span className="text-white/40 block font-display uppercase">Playground round</span>
+              <strong className="text-[#FFE600] font-bold text-sm">
+                {me.assigned_round ? `#${me.assigned_round} ${ROUND_NAMES[me.assigned_round] ?? ''}` : 'Assigned on the day'}
+              </strong>
+            </div>
+          </div>
 
- <button
- onClick={handleSignOut}
- className="w-full py-3 rounded-xl border border-red-500/30 text-red-400 font-bold font-display text-xs uppercase tracking-wider hover:bg-red-500/10 transition-colors"
- >
- Sign Out of Platform
- </button>
- </div>
- )
+          <div className="pt-4 border-t border-white/10 flex justify-between items-center text-[10px] text-white/40 font-mono">
+            <span>TRIBEVERSE V1</span>
+            <span>23 SEP 2026</span>
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={handleSignOut}
+        className="w-full py-3 rounded-xl border border-red-500/30 text-red-400 font-bold font-display text-xs uppercase tracking-wider hover:bg-red-500/10 transition-colors"
+      >
+        Sign Out
+      </button>
+    </div>
+  )
 }

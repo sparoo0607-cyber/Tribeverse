@@ -47,7 +47,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
       {/* Responsive Grid Card Item */}
       <div
         onClick={handleOpenModal}
-        className="group relative w-full max-w-sm mx-auto h-[440px] sm:h-[460px] md:h-[480px] rounded-3xl overflow-hidden bg-[#10141D] border border-white/10 hover:border-[#FFE600] transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(255,230,0,0.3)] flex flex-col justify-end animate-card-in cursor-pointer select-none"
+        className="group relative w-full max-w-sm mx-auto aspect-[1060/1484] rounded-3xl overflow-hidden bg-[#10141D] border border-white/10 hover:border-[#FFE600] transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(255,230,0,0.3)] flex flex-col justify-end animate-card-in cursor-pointer select-none"
         style={{ animationDelay: `${Math.min(index, 12) * 60}ms` }}
         title="Tap to view full ID card"
       >
@@ -76,7 +76,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
         </div>
 
         {/* Main Details (Bottom Overlay) */}
-        <div className="relative z-10 p-5 sm:p-6 transform transition-transform duration-500 group-hover:-translate-y-1 bg-gradient-to-t from-black via-black/90 to-transparent pt-8">
+        <div className="relative z-10 p-3 sm:p-6 transform transition-transform duration-500 group-hover:-translate-y-1 bg-gradient-to-t from-black via-black/90 to-transparent pt-8">
           
           {/* Branch Tag */}
           <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#00FFD1]/15 border border-[#00FFD1]/30 text-[11px] font-bold text-[#00FFD1] mb-1.5 font-display max-w-full">
@@ -85,7 +85,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
           </div>
 
           {/* Member Name & Role */}
-          <h3 className="text-lg sm:text-xl font-black text-white font-display tracking-tight group-hover:text-[#FFE600] transition-colors line-clamp-1">
+          <h3 className="text-sm sm:text-xl font-black text-white font-display tracking-tight group-hover:text-[#FFE600] transition-colors line-clamp-1">
             {member.name}
           </h3>
           <p className="text-xs font-semibold text-white/75 mt-0.5 line-clamp-1">
@@ -100,7 +100,7 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
             {/* View Profile Button */}
             <Link
               href={profilePath}
-              className="w-full py-2 px-3 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black text-xs uppercase tracking-wider rounded-xl font-display text-center transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full h-9 whitespace-nowrap px-3 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black font-black text-xs uppercase tracking-wider rounded-xl font-display text-center transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>View Profile</span>
               <span>→</span>
@@ -113,12 +113,12 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                   href={member.linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-[#0077B5]/25 hover:bg-[#0077B5] border border-[#0077B5]/50 text-white text-xs font-bold font-display transition-all hover:scale-105 shadow-md cursor-pointer"
+                  className="flex-1 basis-0 min-w-0 h-9 whitespace-nowrap flex items-center justify-center gap-1.5 px-2 rounded-xl bg-[#0077B5]/25 hover:bg-[#0077B5] border border-[#0077B5]/50 text-white text-xs font-bold font-display transition-all hover:scale-105 shadow-md cursor-pointer"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                   </svg>
-                  <span>LinkedIn</span>
+                  <span className="hidden sm:inline">LinkedIn</span>
                 </a>
               ) : null}
 
@@ -127,12 +127,12 @@ export default function TeamCard({ member, index = 0 }: TeamCardProps) {
                   href={member.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-[#E1306C]/25 hover:bg-[#E1306C] border border-[#E1306C]/50 text-white text-xs font-bold font-display transition-all hover:scale-105 shadow-md cursor-pointer"
+                  className="flex-1 basis-0 min-w-0 h-9 whitespace-nowrap flex items-center justify-center gap-1.5 px-2 rounded-xl bg-[#E1306C]/25 hover:bg-[#E1306C] border border-[#E1306C]/50 text-white text-xs font-bold font-display transition-all hover:scale-105 shadow-md cursor-pointer"
                 >
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                   </svg>
-                  <span>Instagram</span>
+                  <span className="hidden sm:inline">Instagram</span>
                 </a>
               ) : null}
             </div>

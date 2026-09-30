@@ -43,7 +43,7 @@ export default function PlaybookSlideViewer({
       <div className="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden border-2 border-white/15 bg-[#0A0D14] shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         
         {/* Top Control Bar */}
-        <div className="px-5 py-3.5 bg-white/[0.04] border-b border-white/10 flex items-center justify-between gap-4">
+        <div className="px-4 sm:px-5 py-3.5 bg-white/[0.04] border-b border-white/10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FFE600] animate-pulse"></span>
             <span className="font-display font-black text-xs uppercase tracking-widest text-white">

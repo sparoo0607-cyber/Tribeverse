@@ -5,8 +5,10 @@ import Link from 'next/link'
 import './landing.css'
 import TeamCard from '@/components/TeamCard'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
+import { shuffle } from '@/lib/shuffle'
 import Icon from '@/components/icons/Icon'
 import PlaybookSlideViewer from '@/components/PlaybookSlideViewer'
+import CurvedTitle from '@/components/CurvedTitle'
 
 interface Note {
  id: number
@@ -35,6 +37,14 @@ export default function LandingPage() {
  const [menuOpen, setMenuOpen] = useState(false)
  const [notes, setNotes] = useState<Note[]>(INITIAL_NOTES)
  const [dreamInput, setDreamInput] = useState('')
+ useEffect(() => {
+ document.body.style.overflow = menuOpen ? 'hidden' : ''
+ return () => { document.body.style.overflow = '' }
+ }, [menuOpen])
+ // Source order for the server render, reshuffled on every page open so no one is always first.
+ const [teamOrder, setTeamOrder] = useState(TRIBE_TEAM_MEMBERS)
+ const [teamReady, setTeamReady] = useState(false)
+ useEffect(() => { setTeamOrder(shuffle(TRIBE_TEAM_MEMBERS)); setTeamReady(true) }, [])
 
  useEffect(() =>{
  const handleScroll = () =>{
@@ -57,13 +67,13 @@ export default function LandingPage() {
  return (
  <div className="landing-body">
  {/* ── NAVBAR ── */}
- <nav className={` nav ${navScrolled ? 'scrolled': ''}`}>
+ <nav className={` nav ${navScrolled ? 'scrolled': ''} ${menuOpen ? 'menu-open' : ''}`}>
  <div className="nav-inner">
  <Link href="#hero" className="nav-logo">
  <span className="nav-logo-st">st.</span>
  <span className="nav-logo-text">Student Tribe</span>
  </Link>
- <button className="nav-toggle" onClick={() =>setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+ <button className={`nav-toggle ${menuOpen ? 'open' : ''}`} onClick={() =>setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>
  <span></span><span></span><span></span>
  </button>
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
@@ -87,25 +97,22 @@ export default function LandingPage() {
  {/* ── 1. HERO SECTION ── */}
  <section className="hero" id="hero">
  <div className="hero-bg-grid"></div>
- <div className="hero-sparkles">
- <span className="sparkle s1"></span>
- <span className="sparkle s2"></span>
- <span className="sparkle s3"></span>
- <span className="sparkle s4"></span>
- <span className="sparkle s5"></span>
- <span className="sparkle s6"></span>
- <span className="sparkle s7"></span>
- <span className="sparkle s8"></span>
+ <div className="hero-glow hero-glow-a"></div>
+ <div className="hero-glow hero-glow-b"></div>
+ <div className="hero-sparkles" aria-hidden="true">
+ <span className="sparkle s1"><Icon name="game-controller" className="w-6 h-6" /></span>
+ <span className="sparkle s2"><Icon name="piano" className="w-6 h-6" /></span>
+ <span className="sparkle s3"><Icon name="ticket" className="w-6 h-6" /></span>
+ <span className="sparkle s4"><Icon name="trophy" className="w-6 h-6" /></span>
+ <span className="sparkle s5"><Icon name="sparkles" className="w-6 h-6" /></span>
+ <span className="sparkle s6"><Icon name="chat" className="w-6 h-6" /></span>
+ <span className="sparkle s7"><Icon name="mic" className="w-6 h-6" /></span>
+ <span className="sparkle s8"><Icon name="star" className="w-6 h-6" /></span>
  </div>
  <div className="hero-wavy-deco top-deco"></div>
  <div className="hero-inner">
- <div className="hero-badge">FRESHERS EDITION</div>
- <p className="hero-org">STUDENT TRIBE PRESENTS</p>
- <h1 className="hero-title">
- <span className="ht-tribe">TRIBE</span>
- <span className="ht-verse">VERSE</span>
- <span className="ht-v1">V1</span>
- </h1>
+ <div className="hero-badge"><Icon name="sparkles" className="w-4 h-4" /> FRESHERS EDITION</div>
+ <CurvedTitle />
  <div className="hero-actions">
  <Link href="/register" className="hero-cta">
  ENTER TRIBEVERSE →
@@ -114,9 +121,27 @@ export default function LandingPage() {
  Explore Event Flow ↓
  </a>
  </div>
+ <p className="hero-tagline-sm">One day. Nine moments. One Tribe.</p>
  </div>
  <div className="hero-wavy-deco bottom-deco"></div>
  </section>
+
+ <div className="ticker" aria-hidden="true">
+ <div className="ticker-track">
+ {[0, 1].map((k) => (
+ <div className="ticker-set" key={k}>
+ <span><Icon name="clapperboard" className="w-4 h-4" /> Inauguration</span>
+ <span><Icon name="book" className="w-4 h-4" /> ST Brief</span>
+ <span><Icon name="sparkles" className="w-4 h-4" /> Talent Hunt</span>
+ <span><Icon name="game-controller" className="w-4 h-4" /> Tribe Playground</span>
+ <span><Icon name="pizza" className="w-4 h-4" /> Lunch</span>
+ <span><Icon name="piano" className="w-4 h-4" /> Tribe Jam</span>
+ <span><Icon name="globe" className="w-4 h-4" /> Tribeverse Reveal</span>
+ <span><Icon name="chat" className="w-4 h-4" /> Tribe Wall</span>
+ </div>
+ ))}
+ </div>
+ </div>
 
  {/* ── 2. EVENT OVERVIEW ── */}
  <section className="section overview" id="overview">
@@ -148,13 +173,13 @@ export default function LandingPage() {
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
  <span>CAMPUS EXPERIENCE</span><span className="mx"><Icon name="sparkle" /></span>
- <span>100+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>500+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  <span>ONE DAY</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FIND YOUR TRIBE</span><span className="mx"><Icon name="sparkle" /></span>
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
  <span>OPEN PARTICIPATION</span><span className="mx"><Icon name="sparkle" /></span>
- <span>100+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>500+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  </div>
  </div>
  </div>
@@ -267,7 +292,7 @@ export default function LandingPage() {
         </div>
 
         {/* 6 Divisions Summary Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="divisions-grid grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-[#FF1A75] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
             <span className="font-display font-black text-lg text-[#FFE600] block">1. CAREERS</span>
             <p className="text-xs text-white/90 font-medium mt-1">ST School skill development, upskilling, mentorship.</p>
@@ -305,10 +330,12 @@ export default function LandingPage() {
  <section className="section inaug-sec" id="inauguration">
  <div className="section-inner">
  <div className="sec-num" aria-hidden="true">05</div>
+ <div className="sec-header">
+ <h2 className="sec-title lime-t">INAUGURATION</h2>
+ </div>
  <div className="inaug-layout">
  <div className="inaug-text">
- <h2 className="sec-title lime-t">INAUGURATION</h2>
- <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration as 100+ freshers step into something larger than themselves. Today is the day your tribe is born.</p>
+ <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration as 500+ freshers step into something larger than themselves. Today is the day your tribe is born.</p>
  <div className="inaug-details">
             <div className="idetail"><span className="ilabel">PHASE</span><span className="ival">Stage 01 · Launch</span></div>
             <div className="idetail"><span className="ilabel">FORMAT</span><span className="ival">Opening Ceremony</span></div>
@@ -335,36 +362,36 @@ export default function LandingPage() {
  <div className="sec-num light-num" aria-hidden="true">06</div>
  <div className="sec-header">
  <h2 className="sec-title white-t">TRIBE PLAYGROUND</h2>
- <p className="sec-sub light-sub">5 Rounds · 5 Members · 5 Different Abilities</p>
+ <p className="sec-sub light-sub">5 Rounds · 5 Different Abilities · Open to Everyone</p>
  </div>
  <div className="rounds-grid">
  <div className="round-card">
  <div className="rnum">01</div>
- <div className="ricon"></div>
+ <div className="ricon"><Icon name="eye" className="w-10 h-10" /></div>
  <h3 className="rname">QUICK EYES</h3>
  <p>Spot it before anyone else. Visual speed is everything in this round.</p>
  </div>
  <div className="round-card">
  <div className="rnum">02</div>
- <div className="ricon"></div>
+ <div className="ricon"><Icon name="pencil" className="w-10 h-10" /></div>
  <h3 className="rname">QUICK DRAW</h3>
  <p>Sketch it fast. Make everyone guess it faster. Every second counts.</p>
  </div>
  <div className="round-card">
  <div className="rnum">03</div>
- <div className="ricon"></div>
+ <div className="ricon"><Icon name="brain" className="w-10 h-10" /></div>
  <h3 className="rname">THINK FAST</h3>
  <p>No time to overthink. Your first instinct might just be your best one.</p>
  </div>
  <div className="round-card">
  <div className="rnum">04</div>
- <div className="ricon"></div>
+ <div className="ricon"><Icon name="headphones" className="w-10 h-10" /></div>
  <h3 className="rname">SOUND CHECK</h3>
  <p>Listen. Identify. Win. Music knowledge meets lightning reflexes.</p>
  </div>
  <div className="round-card">
  <div className="rnum">05</div>
- <div className="ricon"></div>
+ <div className="ricon"><Icon name="bolt" className="w-10 h-10" /></div>
  <h3 className="rname">REACTION GAME</h3>
  <p>Pure instinct. Zero hesitation. The fastest reaction wins it all.</p>
  </div>
@@ -410,9 +437,9 @@ export default function LandingPage() {
  <div className="jnote jn3"></div><div className="jnote jn4"></div>
  </div>
  <div className="jam-info">
- <div className="jd"><span className="ji"></span><div><strong>Live Keyboard & Instrumental Jam</strong><p>Live keyboard playing leads the session, laying down chords and rhythms for everyone to join in.</p></div></div>
- <div className="jd"><span className="ji"></span><div><strong>Singing, Rap & Beatbox</strong><p>Sing, rap, beatbox, hum: any vocal expression counts. Take the mic or harmonize with the crowd.</p></div></div>
- <div className="jd"><span className="ji"></span><div><strong>Dance & Pure Jam Vibe</strong><p>Dance, movement, and freestyle rhythm. No perfect pitch or steps required, just authentic energy.</p></div></div>
+ <div className="jd"><span className="ji"><Icon name="piano" className="w-7 h-7" /></span><div><strong>Live Keyboard & Instrumental Jam</strong><p>Live keyboard playing leads the session, laying down chords and rhythms for everyone to join in.</p></div></div>
+ <div className="jd"><span className="ji"><Icon name="mic" className="w-7 h-7" /></span><div><strong>Singing, Rap & Beatbox</strong><p>Sing, rap, beatbox, hum: any vocal expression counts. Take the mic or harmonize with the crowd.</p></div></div>
+ <div className="jd"><span className="ji"><Icon name="music-notes" className="w-7 h-7" /></span><div><strong>Dance & Pure Jam Vibe</strong><p>Dance, movement, and freestyle rhythm. No perfect pitch or steps required, just authentic energy.</p></div></div>
  </div>
  </div>
  </div>
@@ -457,7 +484,7 @@ export default function LandingPage() {
  </section>
 
  {/* ── 10. TRIBE LEADERSHIP & SQUAD (HOVER SHOWCASE) ── */}
- <section className="section py-20 px-4 relative z-10 max-w-7xl mx-auto w-full" id="team">
+ <section className="section py-20 px-4 relative z-10 max-w-[1200px] mx-auto w-full" id="team">
  <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#FFE600]/15 border border-[#FFE600]/30 text-[#FFE600] rounded-full text-xs font-black uppercase tracking-widest font-display">
  <Icon name="sparkle" /> THE SQUAD BEHIND TRIBEVERSE
@@ -470,8 +497,8 @@ export default function LandingPage() {
  </p>
  </div>
 
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
- {TRIBE_TEAM_MEMBERS.map((member) => (
+ <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6" style={{ opacity: teamReady ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+ {teamOrder.map((member) => (
  <TeamCard key={member.id} member={member} />
  ))}
  </div>
