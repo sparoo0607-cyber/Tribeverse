@@ -53,13 +53,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  <div className="flex-1 flex">
  {/* Sidebar */}
  <aside className={`
- fixed inset-y-0 left-0 z-50 w-64 bg-[#0A0A0A] border-r border-white/[0.06]
+ fixed inset-y-0 left-0 z-50 w-64 bg-[#0A0A0A] border-r border-white/[0.06] flex flex-col
  transform transition-transform duration-300
- lg:relative lg:translate-x-0
+ lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0
  ${sidebarOpen ? 'translate-x-0': '-translate-x-full'}
 `}>
  {/* Logo */}
- <div className="p-6 border-b border-white/[0.06]">
+ <div className="p-6 border-b border-white/[0.06] shrink-0">
  <Link href="/dashboard" className="flex items-baseline gap-2">
  <span className="font-black text-3xl text-[#FFE600] font-display">st.</span>
  <span className="font-bold text-xs tracking-widest text-white/60 uppercase font-display">TRIBEVERSE V1</span>
@@ -72,7 +72,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </div>
 
  {/* Nav */}
- <nav className="p-4">
+ <nav className="p-4 flex-1 overflow-y-auto">
  <ul className="space-y-1">
  {NAV.map(item =>{
  const active = pathname === item.href || (item.href !=='/dashboard'&& pathname.startsWith(item.href))
@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </nav>
 
  {/* Bottom user */}
- <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06]">
+ <div className="p-4 border-t border-white/[0.06] shrink-0">
  <div className="flex items-center justify-between">
  <div className="flex items-center gap-3 min-w-0">
  <div className="w-9 h-9 rounded-xl bg-[#1A6FFF] flex items-center justify-center text-white font-bold text-sm font-display flex-shrink-0">

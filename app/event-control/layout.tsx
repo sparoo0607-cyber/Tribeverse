@@ -59,7 +59,7 @@ export default function EventControlLayout({ children }: { children: React.React
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex">
       {/* Left sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:overflow-y-auto lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-white/[0.06]">
           <div className="flex items-baseline gap-2 mb-1">
             <span className="font-black text-3xl text-[#00FFD1] font-display">st.</span>
