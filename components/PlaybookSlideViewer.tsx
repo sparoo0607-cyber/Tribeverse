@@ -104,7 +104,7 @@ export default function PlaybookSlideViewer({
         </div>
 
         {/* Bottom Navigation & Controls */}
-        <div className="p-4 sm:p-5 bg-white/[0.04] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 bg-white/[0.04] border-t border-white/10 flex items-center justify-center gap-4">
           {/* Slide Navigation Buttons */}
           <div className="flex items-center gap-3">
             <button
@@ -124,24 +124,6 @@ export default function PlaybookSlideViewer({
             >
               Next Slide →
             </button>
-          </div>
-
-          {/* Slide Thumbnails / Progress Dots */}
-          <div className="flex items-center gap-1.5 flex-wrap justify-center">
-            {SLIDES.map((s, idx) => (
-              <button
-                key={s.num}
-                onClick={() => setCurrentSlide(idx)}
-                className={`w-6 h-6 rounded-md font-mono text-[10px] font-black transition-all ${
-                  currentSlide === idx
-                    ? 'bg-[#FFE600] text-black scale-110 shadow-md font-bold'
-                    : 'bg-white/10 text-white/50 hover:bg-white/20 hover:text-white'
-                }`}
-                title={`Go to Slide ${s.num}`}
-              >
-                {s.num}
-              </button>
-            ))}
           </div>
         </div>
 
