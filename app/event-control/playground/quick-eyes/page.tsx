@@ -121,7 +121,6 @@ export default function QuickEyesAdminPage() {
             </div>
             <div className="flex gap-4 text-xs text-white/50 font-mono">
               <span>Timer: {state.durationSeconds}s</span>
-              <span>Points: +{state.question.points}</span>
             </div>
           </>
         ) : (

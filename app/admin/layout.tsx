@@ -7,18 +7,9 @@ import Icon, { IconName } from '@/components/icons/Icon'
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Control Center', icon: 'bolt' },
+  { href: '/event-control', label: 'Event Control', icon: 'monitor' },
   { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: 'camera' },
-  { href: '/admin/teams', label: 'Participants & Scores', icon: 'users' },
-  { href: '/admin/event', label: 'Global Event State', icon: 'globe' },
-  { href: '/admin/scores', label: 'Live Scores', icon: 'trophy' },
-  { href: '/admin/monitor', label: 'Monitor', icon: 'chart-bar' },
-  { href: '/admin/reveal', label: 'Reveal Control', icon: 'sparkles' },
-]
-
-const EXTERNAL_NAV: { href: string; label: string; icon: IconName }[] = [
- { href: '/event-flow', label: 'Event Flow (One-Page Cockpit)', icon: 'clapperboard'},
- { href: '/event-control', label: 'Event Control (Per-Stage Cockpit)', icon: 'monitor'},
- { href: '/display', label: 'Display / Projector Screen', icon: 'tv'},
+  { href: '/admin/participants', label: 'Participants', icon: 'users' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -30,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
  useEffect(() =>{
  supabase.auth.getUser().then(({data:{user}}) =>{
- if (!user) { setName('Event Lead Admin'); return }
+ if (!user) return
  supabase.from('profiles').select('full_name,role').eq('id', user.id).single().then(({data}) =>{
  setName(data?.full_name ?? 'Lead Admin')
  })
@@ -43,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
  return (
  <div className="min-h-screen bg-[#0A0A0A] flex">
- <aside className={` fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:overflow-y-auto lg:translate-x-0 ${sidebarOpen? 'translate-x-0': '-translate-x-full'}`}>
+ <aside className={` fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 flex flex-col lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0 ${sidebarOpen? 'translate-x-0': '-translate-x-full'}`}>
  <div className="p-6 border-b border-white/[0.06]">
  <div className="flex items-baseline gap-2 mb-1">
  <span className="font-black text-3xl text-[#FF2D87] font-display">st.</span>
@@ -62,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  </div>
  </div>
  </div>
- <nav className="p-4">
+ <nav className="p-4 flex-1 overflow-y-auto">
  <ul className="space-y-1">
  {NAV.map(item =>{
  const active = pathname === item.href || (item.href !=='/admin'&& pathname.startsWith(item.href))
@@ -76,19 +67,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
  )
  })}
  </ul>
- <p className="px-4 mt-6 mb-2 text-[10px] font-bold text-white/30 uppercase tracking-widest">Event Day Tools</p>
- <ul className="space-y-1">
- {EXTERNAL_NAV.map(item =>(
- <li key={item.href}>
- <Link href={item.href} onClick={()=>setSidebarOpen(false)}
- className="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all font-display text-white/50 hover:text-white hover:bg-white/[0.06] border border-white/10">
- <Icon name={item.icon} className="w-5 h-5" /> {item.label}
- </Link>
- </li>
- ))}
- </ul>
  </nav>
- <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06]">
+ <div className="shrink-0 p-4 border-t border-white/[0.06]">
  <button onClick={signOut} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/40 hover:text-red-400 hover:bg-red-500/10 font-bold text-sm transition-colors font-display">
  Sign Out
  </button>

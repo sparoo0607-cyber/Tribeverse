@@ -40,6 +40,7 @@ export default function AdminScannerPage() {
     const { data } = await supabase
       .from('profiles')
       .select('*')
+      .eq('role', 'student')
       .order('created_at', { ascending: false })
 
     if (data) {

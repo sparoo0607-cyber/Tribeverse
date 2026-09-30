@@ -13,7 +13,6 @@ import Icon, { IconName } from '@/components/icons/Icon'
 const STAGES: { href: string; label: string; slug: string | null; icon: IconName }[] = [
   { href: '/event-control', label: 'All Stages', slug: null, icon: 'clapperboard' },
   { href: '/event-control/playground/quick-eyes', label: 'Playground · Quick Eyes', slug: 'playground', icon: 'game-controller' },
-  { href: '/event-control/detective', label: 'Detective', slug: 'detective', icon: 'hat' },
 ]
 
 export default function EventControlLayout({ children }: { children: React.ReactNode }) {
@@ -59,7 +58,7 @@ export default function EventControlLayout({ children }: { children: React.React
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex">
       {/* Left sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:overflow-y-auto lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 flex flex-col lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-white/[0.06]">
           <div className="flex items-baseline gap-2 mb-1">
             <span className="font-black text-3xl text-[#00FFD1] font-display">st.</span>
@@ -69,7 +68,7 @@ export default function EventControlLayout({ children }: { children: React.React
           <span className="inline-block mt-2 px-2 py-0.5 bg-green-500/20 text-green-400 text-[10px] font-black rounded-full font-display">● LIVE STATUS</span>
         </div>
 
-        <nav className="p-4">
+        <nav className="p-4 flex-1 overflow-y-auto">
           <ul className="space-y-1">
             {STAGES.map((item) => {
               const active = pathname === item.href || (item.href !== '/event-control' && pathname.startsWith(item.href))
@@ -92,7 +91,7 @@ export default function EventControlLayout({ children }: { children: React.React
           </ul>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.06] space-y-1">
+        <div className="shrink-0 p-4 border-t border-white/[0.06] space-y-1">
           <p className="text-white/40 text-xs px-2">{name}</p>
           <button onClick={signOut} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/40 hover:text-red-400 hover:bg-red-500/10 font-bold text-sm transition-colors font-display">
             Sign Out

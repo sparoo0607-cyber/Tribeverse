@@ -3,39 +3,30 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import WallModeration from '@/components/WallModeration'
 import {
  fetchStageStates,
  subscribeToStageChanges,
  setStageStatus,
- revealStageWinner,
  pushBroadcast,
  StageState,
 } from '@/lib/stageStore'
 
-interface ParticipantOption {
- id: string
- full_name: string
-}
+// Only the stages that are on the official itinerary, in running order.
+const ITINERARY_SLUGS = ['inauguration', 'briefs', 'talent-hunt', 'playground', 'lunch', 'playground-continuous', 'jam', 'reveal', 'wall']
 
 export default function AdminGamesManagerPage() {
  const [stages, setStages] = useState<Record<string, StageState>>({})
- const [participants, setParticipants] = useState<ParticipantOption[]>([])
- const [selectedWinner, setSelectedWinner] = useState<Record<string, string>>({})
- const [customPoints, setCustomPoints] = useState<Record<string, number>>({})
  const [broadcastText, setBroadcastText] = useState('')
  const [lastActionMsg, setLastActionMsg] = useState('')
  const [busySlug, setBusySlug] = useState<string | null>(null)
 
  useEffect(() =>{
- const supabase = createClient()
  let cancelled = false
 
  async function load() {
  const states = await fetchStageStates()
  if (!cancelled) setStages(states)
-
- const { data } = await supabase.from('profiles').select('id, full_name').eq('role', 'student').order('full_name')
- if (!cancelled && data) setParticipants(data)
  }
  load()
 
@@ -51,22 +42,21 @@ export default function AdminGamesManagerPage() {
  const handleStatusChange = async (slug: string, status: 'locked'|'live'|'completed') =>{
  setBusySlug(slug)
  await setStageStatus(slug, status)
+ if (slug === 'reveal' && status === 'live') {
+ const supabase = createClient()
+ await supabase.from('events').update({ reveal_activated: true }).neq('id', '00000000-0000-0000-0000-000000000000')
+ await pushBroadcast('The Tribeverse Reveal is live! Head to the main stage now.', 'winner')
+ }
  setBusySlug(null)
  flash(` Stage "${slug.toUpperCase()}" status changed to ${status.toUpperCase()}! Student screens updated everywhere.`)
  }
 
- const handleRevealWinner = async (slug: string) =>{
- const winnerId = selectedWinner[slug] || participants[0]?.id
- if (!winnerId) return
- const pts = customPoints[slug] || (slug ==='impossible'? 1500 : slug ==='arcade'? 800 : slug ==='reveal'? 2000 : slug ==='detective'? 600 : 500)
-
- setBusySlug(slug)
- await revealStageWinner(slug, winnerId, pts)
- setBusySlug(null)
-
- const winnerName = participants.find(p =>p.id === winnerId)?.full_name ?? 'A participant'
- await pushBroadcast(`${winnerName} was the champion of ${stages[slug]?.name}! Answers are now revealed on your screen.`, 'winner')
- flash(` Results & Official Answers for ${stages[slug]?.name} revealed to all students!`)
+ const handleReset = async () =>{
+ if (!window.confirm('Reset the event? Every stage goes back to LOCKED and the reveal is switched off. Participants and wall posts are kept.')) return
+ const supabase = createClient()
+ await supabase.from('activities').update({ status: 'locked', winner_user_id: null, winner_points: null, revealed_answers: null, custom_note: null }).neq('slug', '')
+ await supabase.from('events').update({ status: 'live', reveal_activated: false }).neq('id', '00000000-0000-0000-0000-000000000000')
+ flash('Event reset. All stages are locked and the reveal is off.')
  }
 
  const handleGlobalBroadcast = async (e: React.FormEvent) =>{
@@ -110,7 +100,7 @@ export default function AdminGamesManagerPage() {
  <input
  type="text"
  required
- placeholder="e.g. Stage 02 Detective is LIVE! Head to Auditorium. Clues unlock now."
+ placeholder="e.g. Tribe Playground is LIVE! Head to the main arena now."
  value={broadcastText}
  onChange={(e) =>setBroadcastText(e.target.value)}
  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-xs focus:outline-none focus:border-[#FFE600]"
@@ -126,10 +116,10 @@ export default function AdminGamesManagerPage() {
 
  {/* All 8 Stages Control List */}
  <div className="space-y-4">
- <h3 className="text-xl font-black text-white font-display">8 Event Stages Orchestration</h3>
+ <h3 className="text-xl font-black text-white font-display">Itinerary Stages</h3>
 
  <div className="space-y-4">
- {Object.values(stages).map((st) =>{
+ {ITINERARY_SLUGS.map((slug) => stages[slug]).filter(Boolean).map((st) =>{
  const isLive = st.status ==='live'
  const isLocked = st.status ==='locked'
  const isCompleted = st.status ==='completed'
@@ -161,7 +151,7 @@ export default function AdminGamesManagerPage() {
  : 'bg-red-500/20 text-red-400 border border-red-500/40'
  }`}
  >
- {isLive ? 'LIVE (Students Playing)': isCompleted ? 'COMPLETED & REVEALED': 'LOCKED (Hidden)'}
+ {isLive ? 'LIVE': isCompleted ? 'COMPLETED': 'LOCKED'}
  </span>
  </div>
  <h4 className="text-xl font-black text-white font-display">{st.name}</h4>
@@ -192,7 +182,7 @@ export default function AdminGamesManagerPage() {
  isCompleted ? 'bg-emerald-600 text-white shadow-lg': 'bg-white/5 hover:bg-emerald-500/20 text-emerald-400'
  }`}
  >
- Conclude & Show Answers
+ Conclude
  </button>
  </div>
  </div>
@@ -216,55 +206,20 @@ export default function AdminGamesManagerPage() {
  </div>
  )}
 
- {st.slug ==='detective'&& (
- <div className="mt-4 pt-4 border-t border-white/10">
- <p className="text-xs font-bold text-white/40 font-display uppercase tracking-widest mb-2">Round-by-Round Controller</p>
- <Link
- href="/event-control/detective"
- className="inline-block px-3 py-2 bg-[#00FFD1]/20 hover:bg-[#00FFD1]/30 border border-[#00FFD1]/40 text-[#00FFD1] rounded-xl text-xs font-black font-display uppercase transition-colors"
- >
- Role Assignment & 5 Rounds →
- </Link>
- </div>
- )}
-
- {/* Winner Awarding & Results Controller */}
- <div className="mt-5 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black/30 p-4 rounded-2xl">
- <div className="flex flex-wrap items-center gap-2 flex-1">
- <span className="text-xs font-bold text-white/50 font-display">Award Winner:</span>
- <select
- value={selectedWinner[st.slug] || participants[0]?.id ||''}
- onChange={(e) =>setSelectedWinner({ ...selectedWinner, [st.slug]: e.target.value })}
- className="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-white font-display text-xs focus:outline-none focus:border-[#FFE600]"
- >
- {participants.map(pt =>(
- <option key={pt.id} value={pt.id} className="bg-[#111418] text-white">
- {pt.full_name}
- </option>
- ))}
- </select>
-
- <input
- type="number"
- placeholder="Points"
- defaultValue={st.result?.winnerPoints || 500}
- onChange={(e) =>setCustomPoints({ ...customPoints, [st.slug]: parseInt(e.target.value) || 500 })}
- className="w-24 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[#FFE600] font-mono font-bold text-xs focus:outline-none focus:border-[#FFE600]"
- />
- </div>
-
- <button
- onClick={() =>handleRevealWinner(st.slug)}
- disabled={participants.length === 0}
- className="px-5 py-2 bg-gradient-to-r from-[#FFE600] to-[#00FFD1] text-black font-black text-xs uppercase tracking-wider rounded-xl font-display hover:scale-105 transition-transform disabled:opacity-40"
- >
- REVEAL ANSWERS & AWARD WINNER 
- </button>
- </div>
  </div>
  )
  })}
  </div>
+ </div>
+
+ <WallModeration />
+
+ <div className="bg-white/[0.03] border border-red-500/20 p-6 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+ <div>
+ <h3 className="text-lg font-black text-white font-display">Reset the Event</h3>
+ <p className="text-white/50 text-xs mt-0.5">Locks every stage and switches the reveal off. Use it before the event or after a rehearsal.</p>
+ </div>
+ <button onClick={handleReset} className="px-5 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-black font-display uppercase tracking-wider">Reset Everything</button>
  </div>
  </div>
  )

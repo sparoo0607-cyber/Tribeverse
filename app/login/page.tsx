@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   function redirectFor(role: string | undefined) {
     if (role === 'admin') router.push('/admin')
-    else if (role === 'host') router.push('/event-flow')
+    else if (role === 'host') router.push('/display')
     else router.push('/dashboard/pass?welcome=true')
   }
 

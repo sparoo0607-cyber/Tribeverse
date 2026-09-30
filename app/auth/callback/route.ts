@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
  return NextResponse.redirect(`${origin}/admin`)
  }
  if (profile?.role ==='host') {
- return NextResponse.redirect(`${origin}/event-flow`)
+ return NextResponse.redirect(`${origin}/display`)
  }
  return NextResponse.redirect(`${origin}${next}`)
  }

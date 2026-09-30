@@ -1,7 +1,20 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { createClient as createSessionClient } from '@/lib/supabase/server'
+
+// This route uses the service-role key, so only signed-in admins may call it.
+async function requireAdmin(): Promise<NextResponse | null> {
+  const session = await createSessionClient()
+  const { data: { user } } = await session.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Not signed in' }, { status: 401 })
+  const { data: me } = await session.from('profiles').select('role').eq('id', user.id).single()
+  if (me?.role !== 'admin') return NextResponse.json({ error: 'Admins only' }, { status: 403 })
+  return null
+}
 
 export async function POST(request: Request) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const body = await request.json()
     const { userId, studentId, tagIssued = true } = body
@@ -80,9 +93,11 @@ export async function POST(request: Request) {
 
 // GET endpoint to look up student by QR code value, studentId, or phone
 export async function GET(request: Request) {
+  const denied = await requireAdmin()
+  if (denied) return denied
   try {
     const { searchParams } = new URL(request.url)
-    const queryStr = searchParams.get('q')?.trim()
+    const queryStr = searchParams.get('q')?.trim().replace(/[^\w@.+ -]/g, ' ').trim()
 
     if (!queryStr) {
       return NextResponse.json({ error: 'Search query string (q) is required' }, { status: 400 })

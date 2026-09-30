@@ -69,7 +69,6 @@ export default function LandingPage() {
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           <li><a href="#overview" className="nav-link" onClick={() => setMenuOpen(false)}>Overview</a></li>
           <li><a href="#schedule" className="nav-link" onClick={() => setMenuOpen(false)}>Itinerary</a></li>
-          <li><Link href="/event-flow" className="nav-link text-[#00FFD1] font-bold" onClick={() => setMenuOpen(false)}>Live Cockpit ↗</Link></li>
           <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
           <li>
             <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
@@ -305,7 +304,7 @@ export default function LandingPage() {
  {/* ── 4. INAUGURATION ── */}
  <section className="section inaug-sec" id="inauguration">
  <div className="section-inner">
- <div className="sec-num" aria-hidden="true">04</div>
+ <div className="sec-num" aria-hidden="true">05</div>
  <div className="inaug-layout">
  <div className="inaug-text">
  <h2 className="sec-title lime-t">INAUGURATION</h2>
@@ -333,7 +332,7 @@ export default function LandingPage() {
  <section className="section playground-sec" id="playground">
  <div className="pg-wavy-top"></div>
  <div className="section-inner">
- <div className="sec-num light-num" aria-hidden="true">05</div>
+ <div className="sec-num light-num" aria-hidden="true">06</div>
  <div className="sec-header">
  <h2 className="sec-title white-t">TRIBE PLAYGROUND</h2>
  <p className="sec-sub light-sub">5 Rounds · 5 Members · 5 Different Abilities</p>
@@ -375,34 +374,6 @@ export default function LandingPage() {
  <div className="pg-wavy-bottom"></div>
  </section>
 
- {/* ── 6. TRIBE DETECTIVE ── */}
- <section className="section detective-sec" id="detective">
- <div className="det-bg-dots"></div>
- <div className="section-inner">
- <div className="sec-num" aria-hidden="true">06</div>
- <div className="det-header">
- <div className="det-tape">CASE FILE: CLASSIFIED</div>
- <h2 className="sec-title det-t">THE TRIBE DETECTIVE</h2>
- <p className="det-sub">Mystery. Logic. Deduction. Your tribe's best mind takes the stand.</p>
- </div>
- <div className="det-content">
- <div className="case-file">
- <div className="cf-header">
- <span className="cf-id">CASE FILE #TV-001</span>
- <span className="cf-status">● ACTIVE</span>
- </div>
- <div className="cf-body">
- <div className="clue"><span className="cl-icon"></span><div><strong>Observation Skills</strong><p>Find hidden patterns in plain sight. Attention to detail is your weapon.</p></div></div>
- <div className="clue"><span className="cl-icon"></span><div><strong>Logical Deduction</strong><p>Connect the dots. One wrong assumption and the case goes cold.</p></div></div>
- <div className="clue"><span className="cl-icon"></span><div><strong>Evidence Analysis</strong><p>Every detail matters. The truth is in the evidence if you know where to look.</p></div></div>
- <div className="clue"><span className="cl-icon"></span><div><strong>Time Pressure</strong><p>The clock is ticking. Can your detective instincts keep up?</p></div></div>
- </div>
- </div>
- <blockquote className="det-quote">"Every tribe has a detective.<br/>Today, yours will be tested."</blockquote>
- </div>
- </div>
- </section>
-
  {/* ── 7. LUNCH BREAK ── */}
  <section className="section lunch-sec" id="lunch">
  <div className="lunch-inner">
@@ -420,7 +391,7 @@ export default function LandingPage() {
  <section className="section jam-sec" id="jam">
  <div className="jam-wavy-top"></div>
  <div className="section-inner">
- <div className="sec-num" aria-hidden="true">08</div>
+ <div className="sec-num" aria-hidden="true">07</div>
  <div className="jam-header">
  <h2 className="sec-title jam-t">TRIBE JAM</h2>
  <p className="jam-sub">Pure Jamming Session: Live Keyboard, Singing, Dance & Unfiltered Beats.</p>
@@ -451,7 +422,7 @@ export default function LandingPage() {
  {/* ── 9. THE TRIBE WALL ── */}
  <section className="section wall-sec" id="wall">
  <div className="section-inner">
- <div className="sec-num" aria-hidden="true">09</div>
+ <div className="sec-num" aria-hidden="true">08</div>
  <div className="wall-header">
  <h2 className="sec-title wall-t">THE TRIBE WALL</h2>
  <p className="wall-prompt">"BEFORE I GRADUATE, I WANT TO..."</p>
@@ -526,7 +497,7 @@ export default function LandingPage() {
  <span className="rfp p7"></span><span className="rfp p8">◆</span>
  </div>
  <div className="section-inner rf-inner">
- <div className="sec-num light-num" aria-hidden="true">10</div>
+ <div className="sec-num light-num" aria-hidden="true">09</div>
  <div className="rf-header">
  <span className="rf-label">TRIBEVERSE REVEAL</span>
  </div>

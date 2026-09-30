@@ -17,9 +17,16 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/dashboard/profile', label: 'My Profile', icon: 'user' },
 ]
 
+const TABS: { href: string; short: string; icon: IconName }[] = [
+  { href: '/dashboard', short: 'Home', icon: 'home' },
+  { href: '/dashboard/pass', short: 'Pass', icon: 'ticket' },
+  { href: '/dashboard/event', short: 'Guide', icon: 'book' },
+  { href: '/dashboard/play', short: 'Play', icon: 'game-controller' },
+  { href: '/dashboard/wall', short: 'Wall', icon: 'chat' },
+]
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
  const [profile, setProfile] = useState<Profile | null>(null)
- const [sidebarOpen, setSidebarOpen] = useState(false)
  const pathname = usePathname()
  const router = useRouter()
  const supabase = createClient()
@@ -52,12 +59,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
  <div className="flex-1 flex">
  {/* Sidebar */}
- <aside className={`
- fixed inset-y-0 left-0 z-50 w-64 bg-[#0A0A0A] border-r border-white/[0.06] flex flex-col
- transform transition-transform duration-300
- lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0
- ${sidebarOpen ? 'translate-x-0': '-translate-x-full'}
-`}>
+ <aside className="hidden lg:flex flex-col sticky top-0 h-screen shrink-0 w-64 bg-[#0A0A0A] border-r border-white/[0.06]">
  {/* Logo */}
  <div className="p-6 border-b border-white/[0.06] shrink-0">
  <Link href="/dashboard" className="flex items-baseline gap-2">
@@ -80,7 +82,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  <li key={item.href}>
  <Link
  href={item.href}
- onClick={() =>setSidebarOpen(false)}
  className={`
  flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all font-display
  ${active
@@ -121,31 +122,49 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </div>
  </aside>
 
- {/* Mobile overlay */}
- {sidebarOpen && (
- <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() =>setSidebarOpen(false)} />
- )}
-
  {/* Main content */}
  <div className="flex-1 flex flex-col min-w-0">
- <header className="lg:hidden sticky top-0 z-30 bg-[#0A0A0A]/90 backdrop-blur border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
- <button
- onClick={() =>setSidebarOpen(true)}
- className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-white"
+ <header className="lg:hidden sticky top-0 z-30 bg-[#0A0A0A]/95 backdrop-blur border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
+ <Link href="/dashboard" className="flex items-baseline gap-2">
+ <span className="font-black text-2xl text-[#FFE600] font-display">st.</span>
+ <span className="font-black text-sm tracking-widest text-white font-display">TRIBEVERSE</span>
+ </Link>
+ <Link
+ href="/dashboard/profile"
+ aria-label="My profile"
+ className="w-9 h-9 rounded-xl bg-[#1A6FFF] flex items-center justify-center text-white font-bold text-sm font-display"
  >
- <Icon name="menu" className="w-5 h-5" />
- </button>
- <span className="font-black text-lg text-white font-display">
- <span className="text-[#FFE600]">TRIBE</span>VERSE
- </span>
- <div className="w-9 h-9 rounded-xl bg-[#1A6FFF] flex items-center justify-center text-white font-bold text-sm font-display">
  {profile?.full_name?.charAt(0) ?? 'S'}
- </div>
+ </Link>
  </header>
 
- <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+ <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-28 lg:pb-8 overflow-auto">
  {children}
  </main>
+
+ {/* Mobile bottom tab bar */}
+ <nav
+ aria-label="Primary"
+ className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0A0A0A]/95 backdrop-blur border-t border-white/10"
+ style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+ >
+ <ul className="grid grid-cols-5">
+ {TABS.map(item => {
+ const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+ return (
+ <li key={item.href}>
+ <Link
+ href={item.href}
+ className={`flex flex-col items-center gap-1 py-2.5 text-[10px] font-bold font-display ${active ? 'text-[#FFE600]' : 'text-white/50'}`}
+ >
+ <Icon name={item.icon} className="w-5 h-5" />
+ {item.short}
+ </Link>
+ </li>
+ )
+ })}
+ </ul>
+ </nav>
  </div>
  </div>
  </div>

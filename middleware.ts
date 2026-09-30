@@ -55,15 +55,10 @@ export async function middleware(request: NextRequest) {
     .single()
 
   const role = profile?.role || 'student'
-  const homeFor = (r: string) => (r === 'admin' ? '/admin' : r === 'host' ? '/event-flow' : '/dashboard')
+  const homeFor = (r: string) => (r === 'admin' ? '/admin' : r === 'host' ? '/display' : '/dashboard')
 
   // Only admins may access the admin desk or the per-stage Event Control cockpit
   if ((pathname.startsWith('/admin') || pathname.startsWith('/event-control')) && role !== 'admin') {
-    return NextResponse.redirect(new URL(homeFor(role), request.url))
-  }
-
-  // The one-page Event Flow cockpit: admins and hosts both run the show from here
-  if (pathname.startsWith('/event-flow') && role !== 'admin' && role !== 'host') {
     return NextResponse.redirect(new URL(homeFor(role), request.url))
   }
 

@@ -65,14 +65,6 @@ export const STAGE_REVEAL_TEMPLATES: Record<string, { revealedAnswers: RevealedA
     ],
     customNote: 'Tribe Playground Continuous concluded! Points added to team scores.',
   },
-  detective: {
-    revealedAnswers: [
-      { title: 'Clue #1 (Origin Stone)', answer: 'IBER-CLYAR-01', explanation: 'Rot-13 shifted back 13 positions.' },
-      { title: 'Clue #2 (Binary Beacon)', answer: 'TRIBE', explanation: '8-bit ASCII binary sequence converted to text.' },
-      { title: 'Clue #3 (Cafeteria Cryptogram)', answer: 'WELCOME TO THE TRIBEVERSE', explanation: 'Caesar cipher with -3 shift.' },
-    ],
-    customNote: 'All 3 campus riddles cracked! Checkpoint evidence verified by Admin.',
-  },
   arcade: {
     revealedAnswers: [
       { title: 'Speed Tapper Record', answer: '84 Taps in 10 Seconds', explanation: 'Logged during the arcade session.' },
