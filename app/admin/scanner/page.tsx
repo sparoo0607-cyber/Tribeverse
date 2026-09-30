@@ -15,14 +15,7 @@ interface StudentProfile {
   tag_issued?: boolean
   tag_issued_at?: string
   created_at?: string
-  team_members?: Array<{
-    assigned_round: number
-    team: {
-      name: string
-      team_number: number
-      color: string
-    }
-  }>
+  assigned_round?: number
 }
 
 export default function AdminScannerPage() {
@@ -45,7 +38,7 @@ export default function AdminScannerPage() {
     setLoading(true)
     const { data } = await supabase
       .from('profiles')
-      .select('*, team_members(assigned_round, team:teams(name, team_number, color))')
+      .select('*')
       .order('created_at', { ascending: false })
 
     if (data) {
@@ -394,13 +387,6 @@ export default function AdminScannerPage() {
               <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Section</span>
               <strong className="text-sm font-bold text-white font-display mt-0.5 block truncate">
                 {selectedStudent.section || 'General'}
-              </strong>
-            </div>
-
-            <div className="p-4 bg-white/[0.03] border border-white/10 rounded-2xl">
-              <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Assigned Team</span>
-              <strong className="text-sm font-bold text-[#FFE600] font-display mt-0.5 block truncate">
-                {selectedStudent.team_members?.[0]?.team?.name || 'Team Titans'}
               </strong>
             </div>
 

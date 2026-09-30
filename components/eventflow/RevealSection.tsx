@@ -34,7 +34,7 @@ export default function RevealSection({ status }: { status: string }) {
         num="08"
         color="dark"
         title="Tribeverse Reveal"
-        desc="You came as strangers. Now you leave as a tribe."
+        desc="3:00 – 3:20 PM · Closing reveal connecting the day's experiences with the TRIBEVERSE identity."
         sideNote="Same Tribe. Bigger World"
         sideIcon={<Icon name="rocket" />}
       >

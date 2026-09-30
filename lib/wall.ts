@@ -54,11 +54,10 @@ export async function fetchAllWallPosts(): Promise<WallPostRow[]> {
 // Student: pin a new dream to the wall. Goes in as 'pending' so it only
 // appears publicly once an admin approves it from the Wall moderation
 // panel — even though the table's own default is 'approved'.
-export async function submitWallPost(params: { userId: string; teamId: string | null; authorName: string; content: string }) {
+export async function submitWallPost(params: { userId: string; authorName: string; content: string }) {
   const supabase = createClient()
   await supabase.from('wall_posts').insert({
     user_id: params.userId,
-    team_id: params.teamId,
     author_name: params.authorName,
     content: params.content,
     status: 'pending',

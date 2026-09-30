@@ -30,11 +30,11 @@ export default function JamSection() {
   return (
     <div className="ef-anchor" id="jam">
       <StageRow
-        num="06"
+        num="07"
         color="red"
         title="Tribe Jam"
-        desc="Music. People. Energy. The stage is yours."
-        sideNote="Good Music. Brighter People"
+        desc="2:00 – 3:00 PM · Pure Jamming Session with live keyboard, singing, dance, rap, and beats."
+        sideNote="Live Keyboard. Dance & Singing"
         sideIcon={<Icon name="music-note" />}
       >
         <div className="efb-card-head"><Icon name="mic" /> Live Queue</div>

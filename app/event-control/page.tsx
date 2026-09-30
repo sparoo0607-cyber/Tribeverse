@@ -12,16 +12,15 @@ import {
  StageState,
 } from '@/lib/stageStore'
 
-interface TeamOption {
+interface ParticipantOption {
  id: string
- name: string
- team_number: number
+ full_name: string
 }
 
 export default function AdminGamesManagerPage() {
  const [stages, setStages] = useState<Record<string, StageState>>({})
- const [teams, setTeams] = useState<TeamOption[]>([])
- const [selectedTeam, setSelectedTeam] = useState<Record<string, string>>({})
+ const [participants, setParticipants] = useState<ParticipantOption[]>([])
+ const [selectedWinner, setSelectedWinner] = useState<Record<string, string>>({})
  const [customPoints, setCustomPoints] = useState<Record<string, number>>({})
  const [broadcastText, setBroadcastText] = useState('')
  const [lastActionMsg, setLastActionMsg] = useState('')
@@ -35,8 +34,8 @@ export default function AdminGamesManagerPage() {
  const states = await fetchStageStates()
  if (!cancelled) setStages(states)
 
- const { data } = await supabase.from('teams').select('id, name, team_number').order('team_number')
- if (!cancelled && data) setTeams(data)
+ const { data } = await supabase.from('profiles').select('id, full_name').eq('role', 'student').order('full_name')
+ if (!cancelled && data) setParticipants(data)
  }
  load()
 
@@ -57,16 +56,16 @@ export default function AdminGamesManagerPage() {
  }
 
  const handleRevealWinner = async (slug: string) =>{
- const teamId = selectedTeam[slug] || teams[0]?.id
- if (!teamId) return
+ const winnerId = selectedWinner[slug] || participants[0]?.id
+ if (!winnerId) return
  const pts = customPoints[slug] || (slug ==='impossible'? 1500 : slug ==='arcade'? 800 : slug ==='reveal'? 2000 : slug ==='detective'? 600 : 500)
 
  setBusySlug(slug)
- await revealStageWinner(slug, teamId, pts)
+ await revealStageWinner(slug, winnerId, pts)
  setBusySlug(null)
 
- const teamName = teams.find(t =>t.id === teamId)?.name ?? 'A team'
- await pushBroadcast(`${teamName} won Stage: ${stages[slug]?.name}! +${pts} Points awarded. Answers & solutions revealed on student screens!`, 'winner')
+ const winnerName = participants.find(p =>p.id === winnerId)?.full_name ?? 'A participant'
+ await pushBroadcast(`${winnerName} was the champion of ${stages[slug]?.name}! Answers are now revealed on your screen.`, 'winner')
  flash(` Results & Official Answers for ${stages[slug]?.name} revealed to all students!`)
  }
 
@@ -91,7 +90,7 @@ export default function AdminGamesManagerPage() {
  </div>
  <h1 className="text-3xl font-black text-white font-display">Live Game & Stage Controller</h1>
  <p className="text-white/60 text-xs mt-1">
- Lock games so students cannot see questions early. Launch stages live when ready, and reveal official solutions & winners upon conclusion — every change pushes instantly to all connected devices.
+ Lock games so students cannot see questions early. Launch stages live when ready, and reveal official solutions & winners upon conclusion: every change pushes instantly to all connected devices.
  </p>
  </div>
  </div>
@@ -234,13 +233,13 @@ export default function AdminGamesManagerPage() {
  <div className="flex flex-wrap items-center gap-2 flex-1">
  <span className="text-xs font-bold text-white/50 font-display">Award Winner:</span>
  <select
- value={selectedTeam[st.slug] || teams[0]?.id ||''}
- onChange={(e) =>setSelectedTeam({ ...selectedTeam, [st.slug]: e.target.value })}
+ value={selectedWinner[st.slug] || participants[0]?.id ||''}
+ onChange={(e) =>setSelectedWinner({ ...selectedWinner, [st.slug]: e.target.value })}
  className="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-white font-display text-xs focus:outline-none focus:border-[#FFE600]"
  >
- {teams.map(tm =>(
- <option key={tm.id} value={tm.id} className="bg-[#111418] text-white">
- {tm.name} (#{String(tm.team_number).padStart(2, '0')})
+ {participants.map(pt =>(
+ <option key={pt.id} value={pt.id} className="bg-[#111418] text-white">
+ {pt.full_name}
  </option>
  ))}
  </select>
@@ -256,10 +255,10 @@ export default function AdminGamesManagerPage() {
 
  <button
  onClick={() =>handleRevealWinner(st.slug)}
- disabled={teams.length === 0}
+ disabled={participants.length === 0}
  className="px-5 py-2 bg-gradient-to-r from-[#FFE600] to-[#00FFD1] text-black font-black text-xs uppercase tracking-wider rounded-xl font-display hover:scale-105 transition-transform disabled:opacity-40"
  >
- REVEAL ANSWERS & AWARD TEAM 
+ REVEAL ANSWERS & AWARD WINNER 
  </button>
  </div>
  </div>

@@ -90,7 +90,7 @@ export default function AdminEventControlPage() {
  <input
  type="text"
  required
- placeholder="e.g. All teams report to the Main Auditorium immediately"
+ placeholder="e.g. Everyone report to the Main Auditorium immediately"
  value={broadcastMessage}
  onChange={(e) =>setBroadcastMessage(e.target.value)}
  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#FFE600]"

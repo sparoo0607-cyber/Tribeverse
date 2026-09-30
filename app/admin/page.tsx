@@ -6,7 +6,6 @@ import Icon from '@/components/icons/Icon'
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({
-    teams: 20,
     students: 100,
     tagsIssued: 0,
     activeStage: 'Stage 01 · Tribe Playground',
@@ -17,10 +16,8 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     async function loadStats() {
-      const { count: teamCount } = await supabase.from('teams').select('*', { count: 'exact', head: true })
       const { count: profCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
       const { count: tagCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('tag_issued', true)
-      if (teamCount) setStats((s) => ({ ...s, teams: teamCount }))
       if (profCount) setStats((s) => ({ ...s, students: profCount }))
       if (tagCount !== null) setStats((s) => ({ ...s, tagsIssued: tagCount }))
     }
@@ -65,10 +62,9 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { label: 'Registered Teams', val: stats.teams, icon: 'users' as const, color: '#1A6FFF', link: '/admin/teams' },
-          { label: 'Active Students', val: stats.students, icon: 'graduation-cap' as const, color: '#00FFD1', link: '/admin/teams' },
+          { label: 'Registered Participants', val: stats.students, icon: 'graduation-cap' as const, color: '#00FFD1', link: '/admin/teams' },
           { label: 'Tags / Wristbands Issued', val: stats.tagsIssued, icon: 'tag' as const, color: '#00FF88', link: '/admin/scanner' },
           { label: 'Wall Photos & Posts', val: stats.wallPosts, icon: 'chat' as const, color: '#FF2D87', link: '/admin/monitor' },
         ].map((m, i) => (

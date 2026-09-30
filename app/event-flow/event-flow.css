@@ -206,21 +206,23 @@
 .efb-yellow { background: var(--yellow); }
 .efb-purple { background: var(--purple); }
 .efb-orange { background: var(--orange); }
+.efb-green  { background: #00C27A; }
 .efb-red    { background: #FF1F5E; }
 .efb-teal   { background: var(--teal); }
 .efb-dark   { background: #0A0A0A; }
 .efb-dark .efb-card { border-color: rgba(255,255,255,0.14); }
 
-.efb-purple .efb-desc, .efb-red .efb-desc, .efb-blue .efb-desc { color: rgba(255,255,255,0.7); }
-.efb-purple .efb-title, .efb-red .efb-title, .efb-blue .efb-title { color: #fff; }
-.efb-purple .efb-num, .efb-red .efb-num, .efb-blue .efb-num { color: rgba(255,255,255,0.3); }
-.efb-purple .efb-side, .efb-red .efb-side, .efb-blue .efb-side { color: rgba(255,255,255,0.55); }
+.efb-purple .efb-desc, .efb-red .efb-desc, .efb-blue .efb-desc, .efb-green .efb-desc { color: rgba(255,255,255,0.8); }
+.efb-purple .efb-title, .efb-red .efb-title, .efb-blue .efb-title, .efb-green .efb-title { color: #fff; }
+.efb-purple .efb-num, .efb-red .efb-num, .efb-blue .efb-num, .efb-green .efb-num { color: rgba(255,255,255,0.35); }
+.efb-purple .efb-side, .efb-red .efb-side, .efb-blue .efb-side, .efb-green .efb-side { color: rgba(255,255,255,0.7); }
 
 .efb-btn-play.pink   { background: var(--yellow); }
 .efb-btn-play.blue   { background: var(--yellow); }
 .efb-btn-play.yellow { background: #0A0A0A; color: #FFE600; }
 .efb-btn-play.purple { background: var(--cyan); }
 .efb-btn-play.orange { background: #0A0A0A; color: #fff; }
+.efb-btn-play.green  { background: #0A0A0A; color: #00FFD1; }
 .efb-btn-play.red    { background: var(--yellow); }
 .efb-btn-play.teal   { background: #0A0A0A; color: var(--teal); }
 .efb-btn-play.dark   { background: var(--blue); color: #fff; }
@@ -230,6 +232,7 @@
 .ef-jnode-circle.jc-yellow { background: var(--yellow); }
 .ef-jnode-circle.jc-purple { background: var(--purple); color: #fff; }
 .ef-jnode-circle.jc-orange { background: var(--orange); }
+.ef-jnode-circle.jc-green  { background: #00C27A; color: #000; }
 .ef-jnode-circle.jc-red    { background: #FF1F5E; color: #fff; }
 .ef-jnode-circle.jc-teal   { background: var(--teal); }
 .ef-jnode-circle.jc-dark   { background: #2A2D34; color: #fff; }

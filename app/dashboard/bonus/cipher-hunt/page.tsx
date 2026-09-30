@@ -47,7 +47,7 @@ export default function TribeDetectivePage() {
  const val = (inputs[id] ||'').trim().toUpperCase()
  if (val === sol.toUpperCase()) {
  setSolved(prev =>({ ...prev, [id]: true }))
- alert(` Correct! You decoded Clue #${id} and earned ${pts} points for your team!`)
+ alert(` Correct! You decoded Clue #${id} and earned ${pts} points!`)
  } else {
  alert('Incorrect decode. Check the cipher hint and try again!')
  }

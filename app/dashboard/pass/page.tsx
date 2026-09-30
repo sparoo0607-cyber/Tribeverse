@@ -26,7 +26,6 @@ function EventPassContent() {
     phone?: string;
     tag_issued?: boolean;
   } | null>(null)
-  const [team, setTeam] = useState<{ name: string; team_number: number; color: string; total_score: number } | null>(null)
   const [assignedRound, setAssignedRound] = useState<number>(3)
   const [copied, setCopied] = useState(false)
   const [isNewRegistration, setIsNewRegistration] = useState(false)
@@ -75,12 +74,6 @@ function EventPassContent() {
             phone: '9876543210',
             tag_issued: false,
           })
-          setTeam({
-            name: 'Team Titans',
-            team_number: 1,
-            color: '#1A6FFF',
-            total_score: 920,
-          })
           setAssignedRound(3)
         }
         return
@@ -100,41 +93,15 @@ function EventPassContent() {
         })
       }
 
-      // Fetch team & membership
-      const { data: membership } = await supabase
-        .from('team_members')
-        .select('assigned_round, team:teams(*)')
-        .eq('user_id', user.id)
-        .maybeSingle()
-
-      if (membership) {
-        if (membership.assigned_round) setAssignedRound(membership.assigned_round)
-        const t = Array.isArray(membership.team) ? membership.team[0] : membership.team
-        if (t) {
-          setTeam({
-            name: t.name,
-            team_number: t.team_number,
-            color: t.color || '#1A6FFF',
-            total_score: t.total_score || 0,
-          })
-        }
-      } else {
-        setTeam({
-          name: 'Team Titans',
-          team_number: 1,
-          color: '#1A6FFF',
-          total_score: 920,
-        })
-      }
+      // Assigned round
+      if (p?.assigned_round) setAssignedRound(p.assigned_round)
     }
 
     loadPassData()
   }, [searchParams])
 
   const studentName = profile?.full_name || 'Rohan Varma'
-  const passId = profile?.student_id || 'ST-2026-TITAN-03'
-  const teamName = team?.name || 'Team Titans (#01)'
-  const teamColor = team?.color || '#1A6FFF'
+  const passId = profile?.student_id || 'ST-2026-TRB-0001'
 
   function handleCopyPassId() {
     navigator.clipboard.writeText(passId)
@@ -158,7 +125,7 @@ function EventPassContent() {
                 REGISTRATION SUCCESSFUL! YOUR EVENT PASS IS READY!
               </h3>
               <p className="text-white/70 text-xs mt-0.5">
-                Welcome to <strong>TRIBEVERSE V1</strong>. Your official digital pass and team allocation are confirmed below.
+                Welcome to <strong>TRIBEVERSE V1</strong>. Your official digital pass is confirmed below.
               </p>
             </div>
           </div>
@@ -238,7 +205,7 @@ function EventPassContent() {
         {/* Main Pass Body: 2 Columns */}
         <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Left Side: Participant Info & Team */}
+          {/* Left Side: Participant Info */}
           <div className="lg:col-span-8 space-y-6">
             
             {/* Participant Profile Banner */}
@@ -280,10 +247,10 @@ function EventPassContent() {
               </div>
 
               <div className="p-3.5 bg-white/[0.04] border border-white/10 rounded-2xl">
-                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Assigned Team</span>
+                <span className="text-[10px] font-bold text-white/40 uppercase font-display block">Participation Mode</span>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: teamColor }}></span>
-                  <strong className="text-xs font-black text-white font-display truncate">{teamName}</strong>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#00FFD1]"></span>
+                  <strong className="text-xs font-black text-white font-display truncate">Open Fresher Access</strong>
                 </div>
               </div>
 
@@ -427,12 +394,12 @@ function EventPassContent() {
         </Link>
 
         <Link 
-          href="/dashboard/leaderboard" 
+          href="/dashboard/event" 
           className="p-5 bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 rounded-2xl transition-all group"
         >
-          <Icon name="trophy" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
-          <h4 className="font-bold text-white text-sm font-display">2. Team Leaderboard</h4>
-          <p className="text-white/50 text-xs mt-1">Check current rankings of all 20 teams and race to the top.</p>
+          <Icon name="book" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
+          <h4 className="font-bold text-white text-sm font-display">2. Event Guide</h4>
+          <p className="text-white/50 text-xs mt-1">See the full 9:30 AM to 3:30 PM schedule and the ST Playbook.</p>
         </Link>
 
         <Link 
@@ -441,7 +408,7 @@ function EventPassContent() {
         >
           <Icon name="chat" className="w-7 h-7 group-hover:scale-110 transition-transform inline-block mb-2 text-[#FFE600]" />
           <h4 className="font-bold text-white text-sm font-display">3. The Tribe Wall</h4>
-          <p className="text-white/50 text-xs mt-1">Post your freshers dream note and connect with 100 participants.</p>
+          <p className="text-white/50 text-xs mt-1">Post your freshers dream note and connect with fellow participants.</p>
         </Link>
       </div>
     </div>

@@ -106,7 +106,7 @@ export default function TribeArcadePage() {
  <div>
  <span className="px-3 py-1 bg-[#7B2FFF]/30 text-[#00FFD1] text-xs font-black rounded-full font-display uppercase tracking-widest">Stage 04 · Live Arcade</span>
  <h1 className="text-3xl md:text-5xl font-black text-white font-display mt-2">Tribe Arcade</h1>
- <p className="text-white/70 text-sm mt-1">Retro arcade games. Compete for individual glory and team leaderboard boosts.</p>
+ <p className="text-white/70 text-sm mt-1">Retro arcade games. Play for fun and individual glory.</p>
  </div>
  {activeGame !=='menu'&& (
  <button

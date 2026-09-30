@@ -47,10 +47,10 @@ export default function TribeverseRevealPage() {
  </p>
  <div className="flex flex-wrap gap-4 pt-4">
  <Link
- href="/dashboard/leaderboard"
+ href="/dashboard/wall"
  className="bg-[#FFE600] text-black font-black px-8 py-3.5 rounded-2xl font-display text-sm hover:bg-[#D4FF00] transition-colors"
  >
- VIEW FINAL PODIUM WINNERS 
+ VISIT THE TRIBE WALL 
  </Link>
  <Link
  href="/dashboard/profile"

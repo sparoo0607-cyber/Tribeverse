@@ -6,6 +6,7 @@ import './landing.css'
 import TeamCard from '@/components/TeamCard'
 import { TRIBE_TEAM_MEMBERS } from '@/lib/teamData'
 import Icon from '@/components/icons/Icon'
+import PlaybookSlideViewer from '@/components/PlaybookSlideViewer'
 
 interface Note {
  id: number
@@ -65,26 +66,22 @@ export default function LandingPage() {
  <button className="nav-toggle" onClick={() =>setMenuOpen(!menuOpen)} aria-label="Toggle menu">
  <span></span><span></span><span></span>
  </button>
- <ul className={` nav-links ${menuOpen ? 'open': ''}`}>
- <li><a href="#overview" className="nav-link" onClick={() => setMenuOpen(false)}>Overview</a></li>
- <li><a href="#schedule" className="nav-link" onClick={() => setMenuOpen(false)}>Event Flow</a></li>
- <li><a href="#playground" className="nav-link" onClick={() => setMenuOpen(false)}>Playground</a></li>
- <li><a href="#detective" className="nav-link" onClick={() => setMenuOpen(false)}>Detective</a></li>
- <li><a href="#jam" className="nav-link" onClick={() => setMenuOpen(false)}>Jam</a></li>
- <li><a href="#wall" className="nav-link" onClick={() => setMenuOpen(false)}>Wall</a></li>
- <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
- <li><a href="#reveal" className="nav-link" onClick={() => setMenuOpen(false)}>Reveal</a></li>
- <li>
- <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
- LOGIN 
- </Link>
- </li>
- <li>
- <Link href="/register" className="nav-link nav-link-cta" onClick={() => setMenuOpen(false)}>
- ENTER TRIBEVERSE →
- </Link>
- </li>
- </ul>
+        <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          <li><a href="#overview" className="nav-link" onClick={() => setMenuOpen(false)}>Overview</a></li>
+          <li><a href="#schedule" className="nav-link" onClick={() => setMenuOpen(false)}>Itinerary</a></li>
+          <li><Link href="/event-flow" className="nav-link text-[#00FFD1] font-bold" onClick={() => setMenuOpen(false)}>Live Cockpit ↗</Link></li>
+          <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
+          <li>
+            <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
+              LOGIN
+            </Link>
+          </li>
+          <li>
+            <Link href="/register" className="nav-link nav-link-cta" onClick={() => setMenuOpen(false)}>
+              ENTER TRIBEVERSE →
+            </Link>
+          </li>
+        </ul>
  </div>
  </nav>
 
@@ -110,23 +107,6 @@ export default function LandingPage() {
  <span className="ht-verse">VERSE</span>
  <span className="ht-v1">V1</span>
  </h1>
- <p className="hero-tagline">ONE TEAM. FIVE PEOPLE.<br/>FIVE EXPERIENCES.</p>
- <div className="hero-stats">
- <div className="hero-stat">
- <span className="stat-num">20</span>
- <span className="stat-label">Teams</span>
- </div>
- <span className="stat-dot">·</span>
- <div className="hero-stat">
- <span className="stat-num">5</span>
- <span className="stat-label">Members Each</span>
- </div>
- <span className="stat-dot">·</span>
- <div className="hero-stat">
- <span className="stat-num">100</span>
- <span className="stat-label">Participants</span>
- </div>
- </div>
  <div className="hero-actions">
  <Link href="/register" className="hero-cta">
  ENTER TRIBEVERSE →
@@ -145,37 +125,37 @@ export default function LandingPage() {
  <div className="sec-num" aria-hidden="true">02</div>
  <div className="sec-header">
  <h2 className="sec-title yellow-t">EVENT OVERVIEW</h2>
- <p className="sec-sub">A day built for freshers to discover their tribe</p>
+ <p className="sec-sub">TRIBEVERSE V1 is a student focused campus experience introducing freshers to Student Tribe through interaction, activities, talent, music and shared experiences.</p>
  </div>
  <div className="overview-grid">
  <div className="ov-card">
  <div className="ov-icon"><Icon name="globe" /></div>
  <h3>The Concept</h3>
- <p>TRIBEVERSE is a one-day freshers experience where 20 teams of 5 compete across multiple unique challenges — each designed to unlock a different skill and personality.</p>
+ <p>An immersive day of real human connection where freshers step into interactive challenges, discover hidden strengths, and experience the energy of our community.</p>
  </div>
  <div className="ov-card">
  <div className="ov-icon"><Icon name="bolt" /></div>
- <h3>The Format</h3>
- <p>Each team member takes on a different ability round, contributing to the team's overall score. One team. Five experiences. Infinite memories.</p>
+ <h3>The Experience</h3>
+ <p>From Inauguration and Talent Hunts to high-octane Playground rounds and Live Jams, every moment is built for memorable student participation.</p>
  </div>
  <div className="ov-card">
  <div className="ov-icon"><Icon name="heart" /></div>
  <h3>The Destination</h3>
- <p>You came as strangers. You played together. You met people. And somewhere along the way... you found your Tribe.</p>
+ <p>You came as strangers. You played together. You shared dreams on the Tribe Wall. And somewhere along the way... you found your Tribe.</p>
  </div>
  </div>
  <div className="marquee-wrapper">
  <div className="marquee-track">
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
- <span>20 TEAMS</span><span className="mx"><Icon name="sparkle" /></span>
- <span>100 PARTICIPANTS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>CAMPUS EXPERIENCE</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>100+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  <span>ONE DAY</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FIND YOUR TRIBE</span><span className="mx"><Icon name="sparkle" /></span>
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
- <span>20 TEAMS</span><span className="mx"><Icon name="sparkle" /></span>
- <span>100 PARTICIPANTS</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>OPEN PARTICIPATION</span><span className="mx"><Icon name="sparkle" /></span>
+ <span>100+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  </div>
  </div>
  </div>
@@ -187,70 +167,86 @@ export default function LandingPage() {
  <div className="section-inner">
  <div className="sec-num light-num" aria-hidden="true">03</div>
  <div className="sec-header">
- <h2 className="sec-title white-t">FULL EVENT FLOW</h2>
- <p className="sec-sub light-sub">Official TRIBEVERSE sequence from Inauguration to Reveal</p>
+ <h2 className="sec-title white-t">OFFICIAL ITINERARY</h2>
+ <p className="sec-sub light-sub">Official TRIBEVERSE sequence from 9:30 AM to 3:30 PM</p>
  </div>
  <div className="schedule-table">
  <div className="srow srow-head">
- <div className="stime">STAGE</div>
- <div className="sevent">EVENT PHASE</div>
+ <div className="stime">TIME</div>
+ <div className="sevent">SEGMENT & BRIEF</div>
  <div className="stype">FORMAT</div>
  </div>
  <div className="srow">
- <div className="stime">STAGE 01</div>
+ <div className="stime font-mono text-[#FFE600] font-bold">9:30 – 10:00 AM</div>
  <div className="sevent">
- <span className="sname"><Icon name="clapperboard" /> Inauguration · Welcome to TRIBEVERSE</span>
- <span className="sdetail">Introduction → Tribe Intro → Team Reveal → Interactive Opening → TRIBEVERSE Launch</span>
+ <span className="sname"><Icon name="clapperboard" /> INAUGURATION</span>
+ <span className="sdetail">Official opening of TRIBEVERSE and welcome to the participants.</span>
  </div>
  <div className="stype"><span className="sbadge sb-yellow">Launch</span></div>
  </div>
  <div className="srow">
- <div className="stime">STAGE 02</div>
+ <div className="stime font-mono text-[#00FFD1] font-bold">10:00 – 10:30 AM</div>
  <div className="sevent">
- <span className="sname"><Icon name="game-controller" /> Tribe Playground</span>
- <span className="sdetail">5 Rounds • 5 Members • 5 Abilities (Quick Eyes <Icon name="eye" /> · Quick Draw <Icon name="palette" /> · Think Fast <Icon name="brain" /> · Sound Check <Icon name="headphones" /> · Reaction Game <Icon name="bolt" />)</span>
+ <span className="sname"><Icon name="book" /> ST BRIEF</span>
+ <span className="sdetail">Introduction to Student Tribe, its community and student opportunities.</span>
+ </div>
+ <div className="stype"><span className="sbadge sb-blue">Community</span></div>
+ </div>
+ <div className="srow">
+ <div className="stime font-mono text-[#FF6BDE] font-bold">10:30 – 11:00 AM</div>
+ <div className="sevent">
+ <span className="sname"><Icon name="sparkle" /> TALENT HUNT</span>
+ <span className="sdetail">Open platform for students to showcase their talents and creative skills.</span>
+ </div>
+ <div className="stype"><span className="sbadge sb-purple">Talent</span></div>
+ </div>
+ <div className="srow">
+ <div className="stime font-mono text-[#FFE600] font-bold">11:00 AM – 12:00 PM</div>
+ <div className="sevent">
+ <span className="sname"><Icon name="game-controller" /> TRIBE PLAYGROUND</span>
+ <span className="sdetail">Interactive activities focused on participation, creativity and quick thinking.</span>
  </div>
  <div className="stype"><span className="sbadge sb-pink">Playground</span></div>
  </div>
- <div className="srow">
- <div className="stime">STAGE 03</div>
- <div className="sevent">
- <span className="sname"><Icon name="hat" /> The Tribe Detective</span>
- <span className="sdetail">5 Rounds • Secret Roles • Guess • Reveal (Professions · Characters · Superpowers · Campus Roles · Wild Card)</span>
- </div>
- <div className="stype"><span className="sbadge sb-purple">Mystery</span></div>
- </div>
  <div className="srow srow-lunch">
- <div className="stime">BREAK</div>
+ <div className="stime font-mono text-white/80 font-bold">12:00 – 1:00 PM</div>
  <div className="sevent">
- <span className="sname"><Icon name="pizza" /> Lunch / Free Tribe Time</span>
- <span className="sdetail">Eat → Talk → Meet New People → Photos → Music → Explore</span>
+ <span className="sname"><Icon name="pizza" /> LUNCH</span>
+ <span className="sdetail">Break for lunch, relaxation and informal interaction among participants.</span>
  </div>
  <div className="stype"><span className="sbadge sb-green">Social</span></div>
  </div>
  <div className="srow">
- <div className="stime">STAGE 04</div>
+ <div className="stime font-mono text-[#00FFD1] font-bold">1:00 – 2:00 PM</div>
  <div className="sevent">
- <span className="sname"><Icon name="piano" /> Tribe Jam</span>
- <span className="sdetail">Keyboard → Guitar → Singing → Open Participation → TRIBE JAM SWITCH</span>
+ <span className="sname"><Icon name="trophy" /> TRIBE PLAYGROUND CONTINUOUS</span>
+ <span className="sdetail">Continuation of Playground activities and completion of remaining participation.</span>
  </div>
- <div className="stype"><span className="sbadge sb-teal">Music</span></div>
+ <div className="stype"><span className="sbadge sb-teal">Challenges</span></div>
  </div>
  <div className="srow">
- <div className="stime">STAGE 05</div>
+ <div className="stime font-mono text-[#FF6B1A] font-bold">2:00 – 3:00 PM</div>
  <div className="sevent">
- <span className="sname"><Icon name="brick" /> The Tribe Wall</span>
- <span className="sdetail">“BEFORE I GRADUATE, I WANT TO…” — 100 Students → 100 Dreams → One Tribe Wall</span>
+ <span className="sname"><Icon name="piano" /> TRIBE JAM</span>
+ <span className="sdetail">Open music and performance session featuring students and participants.</span>
  </div>
- <div className="stype"><span className="sbadge sb-yellow">Interactive</span></div>
+ <div className="stype"><span className="sbadge sb-orange">Music</span></div>
  </div>
  <div className="srow srow-final">
- <div className="stime">FINALE</div>
+ <div className="stime font-mono text-[#FFE600] font-bold">3:00 – 3:20 PM</div>
  <div className="sevent">
  <span className="sname"><Icon name="globe" /> TRIBEVERSE REVEAL</span>
- <span className="sdetail">You came as strangers. You played together. AND SOMEWHERE ALONG THE WAY... YOU FOUND YOUR TRIBE.</span>
+ <span className="sdetail">Closing reveal connecting the day's experiences with the TRIBEVERSE identity.</span>
  </div>
  <div className="stype"><span className="sbadge sb-glow">REVEAL <Icon name="fire" /></span></div>
+ </div>
+ <div className="srow">
+ <div className="stime font-mono text-[#00FFD1] font-bold">3:20 – 3:30 PM</div>
+ <div className="sevent">
+ <span className="sname"><Icon name="brick" /> TRIBE WALL</span>
+ <span className="sdetail">Participants share a goal, thought or aspiration as a collective closing activity.</span>
+ </div>
+ <div className="stype"><span className="sbadge sb-yellow">Closing Wall</span></div>
  </div>
  </div>
  </div>
@@ -258,70 +254,49 @@ export default function LandingPage() {
     </section>
 
     {/* ── 4. THE STUDENT TRIBE ECOSYSTEM ── */}
-    <section className="section" id="ecosystem" style={{ background: '#1A6FFF', color: '#FFF' }}>
+    <section className="section ecosystem-sec" id="ecosystem" style={{ background: '#1A6FFF', color: '#FFF' }}>
       <div className="section-inner">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 mb-12">
-          <div>
-            <span className="px-3 py-1 bg-[#FFE600] text-black font-display font-black text-xs uppercase tracking-widest rounded-full border-2 border-black shadow-[2px_2px_0px_#000]">
-              The ST Ecosystem
-            </span>
-            <h2 className="text-4xl sm:text-6xl font-black font-display uppercase mt-3"
-                style={{ WebkitTextStroke: '2px #000', textShadow: '4px 4px 0px #000' }}>
-              OUR 6 TRIBE DIVISIONS
-            </h2>
-            <p className="text-base sm:text-xl font-bold font-display italic text-[#FFE600] mt-1">
-              Structure. Purpose. Teamwork.
-            </p>
-          </div>
-          <div className="px-5 py-2.5 bg-black/40 border border-white/20 rounded-xl text-xs font-mono text-white/80">
-            <span className="inline-flex items-center gap-1"><Icon name="sparkle" /> 6 Core Divisions</span> · <span className="inline-flex items-center gap-1">1 Unified Tribe <Icon name="sparkle" /></span>
-          </div>
+        <div className="sec-num light-num" aria-hidden="true">04</div>
+        <div className="sec-header">
+          <h2 className="sec-title yellow-t">OUR 6 TRIBE DIVISIONS</h2>
+          <p className="sec-sub light-sub">Structure. Purpose. Teamwork | Student Tribe Playbook</p>
         </div>
 
-        {/* Featured Visual Spread & Quick Division Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-10">
-          {/* Cover Mascot Graphic */}
-          <div className="lg:col-span-6">
-            <div className="rounded-2xl overflow-hidden border-4 border-black shadow-[8px_8px_0px_#000] bg-black">
-              <img
-                src="/handbook/handbook-01-cover.png"
-                alt="Student Tribe Ecosystem Cover"
-                className="w-full h-auto object-cover"
-              />
-            </div>
+        {/* Slide By Slide Playbook Deck */}
+        <div className="mb-12">
+          <PlaybookSlideViewer />
+        </div>
+
+        {/* 6 Divisions Summary Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="bg-[#FF1A75] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#FFE600] block">1. CAREERS</span>
+            <p className="text-xs text-white/90 font-medium mt-1">ST School skill development, upskilling, mentorship.</p>
           </div>
 
-          {/* 6 Divisions Cards */}
-          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-[#FF1A75] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#FFE600] block">1. CAREERS</span>
-              <p className="text-xs text-white/90 font-medium mt-1">ST School skill development, upskilling, mentorship.</p>
-            </div>
+          <div className="bg-[#7B2FFF] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#00FFD1] block">2. COMMERCE</span>
+            <p className="text-xs text-white/90 font-medium mt-1">Swiggy, Uber, Duolingo, SBI brand collaborations.</p>
+          </div>
 
-            <div className="bg-[#7B2FFF] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#00FFD1] block">2. COMMERCE</span>
-              <p className="text-xs text-white/90 font-medium mt-1">Swiggy, Uber, Duolingo, SBI brand collaborations.</p>
-            </div>
+          <div className="bg-[#FF5500] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#FFE600] block">3. COMMUNITY</span>
+            <p className="text-xs text-white/90 font-medium mt-1">Campus chapters, regional teams, active engagement.</p>
+          </div>
 
-            <div className="bg-[#FF5500] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#FFE600] block">3. COMMUNITY</span>
-              <p className="text-xs text-white/90 font-medium mt-1">Campus chapters, regional teams, active engagement.</p>
-            </div>
+          <div className="bg-[#FFE600] text-black p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#7B2FFF] block">4. CONTENT</span>
+            <p className="text-xs text-black/80 font-bold mt-1">Media decks, viral reels, articles &amp; movie marketing.</p>
+          </div>
 
-            <div className="bg-[#FFE600] text-black p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#7B2FFF] block">4. CONTENT</span>
-              <p className="text-xs text-black/80 font-bold mt-1">Media decks, viral reels, articles &amp; movie marketing.</p>
-            </div>
+          <div className="bg-[#4F26E9] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#D4FF00] block">5. CARE</span>
+            <p className="text-xs text-white/90 font-medium mt-1">Mental health, well-being sessions, safe listener spaces.</p>
+          </div>
 
-            <div className="bg-[#4F26E9] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#D4FF00] block">5. CARE</span>
-              <p className="text-xs text-white/90 font-medium mt-1">Mental health, well-being sessions, safe listener spaces.</p>
-            </div>
-
-            <div className="bg-[#FF2D55] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-              <span className="font-display font-black text-lg text-[#FFE600] block">6. CLOTHING</span>
-              <p className="text-xs text-white/90 font-medium mt-1">Beast collections, graphic streetwear &amp; design platform.</p>
-            </div>
+          <div className="bg-[#FF2D55] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
+            <span className="font-display font-black text-lg text-[#FFE600] block">6. CLOTHING</span>
+            <p className="text-xs text-white/90 font-medium mt-1">Beast collections, graphic streetwear &amp; design platform.</p>
           </div>
         </div>
       </div>
@@ -334,11 +309,11 @@ export default function LandingPage() {
  <div className="inaug-layout">
  <div className="inaug-text">
  <h2 className="sec-title lime-t">INAUGURATION</h2>
- <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration — 100 freshers stepping into something larger than themselves. Today is the day your tribe is born.</p>
+ <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration as 100+ freshers step into something larger than themselves. Today is the day your tribe is born.</p>
  <div className="inaug-details">
             <div className="idetail"><span className="ilabel">PHASE</span><span className="ival">Stage 01 · Launch</span></div>
             <div className="idetail"><span className="ilabel">FORMAT</span><span className="ival">Opening Ceremony</span></div>
-            <div className="idetail"><span className="ilabel">TEAMS</span><span className="ival">All 20 Present</span></div>
+            <div className="idetail"><span className="ilabel">ATTENDANCE</span><span className="ival">500 to 600 Participants</span></div>
  </div>
  </div>
  <div className="inaug-emblem">
@@ -374,7 +349,7 @@ export default function LandingPage() {
  <div className="rnum">02</div>
  <div className="ricon"></div>
  <h3 className="rname">QUICK DRAW</h3>
- <p>Sketch it fast. Make your team guess it faster. Every second counts.</p>
+ <p>Sketch it fast. Make everyone guess it faster. Every second counts.</p>
  </div>
  <div className="round-card">
  <div className="rnum">03</div>
@@ -419,11 +394,11 @@ export default function LandingPage() {
  <div className="cf-body">
  <div className="clue"><span className="cl-icon"></span><div><strong>Observation Skills</strong><p>Find hidden patterns in plain sight. Attention to detail is your weapon.</p></div></div>
  <div className="clue"><span className="cl-icon"></span><div><strong>Logical Deduction</strong><p>Connect the dots. One wrong assumption and the case goes cold.</p></div></div>
- <div className="clue"><span className="cl-icon"></span><div><strong>Evidence Analysis</strong><p>Every detail matters. The truth is in the evidence — if you know where to look.</p></div></div>
+ <div className="clue"><span className="cl-icon"></span><div><strong>Evidence Analysis</strong><p>Every detail matters. The truth is in the evidence if you know where to look.</p></div></div>
  <div className="clue"><span className="cl-icon"></span><div><strong>Time Pressure</strong><p>The clock is ticking. Can your detective instincts keep up?</p></div></div>
  </div>
  </div>
- <blockquote className="det-quote">"Every team has a detective.<br/>Today, yours will be tested."</blockquote>
+ <blockquote className="det-quote">"Every tribe has a detective.<br/>Today, yours will be tested."</blockquote>
  </div>
  </div>
  </section>
@@ -448,7 +423,7 @@ export default function LandingPage() {
  <div className="sec-num" aria-hidden="true">08</div>
  <div className="jam-header">
  <h2 className="sec-title jam-t">TRIBE JAM</h2>
- <p className="jam-sub">Music. Expression. Vibes. This is the beat of TRIBEVERSE.</p>
+ <p className="jam-sub">Pure Jamming Session: Live Keyboard, Singing, Dance & Unfiltered Beats.</p>
  </div>
  <div className="jam-layout">
  <div className="jam-visual">
@@ -464,9 +439,9 @@ export default function LandingPage() {
  <div className="jnote jn3"></div><div className="jnote jn4"></div>
  </div>
  <div className="jam-info">
- <div className="jd"><span className="ji"></span><div><strong>Performance Round</strong><p>Sing, rap, beatbox, hum — any expression of music counts here.</p></div></div>
- <div className="jd"><span className="ji"></span><div><strong>Team Vibe</strong><p>Your team's musical energy becomes your biggest advantage. Feel it together.</p></div></div>
- <div className="jd"><span className="ji"></span><div><strong>Music is Tribe Language</strong><p>No perfect pitch required. Just passion, rhythm, and your authentic self.</p></div></div>
+ <div className="jd"><span className="ji"></span><div><strong>Live Keyboard & Instrumental Jam</strong><p>Live keyboard playing leads the session, laying down chords and rhythms for everyone to join in.</p></div></div>
+ <div className="jd"><span className="ji"></span><div><strong>Singing, Rap & Beatbox</strong><p>Sing, rap, beatbox, hum: any vocal expression counts. Take the mic or harmonize with the crowd.</p></div></div>
+ <div className="jd"><span className="ji"></span><div><strong>Dance & Pure Jam Vibe</strong><p>Dance, movement, and freestyle rhythm. No perfect pitch or steps required, just authentic energy.</p></div></div>
  </div>
  </div>
  </div>
@@ -520,7 +495,7 @@ export default function LandingPage() {
  MEET THE <span className="text-[#FFE600]">TRIBE TEAM</span>
  </h2>
  <p className="text-white/60 text-xs sm:text-sm max-w-xl mx-auto">
- Hover on the ID cards to explore team member roles, branches, experience, and direct LinkedIn & Instagram profiles.
+ Official Student Tribe ambassadors leading the TRIBEVERSE experience at ANITS.
  </p>
  </div>
 
@@ -594,8 +569,7 @@ export default function LandingPage() {
  <span className="fl-txt">Student Tribe</span>
  </div>
  <div className="footer-event">
- <p>TRIBEVERSE V1 — FRESHERS EDITION</p>
- <p>20 Teams · 5 Members · 100 Participants</p>
+ <p>TRIBEVERSE V1 · FRESHERS EDITION</p>
  </div>
  <p className="footer-tag">Structure. Purpose. Teamwork.</p>
  </div>

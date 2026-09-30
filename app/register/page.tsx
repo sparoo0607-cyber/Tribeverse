@@ -337,7 +337,7 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <footer className="relative z-10 py-5 text-center text-xs text-white/30">
-        Student Tribe Presents TRIBEVERSE V1 · 20 Teams · 5 Members · 100 Participants
+        Student Tribe Presents TRIBEVERSE V1 · Freshers Edition
       </footer>
     </div>
   )

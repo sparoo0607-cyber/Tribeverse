@@ -6,9 +6,9 @@ const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit', display: 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space', display: 'swap'})
 
 export const metadata: Metadata = {
- title: 'TRIBEVERSE V1 — Student Tribe Freshers Edition',
- description: 'The official TRIBEVERSE V1 event platform by Student Tribe.',
- openGraph: { title: 'TRIBEVERSE V1', description: 'Student Tribe Freshers Edition Event Platform'},
+  title: 'TRIBEVERSE V1 | Student Tribe Freshers Edition',
+  description: 'The official TRIBEVERSE V1 event platform by Student Tribe.',
+  openGraph: { title: 'TRIBEVERSE V1', description: 'Student Tribe Freshers Edition Event Platform' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

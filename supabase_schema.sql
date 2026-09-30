@@ -187,28 +187,8 @@ INSERT INTO public.events (name, edition, event_date, start_time, status, reveal
 VALUES ('TRIBEVERSE', 'V1 Freshers Edition', '2026-09-23', '09:00:00', 'live', false)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO public.teams (name, team_number, color, total_score) VALUES
-('Team Titans', 1, '#1A6FFF', 920),
-('Team Phoenix', 2, '#FFE600', 880),
-('Team Cyber', 3, '#00FFD1', 840),
-('Team Apex', 4, '#FF2D87', 760),
-('Team Vortex', 5, '#7B2FFF', 710),
-('Team Nexus', 6, '#FF6B1A', 680),
-('Team Blaze', 7, '#00D9C4', 640),
-('Team Quantum', 8, '#D4FF00', 600),
-('Team Ignite', 9, '#1A6FFF', 570),
-('Team Pulse', 10, '#FF2D87', 530),
-('Team Shadow', 11, '#7B2FFF', 490),
-('Team Storm', 12, '#00FFD1', 460),
-('Team Hydra', 13, '#FF6B1A', 420),
-('Team Zenith', 14, '#FFE600', 390),
-('Team Alpha', 15, '#00D9C4', 360),
-('Team Beta', 16, '#1A6FFF', 330),
-('Team Omega', 17, '#D4FF00', 290),
-('Team Nova', 18, '#FF2D87', 260),
-('Team Echo', 19, '#7B2FFF', 220),
-('Team Drift', 20, '#00FFD1', 180)
-ON CONFLICT (team_number) DO UPDATE SET total_score = EXCLUDED.total_score, name = EXCLUDED.name;
+-- No seed teams: TRIBEVERSE has no fixed teams.
+
 
 -- 5. SEED ALL 8 STAGE ACTIVITIES
 -- ─────────────────────────────────────────────────────────────

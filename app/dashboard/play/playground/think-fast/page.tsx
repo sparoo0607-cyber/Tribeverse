@@ -15,7 +15,6 @@ export default function ThinkFastGame() {
  const [timeLeft, setTimeLeft] = useState(30)
  const [score, setScore] = useState(0)
  const [roundId, setRoundId] = useState<string|null>(null)
- const [teamId, setTeamId] = useState<string|null>(null)
  const [userId, setUserId] = useState<string|null>(null)
  const timerRef = useRef<NodeJS.Timeout|null>(null)
  const supabase = createClient()
@@ -26,8 +25,6 @@ export default function ThinkFastGame() {
  const {data:{user}} = await supabase.auth.getUser()
  if (!user) return
  setUserId(user.id)
- const {data:m} = await supabase.from('team_members').select('team_id').eq('user_id',user.id).single()
- setTeamId(m?.team_id??null)
  const {data:act} = await supabase.from('activities').select('id').eq('slug', 'playground').single()
  if (!act) return
  const {data:round} = await supabase.from('rounds').select('id,duration_seconds').eq('activity_id',act.id).eq('slug', 'think-fast').single()
@@ -64,15 +61,14 @@ export default function ThinkFastGame() {
  }
 
  async function saveAttempt(answer: string, correct: boolean, earned: number) {
- if (!userId || !teamId || !roundId) return
+ if (!userId || !roundId) return
  await supabase.from('game_attempts').insert({
- user_id: userId, team_id: teamId, round_id: roundId,
+ user_id: userId, round_id: roundId,
  question_id: questions[qIdx]?.id,
  answer_given: answer, is_correct: correct, score_earned: earned,
  })
  if (earned >0) {
- // Update team score
- await supabase.rpc('refresh_team_score', { p_team_id: teamId })
+ await supabase.rpc('add_user_points', { p_user_id: userId, p_points: earned })
  }
  }
 
@@ -198,7 +194,7 @@ export default function ThinkFastGame() {
  {phase ==='result'&& (
  <div className={` flex flex-col items-center gap-4 p-6 rounded-2xl ${isCorrect? 'bg-green-500/10 border border-green-500/30': 'bg-red-500/10 border border-red-500/30'}`}>
  <p className={` font-black text-2xl font-display ${isCorrect? 'text-green-400': 'text-red-400'}`}>
- {selected==='__timeout__'? 'Time\'s Up!': isCorrect ? ` CORRECT! +${q?.points} pts `: 'Wrong — 0 pts'}
+ {selected==='__timeout__'? 'Time\'s Up!': isCorrect ? ` CORRECT! +${q?.points} pts `: 'Wrong (0 pts)'}
  </p>
  {!isCorrect && selected !=='__timeout__'&& (
  <p className="text-white/50 text-sm">Correct answer:<strong className="text-white">{q?.correct_answer}</strong></p>

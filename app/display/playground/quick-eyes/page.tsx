@@ -78,7 +78,7 @@ export default function QuickEyesDisplayPage() {
               </div>
             ))}
           </div>
-          {state.phase === 'closed' && <p className="text-white/40 font-display uppercase tracking-widest text-sm">Answers locked — calculating result…</p>}
+          {state.phase === 'closed' && <p className="text-white/40 font-display uppercase tracking-widest text-sm">Answers locked · calculating result…</p>}
         </div>
       )}
 
@@ -92,8 +92,8 @@ export default function QuickEyesDisplayPage() {
           </div>
           <div className="p-8 bg-gradient-to-r from-[#FFE600]/20 via-[#FFE600]/10 to-[#FFE600]/20 border-2 border-[#FFE600]/50 rounded-3xl">
             <p className="text-sm uppercase tracking-widest text-[#FFE600] font-black font-display">Champion</p>
-            <h2 className="text-5xl font-black text-white font-display mt-2">{state.winnerTeamName ?? 'No correct answers'}</h2>
-            {state.winnerTeamName && <p className="text-white/60 font-mono mt-2">+{q.points} points awarded</p>}
+            <h2 className="text-5xl font-black text-white font-display mt-2">{state.winnerName ?? 'No correct answers'}</h2>
+            {state.winnerName && <p className="text-white/60 font-mono mt-2">+{q.points} points awarded</p>}
           </div>
         </div>
       )}

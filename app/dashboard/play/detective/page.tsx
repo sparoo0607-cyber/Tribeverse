@@ -132,7 +132,7 @@ function DetectiveGame() {
       {(round.phase === 'guessing_open' || round.phase === 'guessing_closed') && (
         <div className="space-y-3">
           <p className="text-white/40 text-xs uppercase tracking-widest font-display">
-            {round.phase === 'guessing_open' ? 'Guess each teammate\'s secret role' : 'Guessing is closed — waiting for reveal'}
+            {round.phase === 'guessing_open' ? 'Guess each participant\'s secret role' : 'Guessing is closed · waiting for reveal'}
           </p>
           {teammates.map((tm) => {
             const existing = guesses[tm.userId]
@@ -182,8 +182,8 @@ function DetectiveGame() {
               <div key={tm.userId} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${g?.isCorrect ? 'bg-green-500/10 border-green-500/40' : 'bg-white/[0.03] border-white/10'}`}>
                 <span className="font-bold text-white font-display">{tm.fullName}</span>
                 <div className="text-xs font-display text-right">
-                  <p className="text-white/50">Your guess: <span className="text-white font-bold">{g?.guessedRole ?? '—'}</span></p>
-                  <p className="text-white/50">Actual role: <span className="text-[#FFE600] font-bold">{actual ?? '—'}</span></p>
+                  <p className="text-white/50">Your guess: <span className="text-white font-bold">{g?.guessedRole ?? 'None'}</span></p>
+                  <p className="text-white/50">Actual role: <span className="text-[#FFE600] font-bold">{actual ?? 'None'}</span></p>
                   <p className={`font-black uppercase mt-0.5 ${g?.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                     {g?.isCorrect ? `+${g.pointsAwarded} PTS` : 'Incorrect'}
                   </p>

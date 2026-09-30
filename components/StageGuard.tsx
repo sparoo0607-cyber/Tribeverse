@@ -8,7 +8,7 @@ interface StageGuardProps {
  slug: string
  title: string
  stageNumber: string
- points: number
+ points?: number
  children: React.ReactNode
 }
 
@@ -61,12 +61,8 @@ export default function StageGuard({ slug, title, stageNumber, points, children 
 
  <div className="bg-white/5 border border-white/10 p-5 rounded-2xl max-w-md mx-auto space-y-2 text-left">
  <div className="flex justify-between items-center text-xs">
- <span className="text-white/40 uppercase font-display font-bold">Stage Stakes</span>
- <span className="text-[#FFE600] font-black font-mono">+{points} PTS</span>
- </div>
- <div className="flex justify-between items-center text-xs">
  <span className="text-white/40 uppercase font-display font-bold">Live Status</span>
- <span className="text-yellow-400 font-bold">Awaiting Admin Trigger</span>
+ <span className="text-yellow-400 font-bold">Starts soon</span>
  </div>
  </div>
 
@@ -76,12 +72,6 @@ export default function StageGuard({ slug, title, stageNumber, points, children 
  className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl font-display transition-colors"
  >
  Back to Activity Hub
- </Link>
- <Link
- href="/dashboard/leaderboard"
- className="px-6 py-3 bg-[#FFE600] text-black font-black text-xs uppercase tracking-wider rounded-xl font-display hover:bg-[#D4FF00] transition-colors"
- >
- Check Current Standings 
  </Link>
  </div>
  </div>
@@ -105,11 +95,10 @@ export default function StageGuard({ slug, title, stageNumber, points, children 
  </div>
 
  {/* Winner Banner */}
- {result?.winningTeam && (
+ {result?.winnerName && (
  <div className="bg-gradient-to-r from-yellow-500/20 via-yellow-500/10 to-yellow-500/20 border-2 border-[#FFE600]/50 p-6 rounded-2xl max-w-xl mx-auto shadow-xl">
- <p className="text-xs uppercase tracking-widest text-[#FFE600] font-black font-display">Stage 0{stageNumber} Champions</p>
- <h2 className="text-2xl sm:text-3xl font-black text-white font-display my-1">{result.winningTeam}</h2>
- <p className="text-sm font-mono font-bold text-green-400">+{result.winnerPoints ?? points} Points Credited to Leaderboard</p>
+ <p className="text-xs uppercase tracking-widest text-[#FFE600] font-black font-display">Stage {stageNumber} Champion</p>
+ <h2 className="text-2xl sm:text-3xl font-black text-white font-display my-1">{result.winnerName}</h2>
  {result.customNote && <p className="text-xs text-white/70 mt-2 font-sans italic">{result.customNote}</p>}
  </div>
  )}
@@ -147,12 +136,6 @@ export default function StageGuard({ slug, title, stageNumber, points, children 
  className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl font-display transition-colors"
  >
  Next Available Stage
- </Link>
- <Link
- href="/dashboard/leaderboard"
- className="px-6 py-2.5 bg-[#FFE600] text-black font-black text-xs uppercase tracking-wider rounded-xl font-display hover:bg-[#D4FF00] transition-colors"
- >
- View Live Leaderboard 
  </Link>
  </div>
  </div>

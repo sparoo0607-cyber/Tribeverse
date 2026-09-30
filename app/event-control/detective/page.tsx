@@ -204,7 +204,7 @@ export default function DetectiveControllerPage() {
       {/* Manual role assignment */}
       <div className="bg-white/[0.03] border border-white/10 p-6 rounded-2xl space-y-4">
         <h3 className="text-lg font-black text-white font-display">Assign Secret Roles</h3>
-        <p className="text-white/50 text-xs">Set each participant&apos;s secret role for this round before it goes live. Students never see this — only their own role.</p>
+        <p className="text-white/50 text-xs">Set each participant&apos;s secret role for this round before it goes live. Students never see this (only their own role).</p>
         {teams.map((team) => (
           <div key={team.teamId} className="border-t border-white/10 pt-3 first:border-t-0 first:pt-0">
             <p className="text-xs font-bold text-white/40 font-display uppercase mb-2">{team.teamName}</p>
@@ -217,7 +217,7 @@ export default function DetectiveControllerPage() {
                     onChange={(e) => handleAssign(m.userId, team.teamId, e.target.value)}
                     className="bg-white/10 border border-white/20 rounded-lg px-2 py-1 text-white text-xs font-display focus:outline-none focus:border-[#FFE600]"
                   >
-                    <option value="" className="bg-[#111418]">—</option>
+                    <option value="" className="bg-[#111418]">None</option>
                     {round.rolePool.map((role) => (
                       <option key={role} value={role} className="bg-[#111418]">{role}</option>
                     ))}

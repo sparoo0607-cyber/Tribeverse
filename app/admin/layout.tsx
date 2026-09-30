@@ -8,7 +8,7 @@ import Icon, { IconName } from '@/components/icons/Icon'
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Control Center', icon: 'bolt' },
   { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: 'camera' },
-  { href: '/admin/teams', label: 'Teams & Roster', icon: 'users' },
+  { href: '/admin/teams', label: 'Participants & Scores', icon: 'users' },
   { href: '/admin/event', label: 'Global Event State', icon: 'globe' },
   { href: '/admin/scores', label: 'Live Scores', icon: 'trophy' },
   { href: '/admin/monitor', label: 'Monitor', icon: 'chart-bar' },

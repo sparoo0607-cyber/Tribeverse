@@ -5,11 +5,11 @@ import StageRow from './StageRow'
 import Icon from '@/components/icons/Icon'
 
 const SLIDES = [
-  { badge: 'FRESHERS EDITION', title: 'TRIBEVERSE V1', body: 'ONE TEAM. FIVE PEOPLE. FIVE EXPERIENCES.' },
-  { badge: 'WELCOME', title: 'Every Great Story Has A Beginning', body: '100 freshers stepping into something larger than themselves. Today is the day your tribe is born.' },
-  { badge: 'GUEST INTRODUCTION', title: 'Chief Guest', body: 'Introduce the guest of honor — name, designation, organization.' },
+  { badge: 'FRESHERS EDITION', title: 'TRIBEVERSE V1', body: 'ONE COMMUNITY. HUNDREDS OF STUDENTS. ONE SHARED JOURNEY.' },
+  { badge: 'WELCOME', title: 'Every Great Story Has A Beginning', body: '100+ freshers stepping into something larger than themselves. Today is the day your tribe is born.' },
+  { badge: 'GUEST INTRODUCTION', title: 'Chief Guest', body: 'Introduce the guest of honor: name, designation, organization.' },
   { badge: 'STUDENT TRIBE INTRODUCTION', title: 'Who We Are', body: 'A quick word on Student Tribe before the journey begins.' },
-  { badge: 'EVENT OPENING', title: 'TRIBEVERSE Launch', body: 'Introduction → Tribe Intro → Team Reveal → Interactive Opening → Launch.' },
+  { badge: 'EVENT OPENING', title: 'TRIBEVERSE Launch', body: 'Introduction → Community Intro → Interactive Opening → Official Launch.' },
 ]
 
 export default function InaugurationSection() {

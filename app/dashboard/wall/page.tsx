@@ -11,7 +11,6 @@ const DEGS = ['-3deg', '-2deg', '-1deg', '1deg', '2deg', '3deg']
 
 function WallGame() {
   const [userId, setUserId] = useState<string | null>(null)
-  const [teamId, setTeamId] = useState<string | null>(null)
   const [authorName, setAuthorName] = useState('')
   const [posts, setPosts] = useState<WallPostRow[]>([])
   const [dream, setDream] = useState('')
@@ -28,12 +27,9 @@ function WallGame() {
       if (!cancelled) setUserId(user.id)
 
       const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
-      const { data: membership } = await supabase.from('team_members').select('team_id, team:teams(name, team_number)').eq('user_id', user.id).maybeSingle()
       if (cancelled) return
 
-      const team = Array.isArray(membership?.team) ? membership?.team[0] : membership?.team
-      setTeamId(membership?.team_id ?? null)
-      setAuthorName(team ? `${profile?.full_name ?? 'Participant'} (${team.name})` : profile?.full_name ?? 'Participant')
+      setAuthorName(profile?.full_name ?? 'Participant')
     }
 
     async function loadPosts() {
@@ -51,7 +47,7 @@ function WallGame() {
     e.preventDefault()
     if (!dream.trim() || !userId) return
     setSubmitting(true)
-    await submitWallPost({ userId, teamId, authorName: authorName || 'Participant', content: dream.trim() })
+    await submitWallPost({ userId, authorName: authorName || 'Participant', content: dream.trim() })
     setDream('')
     setSubmitting(false)
     setJustSubmitted(true)
@@ -127,7 +123,7 @@ function WallGame() {
           </div>
         ))}
         {approved.length === 0 && (
-          <p className="col-span-full text-center text-white/30 text-sm py-8">No dreams on the wall yet — be the first to pin one!</p>
+          <p className="col-span-full text-center text-white/30 text-sm py-8">No dreams on the wall yet. Be the first to pin one!</p>
         )}
       </div>
     </div>

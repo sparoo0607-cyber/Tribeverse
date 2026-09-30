@@ -6,17 +6,25 @@ import { createClient } from '@/lib/supabase/client'
 import { fetchStageStates, subscribeToStageChanges } from '@/lib/stageStore'
 import Icon from '@/components/icons/Icon'
 
-const EVENT_DATE = new Date('2026-09-23T09:00:00+05:30')
+const EVENT_DATE = new Date('2026-09-23T09:30:00+05:30')
 
-const STAGE_META = [
-  { slug: 'playground', name: 'Tribe Playground', description: '5 Rounds · 5 Members · 5 Different Abilities', points: 500 },
-  { slug: 'detective', name: 'Tribe Detective', description: 'Campus riddle trail & in-app cipher hunt', points: 600 },
-  { slug: 'lunch', name: 'Lunch Break Vibes', description: 'Campus food battle & freshers playlist chill lounge', points: 200 },
-  { slug: 'arcade', name: 'Tribe Arcade', description: 'Speed tapping, color frenzy & math blitz', points: 800 },
-  { slug: 'impossible', name: 'The Impossible Challenge', description: '100-Second intense countdown logic puzzle gauntlet', points: 1500 },
-  { slug: 'jam', name: 'Tribe Jam', description: 'Live DJ song queue voting & audience cheer meter', points: 400 },
-  { slug: 'wall', name: 'The Tribe Wall', description: 'Live student photo & dream note social board', points: 300 },
-  { slug: 'reveal', name: 'Tribeverse Reveal', description: 'Grand Finale reveal, teaser showcase & winner podium', points: 2000 },
+const OFFICIAL_ITINERARY = [
+  { time: '9:30 – 10:00 AM', name: 'Inauguration', slug: 'inauguration', desc: 'Official opening of TRIBEVERSE and welcome to participants.' },
+  { time: '10:00 – 10:30 AM', name: 'ST Brief', slug: 'brief', desc: 'Introduction to Student Tribe, community opportunities & handbook.' },
+  { time: '10:30 – 11:00 AM', name: 'Talent Hunt', slug: 'talent-hunt', desc: 'Open platform for students to showcase creative talents.' },
+  { time: '11:00 AM – 12:00 PM', name: 'Tribe Playground', slug: 'playground', desc: 'Interactive games focused on participation, creativity and quick thinking.' },
+  { time: '12:00 – 1:00 PM', name: 'Lunch Break', slug: 'lunch', desc: 'Break for lunch, relaxation and informal interaction.' },
+  { time: '1:00 – 2:00 PM', name: 'Tribe Playground (Continuous)', slug: 'playground-cont', desc: 'Continuation of Playground activities & student participation.' },
+  { time: '2:00 – 3:00 PM', name: 'Tribe Jam', slug: 'jam', desc: 'Pure Jamming Session with live keyboard, singing, dance & rap.' },
+  { time: '3:00 – 3:20 PM', name: 'Tribeverse Reveal', slug: 'reveal', desc: 'Closing reveal connecting the day & welcoming freshers to Student Tribe.' },
+  { time: '3:20 – 3:30 PM', name: 'Closing', slug: 'closing', desc: 'Final thank you, group moments, and next chapter.' },
+] as const
+
+const JOIN_IN = [
+  { slug: 'playground', name: 'Tribe Playground', desc: 'Interactive activities focused on participation, creativity and quick thinking.', href: '/dashboard/play/playground' },
+  { slug: 'jam', name: 'Tribe Jam', desc: 'Pure Jamming Session with live keyboard, singing, dance and rap.', href: '/dashboard/play/jam' },
+  { slug: 'wall', name: 'The Tribe Wall', desc: 'Share a goal, thought or aspiration as a collective closing activity.', href: '/dashboard/wall' },
+  { slug: 'reveal', name: 'Tribeverse Reveal', desc: 'Closing reveal connecting the day with the TRIBEVERSE identity.', href: '/dashboard/reveal' },
 ] as const
 
 function Countdown() {
@@ -39,13 +47,13 @@ function Countdown() {
   }, [])
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 sm:gap-3">
       {[['days', timeLeft.days], ['hrs', timeLeft.hours], ['min', timeLeft.mins], ['sec', timeLeft.secs]].map(([label, val]) => (
-        <div key={label as string} className="bg-black/40 border border-white/10 px-3 py-2 rounded-xl text-center min-w-[54px]">
-          <div className="font-black text-xl text-[#FFE600] font-mono">
+        <div key={label as string} className="bg-black/40 border border-white/10 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-center min-w-[48px] sm:min-w-[54px]">
+          <div className="font-black text-lg sm:text-xl text-[#FFE600] font-mono">
             {String(val).padStart(2, '0')}
           </div>
-          <div className="text-white/40 text-[9px] font-bold uppercase tracking-widest">{label}</div>
+          <div className="text-white/40 text-[8px] sm:text-[9px] font-bold uppercase tracking-widest">{label}</div>
         </div>
       ))}
     </div>
@@ -54,12 +62,6 @@ function Countdown() {
 
 export default function DashboardPage() {
   const [fullName, setFullName] = useState('Student')
-  const [teamName, setTeamName] = useState('Unassigned')
-  const [teamNumber, setTeamNumber] = useState<number | null>(null)
-  const [teamScore, setTeamScore] = useState(0)
-  const [teamRank, setTeamRank] = useState<number | null>(null)
-  const [totalTeams, setTotalTeams] = useState(20)
-  const [assignedRound, setAssignedRound] = useState<number | null>(null)
   const [stageStatuses, setStageStatuses] = useState<Record<string, string>>({})
 
   useEffect(() => {
@@ -68,32 +70,9 @@ export default function DashboardPage() {
 
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
-      if (!cancelled && profile) setFullName(profile.full_name)
-
-      const { data: membership } = await supabase
-        .from('team_members')
-        .select('assigned_round, team:teams(id, name, team_number, total_score)')
-        .eq('user_id', user.id)
-        .maybeSingle()
-
-      const team = Array.isArray(membership?.team) ? membership?.team[0] : membership?.team
-      if (!cancelled && team) {
-        setTeamName(team.name)
-        setTeamNumber(team.team_number)
-        setTeamScore(team.total_score)
-      }
-      if (!cancelled) setAssignedRound(membership?.assigned_round ?? null)
-
-      const { data: allTeams } = await supabase.from('teams').select('id, total_score').order('total_score', { ascending: false })
-      if (!cancelled && allTeams) {
-        setTotalTeams(allTeams.length)
-        if (team) {
-          const rank = allTeams.findIndex(t => t.id === team.id)
-          if (rank >= 0) setTeamRank(rank + 1)
-        }
+      if (user) {
+        const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
+        if (!cancelled && profile?.full_name) setFullName(profile.full_name)
       }
 
       const stages = await fetchStageStates()
@@ -102,15 +81,8 @@ export default function DashboardPage() {
     load()
     const unsubscribe = subscribeToStageChanges(load)
 
-    const channel = supabase
-      .channel('dashboard-teams-sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, load)
-      .subscribe()
-
-    return () => { cancelled = true; unsubscribe(); supabase.removeChannel(channel) }
+    return () => { cancelled = true; unsubscribe() }
   }, [])
-
-  const activeStage = STAGE_META.find(s => stageStatuses[s.slug] === 'live')
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
@@ -119,143 +91,149 @@ export default function DashboardPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFE600] text-black text-xs font-black rounded-full font-display uppercase tracking-widest">
-              LIVE EVENT DASHBOARD
+              TRIBEVERSE V1 DASHBOARD
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-white font-display">
               Welcome, <span className="text-[#FFE600]">{fullName.split(' ')[0]}!</span>
             </h1>
             <p className="text-white/80 font-medium text-sm sm:text-base max-w-xl">
-              You are representing <strong className="text-white font-bold">{teamName}{teamNumber ? ` (#${String(teamNumber).padStart(2, '0')})` : ''}</strong>. Today is the day your tribe competes across 8 epic stages.
+              Your official participant portal for TRIBEVERSE V1 at ANITS. Experience activities, talent hunt, live keyboard jamming, and community reveals.
             </p>
           </div>
 
-          <div className="bg-black/50 backdrop-blur-md border border-white/15 p-5 rounded-2xl flex flex-col items-center sm:items-start gap-3">
-            <span className="text-xs text-white/50 font-bold uppercase tracking-wider font-display">Grand Event Countdown</span>
+          <div className="bg-black/50 backdrop-blur-md border border-white/15 p-4 sm:p-5 rounded-2xl flex flex-col items-center sm:items-start gap-2 sm:gap-3">
+            <span className="text-xs text-white/50 font-bold uppercase tracking-wider font-display">Event Countdown</span>
             <Countdown />
           </div>
         </div>
       </div>
 
-      {/* Official Event Pass Ready Banner */}
-      <div className="bg-gradient-to-r from-[#FFE600]/15 via-[#FF6B1A]/10 to-[#FF2D87]/15 border border-[#FFE600]/30 rounded-3xl p-5 sm:p-6 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFE600] text-black font-display flex items-center justify-center flex-shrink-0 shadow-lg">
-            <Icon name="ticket" className="w-7 h-7" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#FFE600] font-display">
-                <Icon name="sparkle" /> OFFICIAL PASS GENERATED
-              </span>
-              <span className="px-2 py-0.5 bg-green-500/20 text-green-400 font-bold text-[10px] rounded-full">
-                ACTIVE
-              </span>
-            </div>
-            <h3 className="text-lg font-black text-white font-display mt-0.5">
-              Your Digital Event Pass & QR Ticket
-            </h3>
-            <p className="text-xs text-white/60">
-              Present your scannable badge at the main auditorium check-in on Sep 23, 2026.
-            </p>
-          </div>
-        </div>
-
+      {/* Quick Action Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
           href="/dashboard/pass"
-          className="px-5 py-3 rounded-xl bg-[#FFE600] hover:bg-[#ffe600]/90 text-black font-black text-xs uppercase tracking-widest font-display transition-all shadow-lg hover:scale-105 active:scale-95 flex items-center gap-2 whitespace-nowrap"
+          className="p-5 bg-gradient-to-br from-[#FFE600]/15 to-transparent border border-[#FFE600]/30 rounded-2xl hover:border-[#FFE600] transition-all group"
         >
-          <span>View / Download Pass</span>
-          <span>→</span>
-        </Link>
-      </div>
-
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Team Total Score', value: `${teamScore} PTS`, color: '#FFE600', link: '/dashboard/leaderboard' },
-          { label: 'Current Leaderboard Rank', value: teamRank ? `#${teamRank} of ${totalTeams}` : '—', color: '#00FFD1', link: '/dashboard/leaderboard' },
-          { label: 'Your Assigned Ability', value: assignedRound ? `Round #0${assignedRound}` : '—', color: '#FF2D87', link: '/dashboard/play/playground' },
-          { label: 'Campus Stage Active', value: activeStage ? activeStage.name : 'None Live Yet', color: '#D4FF00', link: '/dashboard/play' },
-        ].map((s, i) => (
-          <Link key={i} href={s.link} className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 p-5 rounded-2xl transition-all group">
-            <div className="flex items-center justify-end mb-2">
-              <span className="text-xs text-white/30 group-hover:text-white transition-colors font-mono">VIEW</span>
-            </div>
-            <p className="font-black text-xl md:text-2xl font-display truncate" style={{ color: s.color }}>{s.value}</p>
-            <p className="text-xs text-white/50 font-display uppercase tracking-wider mt-1">{s.label}</p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Main Action CTAs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link
-          href="/dashboard/play/playground"
-          className="p-6 rounded-2xl bg-[#FFE600] text-black font-black font-display flex items-center justify-between shadow-xl hover:scale-[1.02] active:scale-95 transition-all"
-        >
-          <div>
-            <span className="text-xs uppercase tracking-widest text-black/60 block mb-1">Your Mission</span>
-            <h3 className="text-xl">PLAY YOUR ROUND</h3>
-            <p className="text-xs text-black/70 mt-1 font-sans font-bold">{assignedRound ? `Round #${assignedRound}` : 'Awaiting team assignment'}</p>
+          <div className="flex items-center justify-between mb-3">
+            <span className="p-2.5 bg-[#FFE600]/20 text-[#FFE600] rounded-xl group-hover:scale-110 transition-transform">
+              <Icon name="ticket" className="w-5 h-5" />
+            </span>
+            <span className="text-[10px] font-mono text-[#FFE600] font-bold">READY</span>
           </div>
+          <h3 className="font-black text-white font-display text-base">Digital Event Pass</h3>
+          <p className="text-white/50 text-xs mt-1">View & download your scannable QR ticket</p>
         </Link>
 
         <Link
-          href="/dashboard/leaderboard"
-          className="p-6 rounded-2xl bg-white/[0.05] border border-white/15 text-white font-black font-display flex items-center justify-between hover:bg-white/10 hover:scale-[1.02] active:scale-95 transition-all"
+          href="/dashboard/play"
+          className="p-5 bg-gradient-to-br from-[#1A6FFF]/15 to-transparent border border-[#1A6FFF]/30 rounded-2xl hover:border-[#1A6FFF] transition-all group"
         >
-          <div>
-            <span className="text-xs uppercase tracking-widest text-[#00FFD1] block mb-1">Live Standings</span>
-            <h3 className="text-xl">VIEW LEADERBOARD</h3>
-            <p className="text-xs text-white/50 mt-1 font-sans">{totalTeams} Teams competing in real-time</p>
+          <div className="flex items-center justify-between mb-3">
+            <span className="p-2.5 bg-[#1A6FFF]/20 text-[#1A6FFF] rounded-xl group-hover:scale-110 transition-transform">
+              <Icon name="game-controller" className="w-5 h-5" />
+            </span>
+            <span className="text-[10px] font-mono text-[#1A6FFF] font-bold">2 STAGES</span>
           </div>
+          <h3 className="font-black text-white font-display text-base">Play</h3>
+          <p className="text-white/50 text-xs mt-1">Tribe Playground & Tribe Jam</p>
+        </Link>
+
+        <Link
+          href="/dashboard/event"
+          className="p-5 bg-gradient-to-br from-[#00FFD1]/15 to-transparent border border-[#00FFD1]/30 rounded-2xl hover:border-[#00FFD1] transition-all group"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="p-2.5 bg-[#00FFD1]/20 text-[#00FFD1] rounded-xl group-hover:scale-110 transition-transform">
+              <Icon name="book" className="w-5 h-5" />
+            </span>
+            <span className="text-[10px] font-mono text-[#00FFD1] font-bold">9:30 – 3:30</span>
+          </div>
+          <h3 className="font-black text-white font-display text-base">Official Itinerary</h3>
+          <p className="text-white/50 text-xs mt-1">9 scheduled segments throughout the day</p>
         </Link>
 
         <Link
           href="/dashboard/wall"
-          className="p-6 rounded-2xl bg-white/[0.05] border border-white/15 text-white font-black font-display flex items-center justify-between hover:bg-white/10 hover:scale-[1.02] active:scale-95 transition-all"
+          className="p-5 bg-gradient-to-br from-[#FF2D87]/15 to-transparent border border-[#FF2D87]/30 rounded-2xl hover:border-[#FF2D87] transition-all group"
         >
-          <div>
-            <span className="text-xs uppercase tracking-widest text-[#FF2D87] block mb-1">Social Feed</span>
-            <h3 className="text-xl">THE TRIBE WALL</h3>
-            <p className="text-xs text-white/50 mt-1 font-sans">Pin your dreams & photos</p>
+          <div className="flex items-center justify-between mb-3">
+            <span className="p-2.5 bg-[#FF2D87]/20 text-[#FF2D87] rounded-xl group-hover:scale-110 transition-transform">
+              <Icon name="chat" className="w-5 h-5" />
+            </span>
+            <span className="text-[10px] font-mono text-[#FF2D87] font-bold">LIVE</span>
           </div>
+          <h3 className="font-black text-white font-display text-base">The Tribe Wall</h3>
+          <p className="text-white/50 text-xs mt-1">Pin your dreams & graduation ambitions</p>
         </Link>
       </div>
 
-      {/* Activities Feed */}
-      <div className="space-y-4">
+      {/* Official 9-Segment Schedule Timeline */}
+      <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-black text-white font-display">All Event Activities</h2>
-            <p className="text-white/50 text-xs mt-0.5">Participate across all 8 stages to maximize your team&apos;s total points</p>
+            <span className="text-[10px] font-mono text-[#FFE600] uppercase tracking-widest font-black block">
+              OFFICIAL EVENT FLOW
+            </span>
+            <h2 className="text-xl sm:text-2xl font-black text-white font-display mt-0.5">
+              Today's Itinerary (9:30 AM – 3:30 PM)
+            </h2>
           </div>
-          <Link href="/dashboard/play" className="text-xs text-[#FFE600] font-bold font-display hover:underline">
-            View All Stages (8)
+          <Link
+            href="/dashboard/event"
+            className="text-xs text-[#FFE600] font-bold font-display hover:underline flex items-center gap-1"
+          >
+            <span>Full Guide</span>
+            <span>→</span>
           </Link>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {OFFICIAL_ITINERARY.map((seg, idx) => (
+            <div
+              key={idx}
+              className="p-4 bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/20 rounded-2xl transition-all"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-mono font-bold text-[#00FFD1] bg-[#00FFD1]/10 px-2 py-0.5 rounded-md">
+                  {seg.time}
+                </span>
+                <span className="text-[10px] font-mono text-white/30 font-bold">
+                  #{String(idx + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h4 className="text-sm font-black text-white font-display">{seg.name}</h4>
+              <p className="text-[11px] text-white/50 mt-0.5 leading-relaxed">{seg.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Join In */}
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-black text-white font-display">Join In</h2>
+          <p className="text-white/50 text-xs mt-0.5">Open to every participant when the stage goes live</p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {STAGE_META.map((act, i) => {
+          {JOIN_IN.map((act) => {
             const status = stageStatuses[act.slug] ?? 'locked'
             return (
               <Link
                 key={act.slug}
-                href={`/dashboard/play/${act.slug}`}
+                href={act.href}
                 className="p-5 bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-[#FFE600]/40 rounded-2xl transition-all flex items-start gap-4 group"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-mono text-white/40 font-bold">STAGE 0{i + 1}</span>
                     <span className={`px-2 py-0.5 text-[10px] font-black rounded-full uppercase ${
-                      status === 'live' ? 'bg-green-500/20 text-green-400' : status === 'completed' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-400'
+                      status === 'live' ? 'bg-green-500/20 text-green-400' : status === 'completed' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-white/10 text-white/50'
                     }`}>
-                      {status === 'live' ? 'live' : status === 'completed' ? 'done' : 'locked'}
+                      {status === 'live' ? 'live' : status === 'completed' ? 'done' : 'upcoming'}
                     </span>
-                    <span className="text-xs text-[#FFE600] font-mono font-bold ml-auto">+{act.points} PTS</span>
                   </div>
                   <h3 className="text-lg font-black text-white font-display truncate group-hover:text-[#FFE600] transition-colors">{act.name}</h3>
-                  <p className="text-white/50 text-xs line-clamp-2 mt-0.5">{act.description}</p>
+                  <p className="text-white/50 text-xs line-clamp-2 mt-0.5">{act.desc}</p>
                 </div>
               </Link>
             )

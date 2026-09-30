@@ -9,12 +9,13 @@ import TopNav from '@/components/eventflow/TopNav'
 import Journey from '@/components/eventflow/Journey'
 import InaugurationSection from '@/components/eventflow/InaugurationSection'
 import BriefsSection from '@/components/eventflow/BriefsSection'
+import TalentHuntSection from '@/components/eventflow/TalentHuntSection'
 import PlaygroundSection from '@/components/eventflow/PlaygroundSection'
-import DetectiveSection from '@/components/eventflow/DetectiveSection'
 import LunchSection from '@/components/eventflow/LunchSection'
+import PlaygroundContinuousSection from '@/components/eventflow/PlaygroundContinuousSection'
 import JamSection from '@/components/eventflow/JamSection'
-import WallSection from '@/components/eventflow/WallSection'
 import RevealSection from '@/components/eventflow/RevealSection'
+import WallSection from '@/components/eventflow/WallSection'
 
 export default function EventFlowPage() {
   const [stageStatuses, setStageStatuses] = useState<Record<string, string>>({})
@@ -61,11 +62,11 @@ export default function EventFlowPage() {
           </h1>
           <p className="hero-tagline">ONE TRIBE.<br/>ONE EXPERIENCE.<br/>ONE JOURNEY.</p>
           <div className="hero-stats">
-            <div className="hero-stat"><span className="stat-num">100</span><span className="stat-label">Participants</span></div>
+            <div className="hero-stat"><span className="stat-num">100+</span><span className="stat-label">Students</span></div>
             <span className="stat-dot">·</span>
-            <div className="hero-stat"><span className="stat-num">20</span><span className="stat-label">Teams</span></div>
+            <div className="hero-stat"><span className="stat-num">9</span><span className="stat-label">Stages</span></div>
             <span className="stat-dot">·</span>
-            <div className="hero-stat"><span className="stat-num">5</span><span className="stat-label">Members</span></div>
+            <div className="hero-stat"><span className="stat-num">1</span><span className="stat-label">Tribe</span></div>
           </div>
           <div className="hero-actions">
             <a href="#journey" className="hero-cta-secondary">Begin The Journey ↓</a>
@@ -76,14 +77,16 @@ export default function EventFlowPage() {
 
       <Journey stageStatuses={stageStatuses} />
 
+      {/* 9 ITINERARY SECTIONS */}
       <InaugurationSection />
       <BriefsSection />
+      <TalentHuntSection status={stageStatuses['talent-hunt'] ?? 'locked'} />
       <PlaygroundSection status={stageStatuses.playground ?? 'locked'} />
-      <DetectiveSection />
       <LunchSection status={stageStatuses.lunch ?? 'locked'} />
+      <PlaygroundContinuousSection status={stageStatuses['playground-continuous'] ?? 'locked'} />
       <JamSection />
-      <WallSection />
       <RevealSection status={stageStatuses.reveal ?? 'locked'} />
+      <WallSection />
 
       <footer className="footer">
         <div className="footer-wavy"></div>
@@ -92,7 +95,7 @@ export default function EventFlowPage() {
             <span className="fl-st">st.</span>
             <span className="fl-txt">Student Tribe</span>
           </div>
-          <p className="footer-tag">Event Operating Screen — TRIBEVERSE V1</p>
+          <p className="footer-tag">Event Operating Screen · TRIBEVERSE V1</p>
         </div>
       </footer>
     </div>

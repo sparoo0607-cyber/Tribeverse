@@ -4,13 +4,13 @@ import StageGuard from '@/components/StageGuard'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import type { Round, TeamMember } from '@/lib/types'
+import type { Round } from '@/lib/types'
 
 const ROUND_COLORS = ['#FFE600', '#FF6B1A', '#FF2D87', '#00FFD1', '#7B2FFF']
 
 export default function PlaygroundPage() {
  const [rounds, setRounds] = useState<Round[]>([])
- const [membership, setMembership] = useState<TeamMember|null>(null)
+ const [assignedRound, setAssignedRound] = useState<number|null>(null)
  const [userId, setUserId] = useState<string|null>(null)
  const supabase = createClient()
 
@@ -24,13 +24,12 @@ export default function PlaygroundPage() {
  const {data:r} = await supabase.from('rounds').select('*').eq('activity_id',act.id).order('round_number')
  setRounds(r??[])
  }
- const {data:m} = await supabase.from('team_members').select('*').eq('user_id',user.id).single()
- setMembership(m)
+ const {data:p} = await supabase.from('profiles').select('assigned_round').eq('id',user.id).single()
+ setAssignedRound(p?.assigned_round ?? null)
  }
  load()
  },[])
 
- const assignedRound = membership?.assigned_round
 
  return (
  <StageGuard slug="playground" title="Tribe Playground" stageNumber="01" points={500}>
@@ -87,10 +86,10 @@ export default function PlaygroundPage() {
  <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-5">
  <h3 className="font-black text-white text-sm font-display mb-2">How It Works</h3>
  <ul className="space-y-1 text-white/50 text-sm">
- <li>• Each team member is assigned one specific round</li>
+ <li>• Each participant is assigned one specific round</li>
  <li>• Only your assigned round will be playable by you</li>
  <li>• Wait for the admin to unlock your round</li>
- <li>• Complete your round to earn points for your team</li>
+ <li>• Complete your round and enjoy the game</li>
  </ul>
  </div>
  </div>

@@ -2,10 +2,10 @@
 import { useState } from 'react'
 
 const LOGS = [
- { id: 1, team: 'Team Titans', action: 'Solved Detective Clue #2', pts: '+200', time: '2 mins ago'},
- { id: 2, team: 'Team Phoenix', action: 'Completed Think Fast Round', pts: '+350', time: '4 mins ago'},
- { id: 3, team: 'Team Cyber', action: 'Speed Tapper High Score', pts: '+180', time: '7 mins ago'},
- { id: 4, team: 'Team Apex', action: 'Admin Manual Award', pts: '+100', time: '12 mins ago'},
+ { id: 1, who: 'Rohan Varma', action: 'Solved Detective Clue #2', pts: '+200', time: '2 mins ago'},
+ { id: 2, who: 'Kavya Reddy', action: 'Completed Think Fast Round', pts: '+350', time: '4 mins ago'},
+ { id: 3, who: 'Nikhil Verma', action: 'Speed Tapper High Score', pts: '+180', time: '7 mins ago'},
+ { id: 4, who: 'Pooja Nair', action: 'Admin Manual Award', pts: '+100', time: '12 mins ago'},
 ]
 
 export default function AdminScoresPage() {
@@ -24,7 +24,7 @@ export default function AdminScoresPage() {
  <div className="flex items-center gap-3">
  <span className="w-2 h-2 rounded-full bg-[#FFE600] animate-ping"/>
  <div>
- <p className="font-bold text-white font-display text-sm">{log.team}</p>
+ <p className="font-bold text-white font-display text-sm">{log.who}</p>
  <p className="text-white/40 text-xs">{log.action}</p>
  </div>
  </div>

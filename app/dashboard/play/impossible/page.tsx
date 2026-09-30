@@ -100,7 +100,7 @@ export default function ImpossibleChallengePage() {
  <span className="text-6xl block"></span>
  <h2 className="text-2xl md:text-3xl font-black text-white font-display">Ready for the 100-Second Trial?</h2>
  <p className="text-white/60 text-sm max-w-lg mx-auto">
- Once you press Start, your 100-second timer begins immediately. Coordinate with your team and lock in the right logical answers!
+ Once you press Start, your 100-second timer begins immediately. Lock in the right logical answers!
  </p>
  <button
  onClick={startChallenge}

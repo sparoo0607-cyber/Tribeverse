@@ -12,7 +12,6 @@ export default function ReactionGame() {
  const [reactionTime, setReactionTime] = useState<number|null>(null)
  const [scores, setScores] = useState<number[]>([])
  const [roundId, setRoundId] = useState<string|null>(null)
- const [teamId, setTeamId] = useState<string|null>(null)
  const [userId, setUserId] = useState<string|null>(null)
  const startRef = useRef<number>(0)
  const timerRef = useRef<NodeJS.Timeout|null>(null)
@@ -25,8 +24,6 @@ export default function ReactionGame() {
  const {data:{user}} = await supabase.auth.getUser()
  if (!user) return
  setUserId(user.id)
- const {data:m} = await supabase.from('team_members').select('team_id').eq('user_id',user.id).single()
- setTeamId(m?.team_id??null)
  const {data:act} = await supabase.from('activities').select('id').eq('slug', 'playground').single()
  if (!act) return
  const {data:r} = await supabase.from('rounds').select('id').eq('activity_id',act.id).eq('slug', 'reaction-game').single()
@@ -74,13 +71,13 @@ export default function ReactionGame() {
  async function finishGame(finalScores: number[]) {
  setState('finished')
  const total = finalScores.reduce((a,b)=>a+b,0)
- if (userId && teamId && roundId) {
+ if (userId && roundId) {
  await supabase.from('game_attempts').insert({
- user_id: userId, team_id: teamId, round_id: roundId,
+ user_id: userId, round_id: roundId,
  is_correct: true, score_earned: total,
  attempt_data: { scores: finalScores, reaction_times: finalScores }
  })
- await supabase.rpc('refresh_team_score', { p_team_id: teamId })
+ await supabase.rpc('add_user_points', { p_user_id: userId, p_points: total })
  }
  }
 

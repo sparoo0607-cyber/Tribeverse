@@ -61,18 +61,11 @@ export async function POST(request: Request) {
       })
     }
 
-    // 3. Return updated profile + team details
-    const { data: membership } = await supabaseAdmin
-      .from('team_members')
-      .select('assigned_round, team:teams(*)')
-      .eq('user_id', profile.id)
-      .maybeSingle()
-
+    // 3. Return updated profile
     const updatedProfile = {
       ...profile,
       tag_issued: tagIssued,
       tag_issued_at: timestamp,
-      membership,
     }
 
     return NextResponse.json({
@@ -109,7 +102,7 @@ export async function GET(request: Request) {
     // Search by student_id or full_name or phone or id
     const { data: profiles, error } = await supabaseAdmin
       .from('profiles')
-      .select('*, team_members(assigned_round, team:teams(name, team_number, color))')
+      .select('*')
       .or(`student_id.ilike.%${queryStr}%,full_name.ilike.%${queryStr}%,phone.ilike.%${queryStr}%,id.eq.${queryStr.length === 36 ? queryStr : '00000000-0000-0000-0000-000000000000'}`)
       .limit(10)
 

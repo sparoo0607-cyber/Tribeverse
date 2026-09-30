@@ -160,7 +160,7 @@ export default function QuickEyesAdminPage() {
           <div className="space-y-3">
             <div className="p-4 bg-[#FFE600]/10 border border-[#FFE600]/30 rounded-xl text-center">
               <p className="text-xs text-white/50 uppercase font-display font-bold">Winner</p>
-              <p className="text-2xl font-black text-[#FFE600] font-display">{state.winnerTeamName ?? 'No correct answers'}</p>
+              <p className="text-2xl font-black text-[#FFE600] font-display">{state.winnerName ?? 'No correct answers'}</p>
             </div>
             <button
               disabled={busy}
@@ -190,7 +190,7 @@ export default function QuickEyesAdminPage() {
               <div key={a.id} className="flex items-center justify-between py-2 text-sm">
                 <div>
                   <span className="font-bold text-white">{a.full_name}</span>
-                  <span className="text-white/40 text-xs ml-2">{a.team_name}</span>
+                  
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-xs text-white/50">{a.time_taken_ms != null ? `${(a.time_taken_ms / 1000).toFixed(2)}s` : ''}</span>

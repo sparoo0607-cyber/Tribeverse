@@ -34,7 +34,6 @@ function useCountdown(phaseStartedAt: string | null, durationSeconds: number, ac
 function QuickEyesGame() {
   const [state, setState] = useState<QERoundState | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
-  const [teamId, setTeamId] = useState<string | null>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [wasCorrect, setWasCorrect] = useState<boolean | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -48,9 +47,6 @@ function QuickEyesGame() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       if (!cancelled) setUserId(user.id)
-
-      const { data: membership } = await supabase.from('team_members').select('team_id').eq('user_id', user.id).maybeSingle()
-      if (!cancelled) setTeamId(membership?.team_id ?? null)
 
       const s = await fetchQuickEyesState()
       if (cancelled || !s) return
@@ -76,7 +72,7 @@ function QuickEyesGame() {
   const remaining = useCountdown(state?.phaseStartedAt ?? null, state?.durationSeconds ?? 15, state?.phase === 'timer' || state?.phase === 'question')
 
   async function handleSubmit(optionLabel: string) {
-    if (!state?.question || !userId || !teamId || selected || submitting) return
+    if (!state?.question || !userId || selected || submitting) return
     setSubmitting(true)
     const startedAt = state.phaseStartedAt ? new Date(state.phaseStartedAt).getTime() : Date.now()
     const timeTakenMs = Date.now() - startedAt
@@ -85,7 +81,6 @@ function QuickEyesGame() {
       roundId: state.roundId,
       questionId: state.question.id,
       userId,
-      teamId,
       selectedOption: optionLabel,
       correctOption: state.question.correct_option,
       points: state.question.points,
@@ -161,16 +156,16 @@ function QuickEyesGame() {
           </div>
 
           {selected && state.phase !== 'revealed' && (
-            <p className="text-white/50 text-sm font-display inline-flex items-center gap-1">Answer Submitted <Icon name="check" /> — waiting for host to reveal…</p>
+            <p className="text-white/50 text-sm font-display inline-flex items-center gap-1">Answer Submitted <Icon name="check" /> · waiting for host to reveal…</p>
           )}
 
           {state.phase === 'revealed' && (
             <div className={`p-6 rounded-2xl border ${wasCorrect ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
               <p className={`font-black text-2xl font-display ${wasCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                {selected == null ? "Time's up!" : wasCorrect ? `CORRECT! +${state.question.points}` : 'Wrong — 0 pts'}
+                {selected == null ? "Time's up!" : wasCorrect ? `CORRECT! +${state.question.points}` : 'Wrong (0 pts)'}
               </p>
-              {state.winnerTeamName && (
-                <p className="text-white/60 text-sm mt-2">Champion: <strong className="text-white">{state.winnerTeamName}</strong></p>
+              {state.winnerName && (
+                <p className="text-white/60 text-sm mt-2">Champion: <strong className="text-white">{state.winnerName}</strong></p>
               )}
             </div>
           )}

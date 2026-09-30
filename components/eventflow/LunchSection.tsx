@@ -19,9 +19,9 @@ export default function LunchSection({ status }: { status: string }) {
       <StageRow
         num="05"
         color="orange"
-        title="Lunch / Free Tribe Time"
-        desc="Eat. Talk. Meet someone new. Your tribe isn't just the people you came with."
-        sideNote="Take A Breath, Meet New People, Explore Vibe"
+        title="Lunch Break"
+        desc="12:00 – 1:00 PM · Break for lunch, relaxation and informal interaction among participants."
+        sideNote="Recharge. Connect. Good Food"
         sideIcon={<Icon name="pizza" />}
       >
         <div className="efb-card-head"><Icon name="coffee" /> Break Time</div>

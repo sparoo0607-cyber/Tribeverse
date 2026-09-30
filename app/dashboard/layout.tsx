@@ -5,24 +5,20 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import LiveBroadcastBanner from '@/components/LiveBroadcastBanner'
-import type { Profile, Team, TeamMember } from '@/lib/types'
+import type { Profile } from '@/lib/types'
 import Icon, { IconName } from '@/components/icons/Icon'
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/dashboard', label: 'Home', icon: 'home' },
   { href: '/dashboard/pass', label: 'Event Pass', icon: 'ticket' },
   { href: '/dashboard/event', label: 'Event Guide', icon: 'book' },
-  { href: '/dashboard/play', label: 'Play Arena', icon: 'game-controller' },
-  { href: '/dashboard/bonus/cipher-hunt', label: 'Bonus: Cipher Hunt', icon: 'search' },
-  { href: '/dashboard/leaderboard', label: 'Leaderboard', icon: 'trophy' },
+  { href: '/dashboard/play', label: 'Play', icon: 'game-controller' },
   { href: '/dashboard/wall', label: 'Tribe Wall', icon: 'chat' },
   { href: '/dashboard/profile', label: 'My Profile', icon: 'user' },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
  const [profile, setProfile] = useState<Profile | null>(null)
- const [team, setTeam] = useState<Team | null>(null)
- const [membership, setMembership] = useState<TeamMember | null>(null)
  const [sidebarOpen, setSidebarOpen] = useState(false)
  const pathname = usePathname()
  const router = useRouter()
@@ -34,21 +30,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  if (!user) {
  // Fallback for demo preview
  setProfile({ id: 'demo-student', full_name: 'Rohan Varma', role: 'student', created_at: new Date().toISOString() })
- setTeam({ id: 'demo-team', name: 'Team Titans', team_number: 1, color: '#1A6FFF', total_score: 920, created_at: new Date().toISOString() })
- setMembership({ id: 'demo-mem', team_id: 'demo-team', user_id: 'demo-student', assigned_round: 3, joined_at: new Date().toISOString() })
  return
  }
 
  const { data: p } = await supabase.from('profiles').select('*').eq('id', user.id).single()
  setProfile(p ?? { id: user.id, full_name: user.email?.split('@')[0] ?? 'Student', role: 'student', created_at: new Date().toISOString() })
 
- const { data: m } = await supabase
- .from('team_members')
- .select('*, team:teams(*)')
- .eq('user_id', user.id)
- .single()
- setMembership(m)
- setTeam(m?.team ?? { id: 'team-1', name: 'Team Titans', team_number: 1, color: '#1A6FFF', total_score: 920, created_at: new Date().toISOString() })
  }
  load()
  }, [])
@@ -77,13 +64,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  <span className="font-black text-3xl text-[#FFE600] font-display">st.</span>
  <span className="font-bold text-xs tracking-widest text-white/60 uppercase font-display">TRIBEVERSE V1</span>
  </Link>
- {team && (
- <div className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-xl border border-white/10">
- <div className="w-4 h-4 rounded-full" style={{ background: team.color }} />
- <span className="text-xs font-bold text-white truncate font-display">{team.name}</span>
- <span className="text-[10px] text-[#FFE600] font-mono ml-auto font-bold">{team.total_score}p</span>
+ <div className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-[#FFE600]/10 rounded-xl border border-[#FFE600]/20">
+ <div className="w-2.5 h-2.5 rounded-full bg-[#00FFD1] animate-pulse" />
+ <span className="text-[11px] font-bold text-white truncate font-display">Official Participant</span>
+ <span className="text-[10px] text-[#FFE600] font-mono ml-auto font-bold">ANITS</span>
  </div>
- )}
  </div>
 
  {/* Nav */}
@@ -122,7 +107,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </div>
  <div className="min-w-0">
  <p className="font-bold text-white text-sm truncate font-display">{profile?.full_name ?? 'Student'}</p>
- <p className="text-white/40 text-xs truncate">Team Titans (#01)</p>
+ <p className="text-white/40 text-xs truncate">Student Tribe · Freshers V1</p>
  </div>
  </div>
  <button

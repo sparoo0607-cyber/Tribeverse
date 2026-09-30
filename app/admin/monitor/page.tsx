@@ -2,9 +2,9 @@
 import { useState } from 'react'
 
 const POSTS = [
- { id: 1, author: 'Alex (Team Titans)', content: 'We just cracked the main library riddle! Let us go!!', time: '5m ago', status: 'approved'},
- { id: 2, author: 'Priya (Team Apex)', content: 'Best freshers event ever! Student Tribe rocks', time: '8m ago', status: 'approved'},
- { id: 3, author: 'Rahul (Team Cyber)', content: 'Where is the lunch counter guys?', time: '12m ago', status: 'pending'},
+ { id: 1, author: 'Alex', content: 'We just cracked the main library riddle! Let us go!!', time: '5m ago', status: 'approved'},
+ { id: 2, author: 'Priya', content: 'Best freshers event ever! Student Tribe rocks', time: '8m ago', status: 'approved'},
+ { id: 3, author: 'Rahul', content: 'Where is the lunch counter guys?', time: '12m ago', status: 'pending'},
 ]
 
 export default function AdminMonitorPage() {

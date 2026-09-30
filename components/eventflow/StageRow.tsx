@@ -12,7 +12,7 @@ export default function StageRow({
   children,
 }: {
   num: string
-  color: 'pink' | 'blue' | 'yellow' | 'purple' | 'orange' | 'red' | 'teal' | 'dark'
+  color: 'pink' | 'blue' | 'yellow' | 'purple' | 'orange' | 'green' | 'red' | 'teal' | 'dark'
   title: string
   desc: string
   sideNote?: string

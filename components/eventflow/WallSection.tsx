@@ -24,10 +24,10 @@ export default function WallSection() {
   return (
     <div className="ef-anchor" id="wall">
       <StageRow
-        num="07"
+        num="09"
         color="teal"
         title="The Tribe Wall"
-        desc={`"Before I graduate, I want to..."`}
+        desc="3:20 – 3:30 PM · Participants share a goal, thought or aspiration as a collective closing activity."
         sideNote={`${approved.length} Dreams. One Tribe`}
         sideIcon={<Icon name="crown" />}
       >
@@ -54,7 +54,7 @@ export default function WallSection() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
               {pending.map((p) => (
                 <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: '0.6rem 0.9rem' }}>
-                  <span style={{ color: '#fff', fontSize: '0.8rem' }}>{p.content} <span style={{ color: 'rgba(255,255,255,0.35)' }}>— {p.authorName}</span></span>
+                  <span style={{ color: '#fff', fontSize: '0.8rem' }}>{p.content} <span style={{ color: 'rgba(255,255,255,0.35)' }}>· {p.authorName}</span></span>
                   <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
                     <button className="ef-btn ef-btn-live" style={{ padding: '4px 12px' }} onClick={() => approvePost(p.id)}>Approve</button>
                     <button className="ef-btn ef-btn-danger" style={{ padding: '4px 12px' }} onClick={() => hidePost(p.id)}>Hide</button>

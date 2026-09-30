@@ -179,20 +179,25 @@ export interface TeamWithMembers {
   members: Teammate[]
 }
 
+// Detective circles: internal groups of participants who guess each other's
+// roles. They are never shown as teams and carry no score of their own.
 export async function fetchTeamsWithMembers(): Promise<TeamWithMembers[]> {
   const supabase = createClient()
-  const { data: teams } = await supabase.from('teams').select('id, name, team_number').order('team_number')
   const { data: members } = await supabase.from('team_members').select('user_id, team_id, profile:profiles(full_name)')
 
-  return (teams ?? []).map((t) => ({
-    teamId: t.id,
-    teamName: `${t.name} (#${String(t.team_number).padStart(2, '0')})`,
-    members: ((members ?? []) as ProfileJoinRow[])
-      .filter((m) => m.team_id === t.id)
-      .map((m) => {
-        const profile = Array.isArray(m.profile) ? m.profile[0] : m.profile
-        return { userId: m.user_id, fullName: profile?.full_name ?? 'Participant' }
-      }),
+  const byCircle = new Map<string, Teammate[]>()
+  for (const m of (members ?? []) as ProfileJoinRow[]) {
+    if (!m.team_id) continue
+    const profile = Array.isArray(m.profile) ? m.profile[0] : m.profile
+    const list = byCircle.get(m.team_id) ?? []
+    list.push({ userId: m.user_id, fullName: profile?.full_name ?? 'Participant' })
+    byCircle.set(m.team_id, list)
+  }
+
+  return Array.from(byCircle.entries()).map(([id, list], i) => ({
+    teamId: id,
+    teamName: `Circle ${String(i + 1).padStart(2, '0')}`,
+    members: list,
   }))
 }
 
@@ -250,7 +255,7 @@ export async function fetchGuessProgress(roundId: string): Promise<{ submitted: 
   return { submitted: submitted ?? 0, expected }
 }
 
-// Score every guess against the real assignment, award team points, and
+// Score every guess against the real assignment, award each guesser individually, and
 // flip the round to revealed/completed.
 export async function revealDetectiveRound(roundId: string) {
   const supabase = createClient()
@@ -261,20 +266,19 @@ export async function revealDetectiveRound(roundId: string) {
   const { data: assignments } = await supabase.from('detective_assignments').select('user_id, secret_role').eq('round_id', roundId)
   const roleByUser = Object.fromEntries((assignments ?? []).map((a) => [a.user_id, a.secret_role]))
 
-  const { data: guesses } = await supabase.from('detective_guesses').select('id, target_user_id, guessed_role, team_id').eq('round_id', roundId)
+  const { data: guesses } = await supabase.from('detective_guesses').select('id, guesser_user_id, target_user_id, guessed_role').eq('round_id', roundId)
 
-  const teamPoints: Record<string, number> = {}
+  const userPoints: Record<string, number> = {}
   for (const g of guesses ?? []) {
     const actual = roleByUser[g.target_user_id]
     const isCorrect = !!actual && actual === g.guessed_role
     const pointsAwarded = isCorrect ? pointsPerCorrect : 0
     await supabase.from('detective_guesses').update({ is_correct: isCorrect, points_awarded: pointsAwarded }).eq('id', g.id)
-    if (isCorrect) teamPoints[g.team_id] = (teamPoints[g.team_id] ?? 0) + pointsAwarded
+    if (isCorrect) userPoints[g.guesser_user_id] = (userPoints[g.guesser_user_id] ?? 0) + pointsAwarded
   }
 
-  for (const [teamId, pts] of Object.entries(teamPoints)) {
-    const { data: team } = await supabase.from('teams').select('total_score').eq('id', teamId).single()
-    if (team) await supabase.from('teams').update({ total_score: (team.total_score ?? 0) + pts }).eq('id', teamId)
+  for (const [userId, pts] of Object.entries(userPoints)) {
+    await supabase.rpc('add_user_points', { p_user_id: userId, p_points: pts })
   }
 
   await supabase.from('rounds').update({ phase: 'revealed', status: 'completed' }).eq('id', roundId)

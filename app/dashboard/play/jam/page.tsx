@@ -132,49 +132,49 @@ export default function TribeJamPage() {
             </div>
           </div>
 
-          {/* Right Column: The 3 Exact Information Cards from index.html */}
+          {/* Right Column: Information Cards */}
           <div className="lg:col-span-6 space-y-4">
-            {/* Card 1: Performance Round */}
+            {/* Card 1: Live Keyboard & Instrumental Jam */}
             <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FFE600]/40 rounded-2xl transition-all group">
               <span className="p-3 bg-[#FFE600]/10 border border-[#FFE600]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FFE600]">
-                <Icon name="mic" className="w-7 h-7" />
-              </span>
-              <div>
-                <strong className="block text-lg font-black text-[#FFE600] font-display mb-1">
-                  Performance Round
-                </strong>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Sing, rap, beatbox, hum — any expression of music counts here.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 2: Team Vibe */}
-            <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF6B1A]/40 rounded-2xl transition-all group">
-              <span className="p-3 bg-[#FF6B1A]/10 border border-[#FF6B1A]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF6B1A]">
-                <Icon name="guitar" className="w-7 h-7" />
-              </span>
-              <div>
-                <strong className="block text-lg font-black text-[#FF6B1A] font-display mb-1">
-                  Team Vibe
-                </strong>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Your team's musical energy becomes your biggest advantage. Feel it together.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3: Music is Tribe Language */}
-            <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF2D87]/40 rounded-2xl transition-all group">
-              <span className="p-3 bg-[#FF2D87]/10 border border-[#FF2D87]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF2D87]">
                 <Icon name="music-notes" className="w-7 h-7" />
               </span>
               <div>
-                <strong className="block text-lg font-black text-[#FF2D87] font-display mb-1">
-                  Music is Tribe Language
+                <strong className="block text-lg font-black text-[#FFE600] font-display mb-1">
+                  Live Keyboard & Instrumental Jam
                 </strong>
                 <p className="text-white/60 text-sm leading-relaxed">
-                  No perfect pitch required. Just passion, rhythm, and your authentic self.
+                  Live keyboard playing leads the session, laying down chords and rhythms for everyone to join in.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: Singing, Rap & Beatbox */}
+            <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF6B1A]/40 rounded-2xl transition-all group">
+              <span className="p-3 bg-[#FF6B1A]/10 border border-[#FF6B1A]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF6B1A]">
+                <Icon name="mic" className="w-7 h-7" />
+              </span>
+              <div>
+                <strong className="block text-lg font-black text-[#FF6B1A] font-display mb-1">
+                  Singing, Rap & Beatbox
+                </strong>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Sing, rap, beatbox, hum: any vocal expression counts. Take the mic or harmonize with the crowd.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3: Dance & Pure Jam Vibe */}
+            <div className="flex items-start gap-4 p-5 bg-white/[0.04] border border-white/10 hover:border-[#FF2D87]/40 rounded-2xl transition-all group">
+              <span className="p-3 bg-[#FF2D87]/10 border border-[#FF2D87]/20 rounded-xl group-hover:scale-110 transition-transform text-[#FF2D87]">
+                <Icon name="guitar" className="w-7 h-7" />
+              </span>
+              <div>
+                <strong className="block text-lg font-black text-[#FF2D87] font-display mb-1">
+                  Dance & Pure Jam Vibe
+                </strong>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Dance, movement, and freestyle rhythm. No perfect pitch or steps required, just authentic energy.
                 </p>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function TribeJamPage() {
                 Tribe Stage Performance Entry
               </h3>
               <p className="text-white/50 text-xs mt-1">
-                Register your team representative for the live TRIBE JAM stage round.
+                Register to perform in the live TRIBE JAM stage round.
               </p>
             </div>
             <span className="px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/30 text-xs font-black rounded-full font-display uppercase tracking-wider self-start sm:self-auto">

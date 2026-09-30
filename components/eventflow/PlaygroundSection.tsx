@@ -28,10 +28,10 @@ export default function PlaygroundSection({ status }: { status: string }) {
   return (
     <div className="ef-anchor" id="playground">
       <StageRow
-        num="03"
+        num="04"
         color="yellow"
         title="Tribe Playground"
-        desc="Play. Think. Create. React. Five rounds. Five abilities."
+        desc="11:00 AM – 12:00 PM · Interactive team activities focused on participation, creativity and quick thinking."
         sideNote="Play. Learn. Connect"
         sideIcon={<Icon name="smiley" />}
       >

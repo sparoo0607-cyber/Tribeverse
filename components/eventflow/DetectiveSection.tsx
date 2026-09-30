@@ -88,7 +88,7 @@ export default function DetectiveSection() {
 
         {open && round && (
           <div className="efb-detail">
-            <p className="efb-round-label">{round.name} — Status: {round.status} · Phase: {round.phase} · Guesses: {progress.submitted}/{progress.expected}</p>
+            <p className="efb-round-label">{round.name} · Status: {round.status} · Phase: {round.phase} · Guesses: {progress.submitted}/{progress.expected}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
               <button className="ef-btn ef-btn-primary" disabled={busy || round.phase === 'revealed'} onClick={advance}>
                 {round.status === 'locked' ? 'Start Round →' : round.phase === 'scenario' ? 'Open Guessing' : round.phase === 'guessing_open' ? 'Close Guessing' : round.phase === 'guessing_closed' ? 'Reveal & Award' : 'Revealed'}

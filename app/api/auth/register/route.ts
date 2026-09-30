@@ -66,6 +66,7 @@ export async function POST(request: Request) {
           section: section || '',
           tag_issued: false,
           role: role,
+          assigned_round: Math.floor(1 + Math.random() * 5),
         })
       } catch (e) {
         // Fallback for base profile if custom columns aren't migrated yet
@@ -75,17 +76,6 @@ export async function POST(request: Request) {
           student_id: studentId,
           role: role,
         })
-      }
-
-      // 3. Assign to a team if teams exist
-      const { data: teams } = await supabaseAdmin.from('teams').select('id, name, team_number').order('team_number')
-      if (teams && teams.length > 0) {
-        const pickedTeam = teams[Math.floor(Math.random() * teams.length)]
-        await supabaseAdmin.from('team_members').upsert({
-          team_id: pickedTeam.id,
-          user_id: user.id,
-          assigned_round: Math.floor(1 + Math.random() * 5),
-        }, { onConflict: 'user_id' })
       }
     }
 

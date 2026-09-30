@@ -20,7 +20,6 @@ export default function EventControlLayout({ children }: { children: React.React
   const [name, setName] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [stageStatuses, setStageStatuses] = useState<Record<string, string>>({})
-  const [teamCount, setTeamCount] = useState(20)
   const [studentCount, setStudentCount] = useState(100)
   const pathname = usePathname()
   const router = useRouter()
@@ -42,9 +41,7 @@ export default function EventControlLayout({ children }: { children: React.React
     const unsub = subscribeToStageChanges(loadStages)
 
     async function loadCounts() {
-      const { count: teams } = await supabase.from('teams').select('*', { count: 'exact', head: true })
       const { count: students } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
-      if (teams) setTeamCount(teams)
       if (students) setStudentCount(students)
     }
     loadCounts()
@@ -122,10 +119,6 @@ export default function EventControlLayout({ children }: { children: React.React
             <div className="flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3">
               <span className="text-white/50 text-xs font-display">Participants</span>
               <span className="text-white font-black font-mono">{studentCount}</span>
-            </div>
-            <div className="flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3">
-              <span className="text-white/50 text-xs font-display">Teams</span>
-              <span className="text-white font-black font-mono">{teamCount}</span>
             </div>
             <div className="flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3">
               <span className="text-white/50 text-xs font-display">Current Stage</span>

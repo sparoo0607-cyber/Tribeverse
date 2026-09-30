@@ -167,7 +167,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                   >
                     <img
                       src={member.backAvatarUrl}
-                      alt={`${member.name} — ID back`}
+                      alt={`${member.name} ID back`}
                       className="w-full h-full object-cover object-top shadow-xl"
                     />
                   </div>
@@ -214,16 +214,6 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
                 <Icon name="graduation-cap" />
                 <span>{member.branch}</span>
               </div>
-            </div>
-
-            {/* Bio Card */}
-            <div className="p-5 bg-white/[0.03] border border-white/10 rounded-2xl space-y-2">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#FFE600] block font-display">
-                Ambassador Profile & Experience
-              </span>
-              <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
-                {member.experience}
-              </p>
             </div>
 
             {/* ── INDIVIDUAL QR CODE BOX ── */}
@@ -276,7 +266,7 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
 
                     <button
                       onClick={handleDownloadQR}
-                      className="flex-1 py-2.5 px-4 bg-[#FFE600] hover:bg-[#FFE600]/90 text-black rounded-xl text-xs font-black font-display uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+                      className="flex-1 py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold font-display uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <Icon name="download" />
                       <span>Download QR</span>
@@ -327,7 +317,6 @@ export default function IndividualTeamMemberPage({ params }: PageProps) {
       <footer className="relative z-10 border-t border-white/10 py-8 text-center text-xs text-white/40">
         Student Tribe Presents TRIBEVERSE V1 · Empowering Students Across India
       </footer>
-
     </div>
   )
 }
