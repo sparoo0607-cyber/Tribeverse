@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { fetchStageStates, subscribeToStageChanges } from '@/lib/stageStore'
+import AdminBottomNav from '@/components/AdminBottomNav'
 import Icon, { IconName } from '@/components/icons/Icon'
 
 // /event-control (index) already lists and controls all 8 stages in one
@@ -17,7 +18,6 @@ const STAGES: { href: string; label: string; slug: string | null; icon: IconName
 
 export default function EventControlLayout({ children }: { children: React.ReactNode }) {
   const [name, setName] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [stageStatuses, setStageStatuses] = useState<Record<string, string>>({})
   const [studentCount, setStudentCount] = useState(100)
   const pathname = usePathname()
@@ -58,7 +58,7 @@ export default function EventControlLayout({ children }: { children: React.React
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex">
       {/* Left sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#050505] border-r border-white/[0.06] transform transition-transform duration-300 flex flex-col lg:sticky lg:top-0 lg:h-screen lg:shrink-0 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className="hidden lg:flex flex-col sticky top-0 h-screen shrink-0 w-64 bg-[#050505] border-r border-white/[0.06]">
         <div className="p-6 border-b border-white/[0.06]">
           <div className="flex items-baseline gap-2 mb-1">
             <span className="font-black text-3xl text-[#00FFD1] font-display">st.</span>
@@ -77,7 +77,6 @@ export default function EventControlLayout({ children }: { children: React.React
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    onClick={() => setSidebarOpen(false)}
                     className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all font-display ${active ? 'bg-[#00FFD1] text-black' : 'text-white/50 hover:text-white hover:bg-white/[0.06]'}`}
                   >
                     <span className="flex items-center gap-3"><Icon name={item.icon} className="w-5 h-5" />{item.label}</span>
@@ -99,17 +98,17 @@ export default function EventControlLayout({ children }: { children: React.React
         </div>
       </aside>
 
-      {sidebarOpen && <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />}
-
       {/* Main + right status panel */}
       <div className="flex-1 flex flex-col lg:flex-row min-w-0">
         <div className="flex-1 min-w-0">
           <header className="lg:hidden sticky top-0 z-30 bg-[#050505]/90 backdrop-blur border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
-            <button onClick={() => setSidebarOpen(true)} className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center text-white"><Icon name="menu" className="w-5 h-5" /></button>
-            <span className="font-black text-[#00FFD1] font-display">EVENT CONTROL</span>
-            <div className="w-9 h-9" />
+            <Link href="/event-control" className="flex items-baseline gap-2">
+              <span className="font-black text-2xl text-[#00FFD1] font-display">st.</span>
+              <span className="font-black text-sm tracking-widest text-white font-display">EVENT CONTROL</span>
+            </Link>
+            <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-[10px] font-black rounded-full font-display">● LIVE</span>
           </header>
-          <main className="p-6 lg:p-8">{children}</main>
+          <main className="p-4 sm:p-6 lg:p-8 pb-28 lg:pb-8">{children}</main>
         </div>
 
         <aside className="lg:w-72 shrink-0 border-t lg:border-t-0 lg:border-l border-white/[0.06] p-6 space-y-4">
@@ -137,6 +136,8 @@ export default function EventControlLayout({ children }: { children: React.React
           </Link>
         </aside>
       </div>
+
+      <AdminBottomNav />
     </div>
   )
 }
