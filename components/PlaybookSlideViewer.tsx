@@ -49,8 +49,8 @@ export default function PlaybookSlideViewer({
             <span className="font-display font-black text-xs uppercase tracking-widest text-white">
               ST Playbook Presentation
             </span>
-            <span className="hidden sm:inline-block text-white/30 text-xs">·</span>
-            <span className="hidden sm:inline-block text-white/60 font-mono text-xs">
+            <span className="hidden sm:inline-block text-white/60 text-xs">·</span>
+            <span className="hidden sm:inline-block text-white/90 font-mono text-xs">
               Slide {currentSlide + 1} of {TOTAL_SLIDES}
             </span>
           </div>
@@ -60,14 +60,14 @@ export default function PlaybookSlideViewer({
               href="/handbook/st-playbook.pdf"
               target="_blank"
               rel="noreferrer"
-              className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/15 rounded-lg text-white/70 hover:text-white text-xs font-display font-bold transition-colors inline-flex items-center gap-1"
+              className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/15 rounded-lg text-white/95 hover:text-white text-xs font-display font-bold transition-colors inline-flex items-center gap-1"
             >
               <span>Download PDF</span>
               <Icon name="download" className="w-3 h-3" />
             </a>
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
-              className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/15 rounded-lg text-white/70 hover:text-white text-xs font-display font-bold transition-colors"
+              className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/15 rounded-lg text-white/95 hover:text-white text-xs font-display font-bold transition-colors"
               title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
             >
               {isFullscreen ? 'Exit Fullscreen ✕' : 'Fullscreen ⛶'}

@@ -294,18 +294,18 @@ export default function LandingPage() {
         {/* 6 Divisions Summary Grid */}
         <div className="divisions-grid grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           <div className="bg-[#FF1A75] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-            <span className="font-display font-black text-lg text-[#FFE600] block">1. CAREERS</span>
-            <p className="text-xs text-white/90 font-medium mt-1">ST School skill development, upskilling, mentorship.</p>
+            <span className="font-display font-black text-lg text-white block [text-shadow:1px_1px_0_#000,2px_2px_0_#000]">1. CAREERS</span>
+            <p className="text-xs text-white font-semibold mt-1 [text-shadow:0_1px_1px_rgba(0,0,0,0.5)]">ST School skill development, upskilling, mentorship.</p>
           </div>
 
           <div className="bg-[#7B2FFF] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-            <span className="font-display font-black text-lg text-[#00FFD1] block">2. COMMERCE</span>
-            <p className="text-xs text-white/90 font-medium mt-1">Swiggy, Uber, Duolingo, SBI brand collaborations.</p>
+            <span className="font-display font-black text-lg text-white block [text-shadow:1px_1px_0_#000,2px_2px_0_#000]">2. COMMERCE</span>
+            <p className="text-xs text-white font-semibold mt-1 [text-shadow:0_1px_1px_rgba(0,0,0,0.5)]">Swiggy, Uber, Duolingo, SBI brand collaborations.</p>
           </div>
 
           <div className="bg-[#FF5500] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-            <span className="font-display font-black text-lg text-[#FFE600] block">3. COMMUNITY</span>
-            <p className="text-xs text-white/90 font-medium mt-1">Campus chapters, regional teams, active engagement.</p>
+            <span className="font-display font-black text-lg text-white block [text-shadow:1px_1px_0_#000,2px_2px_0_#000]">3. COMMUNITY</span>
+            <p className="text-xs text-white font-semibold mt-1 [text-shadow:0_1px_1px_rgba(0,0,0,0.5)]">Campus chapters, regional teams, active engagement.</p>
           </div>
 
           <div className="bg-[#FFE600] text-black p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
@@ -314,13 +314,13 @@ export default function LandingPage() {
           </div>
 
           <div className="bg-[#4F26E9] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-            <span className="font-display font-black text-lg text-[#D4FF00] block">5. CARE</span>
-            <p className="text-xs text-white/90 font-medium mt-1">Mental health, well-being sessions, safe listener spaces.</p>
+            <span className="font-display font-black text-lg text-white block [text-shadow:1px_1px_0_#000,2px_2px_0_#000]">5. CARE</span>
+            <p className="text-xs text-white font-semibold mt-1 [text-shadow:0_1px_1px_rgba(0,0,0,0.5)]">Mental health, well-being sessions, safe listener spaces.</p>
           </div>
 
           <div className="bg-[#FF2D55] p-5 rounded-2xl border-4 border-black shadow-[4px_4px_0px_#000]">
-            <span className="font-display font-black text-lg text-[#FFE600] block">6. CLOTHING</span>
-            <p className="text-xs text-white/90 font-medium mt-1">Beast collections, graphic streetwear &amp; design platform.</p>
+            <span className="font-display font-black text-lg text-white block [text-shadow:1px_1px_0_#000,2px_2px_0_#000]">6. CLOTHING</span>
+            <p className="text-xs text-white font-semibold mt-1 [text-shadow:0_1px_1px_rgba(0,0,0,0.5)]">Beast collections, graphic streetwear &amp; design platform.</p>
           </div>
         </div>
       </div>
@@ -492,7 +492,7 @@ export default function LandingPage() {
  <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-display">
  MEET THE <span className="text-[#FFE600]">TRIBE TEAM</span>
  </h2>
- <p className="text-white/60 text-xs sm:text-sm max-w-xl mx-auto">
+ <p className="text-white/85 text-xs sm:text-sm max-w-xl mx-auto">
  Official Student Tribe ambassadors leading the TRIBEVERSE experience at ANITS.
  </p>
  </div>
