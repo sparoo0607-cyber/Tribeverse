@@ -8,6 +8,15 @@ import type { Round } from '@/lib/types'
 
 const ROUND_COLORS = ['#FFE600', '#FF6B1A', '#FF2D87', '#00FFD1', '#7B2FFF']
 
+// Current round line-up shown to students (overrides older names stored in the database)
+const ROUND_LABELS: Record<number, { name: string; description: string }> = {
+  1: { name: 'Quick Eyes', description: 'Observe the picture and answer what you saw.' },
+  2: { name: 'Quick Draw', description: 'Draw the topic and let your team guess it.' },
+  3: { name: 'Think Fast', description: 'Logic and pattern questions against the clock.' },
+  4: { name: 'Sound Check', description: 'Listen closely and identify the sound.' },
+  5: { name: 'Memory Chain', description: 'Remember the items and recall the exact order.' },
+}
+
 export default function PlaygroundPage() {
  const [rounds, setRounds] = useState<Round[]>([])
  const [assignedRound, setAssignedRound] = useState<number|null>(null)
@@ -61,13 +70,15 @@ export default function PlaygroundPage() {
  <span className="text-2xl">{round.icon}</span>
  {isAssigned &&<span className="ml-auto text-xs font-black text-[#FFE600] font-display px-2 py-0.5 bg-[#FFE600]/10 rounded-full">YOUR ROUND</span>}
  </div>
- <h3 className="font-black text-white text-lg font-display mb-1">{round.name}</h3>
- <p className="text-white/50 text-sm mb-4">{round.description}</p>
+ <h3 className="font-black text-white text-lg font-display mb-1">{ROUND_LABELS[round.round_number]?.name ?? round.name}</h3>
+ <p className="text-white/50 text-sm mb-4">{ROUND_LABELS[round.round_number]?.description ?? round.description}</p>
  <div className="flex items-center justify-between">
  <span className={` text-xs font-bold px-2 py-1 rounded-full font-display ${isLive? 'bg-green-500/20 text-green-400':round.status==='completed'? 'bg-white/10 text-white/50': 'bg-white/5 text-white/30'}`}>
  {isLive? 'LIVE':round.status==='completed'? 'DONE': 'LOCKED'}
  </span>
- {canPlay ? (
+ {round.round_number === 5 ? (
+ <span className="text-white/40 text-xs font-bold font-display">Played on the main screen</span>
+ ) : canPlay ? (
  <Link href={`/dashboard/play/playground/${round.slug}`}
  className="bg-[#FFE600] text-black font-black text-xs px-4 py-2 rounded-xl font-display hover:bg-[#D4FF00] transition-colors">
  PLAY 

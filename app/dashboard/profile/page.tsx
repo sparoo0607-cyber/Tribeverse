@@ -9,9 +9,9 @@ import Icon from '@/components/icons/Icon'
 const ROUND_NAMES: Record<number, string> = {
   1: 'Quick Eyes',
   2: 'Quick Draw',
-  3: 'Reaction Challenge',
+  3: 'Think Fast',
   4: 'Sound Check',
-  5: 'Think Fast',
+  5: 'Memory Chain',
 }
 
 interface Me {
