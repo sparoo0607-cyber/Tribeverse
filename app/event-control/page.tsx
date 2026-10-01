@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import WallModeration from '@/components/WallModeration'
+import { DECKS, sceneAnswer } from '@/lib/displayDeck'
+import { fetchEventFlow, setEventFlowStep, subscribeToEventChanges } from '@/lib/stageStore'
 import {
  fetchStageStates,
  subscribeToStageChanges,
@@ -13,13 +14,14 @@ import {
 } from '@/lib/stageStore'
 
 // Only the stages that are on the official itinerary, in running order.
-const ITINERARY_SLUGS = ['inauguration', 'briefs', 'talent-hunt', 'playground', 'lunch', 'playground-continuous', 'jam', 'reveal', 'wall']
+const ITINERARY_SLUGS = ['inauguration', 'briefs', 'talent-hunt', 'playground', 'lunch', 'jam', 'reveal', 'wall']
 
 export default function AdminGamesManagerPage() {
  const [stages, setStages] = useState<Record<string, StageState>>({})
  const [broadcastText, setBroadcastText] = useState('')
  const [lastActionMsg, setLastActionMsg] = useState('')
  const [busySlug, setBusySlug] = useState<string | null>(null)
+ const [flow, setFlow] = useState<{ id: string; currentStep: number } | null>(null)
 
  useEffect(() =>{
  let cancelled = false
@@ -34,6 +36,37 @@ export default function AdminGamesManagerPage() {
  return () =>{ cancelled = true; unsubscribe() }
  }, [])
 
+ useEffect(() =>{
+ let cancelled = false
+ const loadFlow = async () =>{ const f = await fetchEventFlow(); if (!cancelled) setFlow(f) }
+ loadFlow()
+ const unsub = subscribeToEventChanges(loadFlow)
+ return () =>{ cancelled = true; unsub() }
+ }, [])
+
+ const moveScene = async (slug: string, delta: number | 'reset') =>{
+ if (!flow) return
+ const len = DECKS[slug]?.length ?? 1
+ const next = delta === 'reset' ? 0 : Math.min(Math.max(flow.currentStep + delta, 0), len - 1)
+ setFlow({ ...flow, currentStep: next })
+ await setEventFlowStep(flow.id, next)
+ }
+
+ // ← / → drive the projector for whichever stage is live
+ useEffect(() =>{
+ const onKey = (e: KeyboardEvent) =>{
+ const el = e.target as HTMLElement
+ if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return
+ if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+ const live = ITINERARY_SLUGS.find((s) => stages[s]?.status === 'live' && (DECKS[s]?.length ?? 0) > 0)
+ if (!live) return
+ e.preventDefault()
+ moveScene(live, e.key === 'ArrowRight' ? 1 : -1)
+ }
+ window.addEventListener('keydown', onKey)
+ return () =>window.removeEventListener('keydown', onKey)
+ })
+
  const flash = (msg: string) =>{
  setLastActionMsg(msg)
  setTimeout(() =>setLastActionMsg(''), 4000)
@@ -42,6 +75,7 @@ export default function AdminGamesManagerPage() {
  const handleStatusChange = async (slug: string, status: 'locked'|'live'|'completed') =>{
  setBusySlug(slug)
  await setStageStatus(slug, status)
+ if (status === 'live' && flow) { await setEventFlowStep(flow.id, 0); setFlow({ ...flow, currentStep: 0 }) }
  if (slug === 'reveal' && status === 'live') {
  const supabase = createClient()
  await supabase.from('events').update({ reveal_activated: true }).neq('id', '00000000-0000-0000-0000-000000000000')
@@ -187,22 +221,37 @@ export default function AdminGamesManagerPage() {
  </div>
  </div>
 
- {st.slug ==='playground'&& (
- <div className="mt-4 pt-4 border-t border-white/10">
- <p className="text-xs font-bold text-white/40 font-display uppercase tracking-widest mb-2">Per-Round Controllers</p>
- <div className="flex flex-wrap gap-2">
- <Link
- href="/event-control/playground/quick-eyes"
- className="px-3 py-2 bg-[#1A6FFF]/20 hover:bg-[#1A6FFF]/30 border border-[#1A6FFF]/40 text-[#1A6FFF] rounded-xl text-xs font-black font-display uppercase transition-colors"
- >
- Quick Eyes →
- </Link>
- {['Quick Draw', 'Think Fast', 'Sound Check', 'Reaction Game'].map(name =>(
- <span key={name} className="px-3 py-2 bg-white/[0.03] border border-white/10 text-white/25 rounded-xl text-xs font-black font-display uppercase cursor-not-allowed">
- {name} (soon)
+ {isLive && (DECKS[st.slug]?.length ?? 0) > 0 && flow && (
+ <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-3">
+ <p className="text-xs font-bold text-white/40 font-display uppercase tracking-widest">Projector</p>
+ <button onClick={() =>moveScene(st.slug, -1)} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-black font-display uppercase">← Prev</button>
+ <span className="text-white text-sm font-bold font-display">
+ {Math.min(flow.currentStep, DECKS[st.slug].length - 1) + 1} / {DECKS[st.slug].length} · {DECKS[st.slug][Math.min(flow.currentStep, DECKS[st.slug].length - 1)].title}
  </span>
+ <button onClick={() =>moveScene(st.slug, 1)} className="px-4 py-2 bg-[#FFE600] hover:bg-[#D4FF00] text-black rounded-xl text-xs font-black font-display uppercase">Next →</button>
+ <button onClick={() =>moveScene(st.slug, 'reset')} className="px-3 py-2 text-white/50 hover:text-white text-xs font-bold font-display uppercase">Restart</button>
+ {sceneAnswer(DECKS[st.slug][Math.min(flow.currentStep, DECKS[st.slug].length - 1)]) && (
+ <p className="w-full text-xs text-[#FFE600] bg-[#FFE600]/10 border border-[#FFE600]/30 rounded-xl px-3 py-2 font-bold">
+ Host only: {sceneAnswer(DECKS[st.slug][Math.min(flow.currentStep, DECKS[st.slug].length - 1)])}
+ </p>
+ )}
+ <p className="w-full text-[10px] text-white/30 font-mono">Keyboard: ← Prev · → Next</p>
+ {DECKS[st.slug].length > 1 && (
+ <div className="w-full flex flex-wrap gap-1.5">
+ {DECKS[st.slug].map((sc, i) =>(
+ <button
+ key={i}
+ onClick={() =>moveScene(st.slug, i - flow.currentStep)}
+ title={sc.title}
+ className={`min-w-9 px-2.5 py-1.5 rounded-lg text-[11px] font-black font-display transition-colors ${
+ i === Math.min(flow.currentStep, DECKS[st.slug].length - 1) ? 'bg-[#FFE600] text-black' : 'bg-white/5 hover:bg-white/15 text-white/60'
+ }`}
+ >
+ {i + 1}
+ </button>
  ))}
  </div>
+ )}
  </div>
  )}
 

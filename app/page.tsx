@@ -173,13 +173,11 @@ export default function LandingPage() {
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
  <span>CAMPUS EXPERIENCE</span><span className="mx"><Icon name="sparkle" /></span>
- <span>500+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  <span>ONE DAY</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FIND YOUR TRIBE</span><span className="mx"><Icon name="sparkle" /></span>
  <span>TRIBEVERSE V1</span><span className="mx"><Icon name="sparkle" /></span>
  <span>FRESHERS EDITION</span><span className="mx"><Icon name="sparkle" /></span>
  <span>OPEN PARTICIPATION</span><span className="mx"><Icon name="sparkle" /></span>
- <span>500+ STUDENTS</span><span className="mx"><Icon name="sparkle" /></span>
  </div>
  </div>
  </div>
@@ -335,11 +333,10 @@ export default function LandingPage() {
  </div>
  <div className="inaug-layout">
  <div className="inaug-text">
- <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration as 500+ freshers step into something larger than themselves. Today is the day your tribe is born.</p>
+ <p className="inaug-desc">Every great story has a beginning. TRIBEVERSE begins with a declaration as freshers step into something larger than themselves. Today is the day your tribe is born.</p>
  <div className="inaug-details">
             <div className="idetail"><span className="ilabel">PHASE</span><span className="ival">Stage 01 · Launch</span></div>
             <div className="idetail"><span className="ilabel">FORMAT</span><span className="ival">Opening Ceremony</span></div>
-            <div className="idetail"><span className="ilabel">ATTENDANCE</span><span className="ival">500 to 600 Participants</span></div>
  </div>
  </div>
  <div className="inaug-emblem">
@@ -392,8 +389,8 @@ export default function LandingPage() {
  <div className="round-card">
  <div className="rnum">05</div>
  <div className="ricon"><Icon name="bolt" className="w-10 h-10" /></div>
- <h3 className="rname">REACTION GAME</h3>
- <p>Pure instinct. Zero hesitation. The fastest reaction wins it all.</p>
+ <h3 className="rname">MEMORY CHAIN</h3>
+ <p>Watch. Remember. Recall the exact order, one item at a time.</p>
  </div>
  </div>
  <p className="pg-quote">"One playground. Five ways to prove yourself."</p>

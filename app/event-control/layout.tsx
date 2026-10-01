@@ -13,7 +13,7 @@ import Icon, { IconName } from '@/components/icons/Icon'
 // stage gets its own route so the sidebar never links to a 404.
 const STAGES: { href: string; label: string; slug: string | null; icon: IconName }[] = [
   { href: '/event-control', label: 'All Stages', slug: null, icon: 'clapperboard' },
-  { href: '/event-control/playground/quick-eyes', label: 'Playground · Quick Eyes', slug: 'playground', icon: 'game-controller' },
+  { href: '/event-control/playground/quick-eyes', label: 'Tribe Playground', slug: 'playground', icon: 'game-controller' },
 ]
 
 export default function EventControlLayout({ children }: { children: React.ReactNode }) {

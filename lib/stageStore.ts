@@ -49,7 +49,7 @@ export const STAGE_REVEAL_TEMPLATES: Record<string, { revealedAnswers: RevealedA
       { title: 'Round 2: Quick Draw', answer: 'Visual Recognition', explanation: 'Speed and team clue synchronization.' },
       { title: 'Round 3: Think Fast', answer: 'Tribe Protocol 2026', explanation: 'The official keyword decoded from the binary clue.' },
       { title: 'Round 4: Sound Check', answer: 'Track Rhythm Clue', explanation: 'Recognized within 3 seconds.' },
-      { title: 'Round 5: Reaction Time', answer: '184ms', explanation: 'Fastest reaction score logged during the round.' },
+      { title: 'Round 5: Memory Chain', answer: 'Longest Chain Recalled', explanation: 'Most items reproduced in the exact order.' },
     ],
     customNote: 'Tribe Playground (Part 1) concluded!',
   },
@@ -240,17 +240,20 @@ export async function pushBroadcast(message: string, type: BroadcastNotification
 }
 
 // Host (Event Flow runner): read the live event row (id + current step).
-export async function fetchEventFlow(): Promise<{ id: string; currentStep: number } | null> {
+// The projector position is stored as one number: screen index * 10 + phase
+// (phase = Show Image / Show Question / Show Answer / Start Timer ... within a screen).
+export async function fetchEventFlow(): Promise<{ id: string; currentStep: number; phase: number } | null> {
   const supabase = createClient()
   const { data } = await supabase.from('events').select('id, current_step').order('created_at').limit(1).maybeSingle()
   if (!data) return null
-  return { id: data.id, currentStep: data.current_step ?? 0 }
+  const raw: number = data.current_step ?? 0
+  return { id: data.id, currentStep: Math.floor(raw / 10), phase: raw % 10 }
 }
 
 // Host: advance/rewind the Event Flow for every synced screen.
-export async function setEventFlowStep(eventId: string, step: number) {
+export async function setEventFlowStep(eventId: string, step: number, phase = 0) {
   const supabase = createClient()
-  await supabase.from('events').update({ current_step: step }).eq('id', eventId)
+  await supabase.from('events').update({ current_step: step * 10 + phase }).eq('id', eventId)
 }
 
 // Subscribe to live cross-device changes on the event row (flow step, status).

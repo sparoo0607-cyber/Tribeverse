@@ -2,19 +2,28 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { fetchStageStates, subscribeToStageChanges } from '@/lib/stageStore'
+import { fetchStageStates, subscribeToStageChanges, fetchEventFlow, subscribeToEventChanges } from '@/lib/stageStore'
+import { DECKS } from '@/lib/displayDeck'
+import SceneView from '@/components/display/Scenes'
 
 // Stages that already have a dedicated fullscreen display route wired up.
 const STAGE_DISPLAY_ROUTE: Record<string, string> = {
-  playground: '/display/playground/quick-eyes',
 }
 
 export default function DisplayHomePage() {
   const [liveStageName, setLiveStageName] = useState<string | null>(null)
+  const [liveSlug, setLiveSlug] = useState<string | null>(null)
+  const [step, setStep] = useState(0)
+  const [phase, setPhase] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
     let cancelled = false
+
+    async function syncStep() {
+      const flow = await fetchEventFlow()
+      if (!cancelled && flow) { setStep(flow.currentStep); setPhase(flow.phase) }
+    }
 
     async function sync() {
       const stages = await fetchStageStates()
@@ -22,17 +31,26 @@ export default function DisplayHomePage() {
       const live = Object.values(stages).find((s) => s.status === 'live')
       if (live) {
         setLiveStageName(live.name)
+        setLiveSlug(live.slug)
         const route = STAGE_DISPLAY_ROUTE[live.slug]
         if (route) { router.replace(route); return }
       } else {
         setLiveStageName(null)
+        setLiveSlug(null)
       }
     }
 
     sync()
+    syncStep()
     const unsub = subscribeToStageChanges(sync)
-    return () => { cancelled = true; unsub() }
+    const unsubEvent = subscribeToEventChanges(syncStep)
+    return () => { cancelled = true; unsub(); unsubEvent() }
   }, [router])
+
+  const deck = liveSlug ? DECKS[liveSlug] : undefined
+  if (deck && deck.length > 0) {
+    return <SceneView scene={deck[Math.min(Math.max(step, 0), deck.length - 1)]} phase={phase} />
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
