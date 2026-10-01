@@ -78,16 +78,16 @@ export default function AdminScannerPage() {
           video: { facingMode: 'environment' },
         })
         streamRef.current = stream
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-          videoRef.current.play()
-        }
         setCameraActive(true)
       } else {
         setCameraError('Camera access not supported on this device/browser.')
       }
     } catch (err: any) {
-      setCameraError('Camera permission denied or camera not found.')
+      setCameraError(
+        window.isSecureContext
+          ? 'Camera permission denied or camera not found.'
+          : 'Camera needs HTTPS (or localhost). Open the site over https://.'
+      )
     }
   }
 
@@ -99,6 +99,16 @@ export default function AdminScannerPage() {
     }
     setCameraActive(false)
   }
+
+  // The <video> only mounts once the camera is active, so attach the stream here
+  useEffect(() => {
+    if (!cameraActive) return
+    const video = videoRef.current
+    if (video && streamRef.current) {
+      video.srcObject = streamRef.current
+      video.play().catch(() => {})
+    }
+  }, [cameraActive])
 
   // Decode QR codes from the live camera feed and look the participant up.
   useEffect(() => {
