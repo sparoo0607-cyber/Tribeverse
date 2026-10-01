@@ -239,14 +239,6 @@ export default function LandingPage() {
  <div className="stype"><span className="sbadge sb-green">Social</span></div>
  </div>
  <div className="srow">
- <div className="stime font-mono text-[#00FFD1] font-bold">1:00 – 2:00 PM</div>
- <div className="sevent">
- <span className="sname"><Icon name="trophy" /> TRIBE PLAYGROUND CONTINUOUS</span>
- <span className="sdetail">Continuation of Playground activities and completion of remaining participation.</span>
- </div>
- <div className="stype"><span className="sbadge sb-teal">Challenges</span></div>
- </div>
- <div className="srow">
  <div className="stime font-mono text-[#FF6B1A] font-bold">2:00 – 3:00 PM</div>
  <div className="sevent">
  <span className="sname"><Icon name="piano" /> TRIBE JAM</span>
