@@ -1,6 +1,7 @@
 // middleware.ts
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { EVENT_LOCK_COOKIE, eventLockToken } from '@/lib/eventLock'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -60,6 +61,16 @@ export async function middleware(request: NextRequest) {
   // Only admins may access the admin desk or the per-stage Event Control cockpit
   if ((pathname.startsWith('/admin') || pathname.startsWith('/event-control')) && role !== 'admin') {
     return NextResponse.redirect(new URL(homeFor(role), request.url))
+  }
+
+  // Event Control needs a second password on top of the admin login
+  if (pathname.startsWith('/event-control')) {
+    const token = await eventLockToken()
+    if (!token || request.cookies.get(EVENT_LOCK_COOKIE)?.value !== token) {
+      const lock = new URL('/admin/event-lock', request.url)
+      lock.searchParams.set('next', pathname)
+      return NextResponse.redirect(lock)
+    }
   }
 
   // Admins use the admin desk instead; students and hosts (who embed the

@@ -7,9 +7,9 @@ import Icon, { IconName } from '@/components/icons/Icon'
 
 const TABS: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Home', icon: 'bolt' },
-  { href: '/event-control', label: 'Control', icon: 'monitor' },
   { href: '/admin/scanner', label: 'Check-in', icon: 'camera' },
   { href: '/admin/participants', label: 'People', icon: 'users' },
+  { href: '/event-control', label: 'Control', icon: 'monitor' },
 ]
 
 // Fixed bottom tab bar for phones, shared by the admin desk and Event Control.
