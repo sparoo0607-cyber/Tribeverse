@@ -12,7 +12,6 @@ const ITINERARY: { time: string; name: string; icon: IconName; color: string; de
   { time: '10:30 to 11:00 AM', name: 'Talent Hunt', icon: 'sparkles', color: '#7B2FFF', desc: 'Open platform to showcase your talents and creative skills.' },
   { time: '11:00 AM to 12:00 PM', name: 'Tribe Playground', icon: 'game-controller', color: '#FF2D87', desc: 'Interactive activities for participation, creativity and quick thinking.' },
   { time: '12:00 to 1:00 PM', name: 'Lunch Break', icon: 'pizza', color: '#FF6B1A', desc: 'Lunch, relaxation and informal interaction.' },
-  { time: '1:00 to 2:00 PM', name: 'Tribe Playground Continues', icon: 'game-controller', color: '#FF2D87', desc: 'Remaining Playground activities and participation.' },
   { time: '2:00 to 3:00 PM', name: 'Tribe Jam', icon: 'piano', color: '#FF2D2D', desc: 'Live keyboard, singing, dance and rap.' },
   { time: '3:00 to 3:20 PM', name: 'Tribeverse Reveal', icon: 'globe', color: '#1A6FFF', desc: 'Closing reveal connecting the day with the TRIBEVERSE identity.' },
   { time: '3:20 to 3:30 PM', name: 'Closing', icon: 'confetti', color: '#D4FF00', desc: 'Final thank you, group moments and the next chapter.' },

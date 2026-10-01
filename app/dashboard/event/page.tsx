@@ -11,10 +11,9 @@ const SCHEDULE: { time: string; stage: string; name: string; icon: IconName; typ
   { time: '10:30 – 11:00 AM', stage: 'SEGMENT 03', name: 'Talent Hunt', icon: 'sparkle', type: 'Talent', badgeBg: 'bg-purple-500/20 text-purple-300 border-purple-500/30', desc: 'Open platform for students to showcase their talents and creative skills.' },
   { time: '11:00 AM – 12:00 PM', stage: 'SEGMENT 04', name: 'Tribe Playground', icon: 'game-controller', type: 'Activities', badgeBg: 'bg-pink-500/20 text-pink-300 border-pink-500/30', desc: 'Interactive activities focused on participation, creativity and quick thinking.' },
   { time: '12:00 – 1:00 PM', stage: 'BREAK', name: 'Lunch Break', icon: 'pizza', type: 'Break', badgeBg: 'bg-green-500/20 text-green-300 border-green-500/30', desc: 'Break for lunch, relaxation and informal interaction among participants.' },
-  { time: '1:00 – 2:00 PM', stage: 'SEGMENT 05', name: 'Tribe Playground (Continuous)', icon: 'game-controller', type: 'Activities', badgeBg: 'bg-pink-500/20 text-pink-300 border-pink-500/30', desc: 'Continuation of Playground activities and completion of remaining participation.' },
-  { time: '2:00 – 3:00 PM', stage: 'SEGMENT 06', name: 'Tribe Jam', icon: 'piano', type: 'Pure Jam', badgeBg: 'bg-red-500/20 text-red-300 border-red-500/30', desc: 'Pure Jamming Session with live keyboard, singing, dance, rap, and beats.' },
-  { time: '3:00 – 3:20 PM', stage: 'SEGMENT 07', name: 'Tribeverse Reveal', icon: 'globe', type: 'Reveal', badgeBg: 'bg-[#FFE600] text-black font-black', desc: 'Closing reveal connecting the day & welcoming freshers into Student Tribe.' },
-  { time: '3:20 – 3:30 PM', stage: 'SEGMENT 08', name: 'Closing', icon: 'check', type: 'Closing', badgeBg: 'bg-white/10 text-white/80 border-white/20', desc: 'Final thank you, celebration and student community induction.' },
+  { time: '2:00 – 3:00 PM', stage: 'SEGMENT 05', name: 'Tribe Jam', icon: 'piano', type: 'Pure Jam', badgeBg: 'bg-red-500/20 text-red-300 border-red-500/30', desc: 'Pure Jamming Session with live keyboard, singing, dance, rap, and beats.' },
+  { time: '3:00 – 3:20 PM', stage: 'SEGMENT 06', name: 'Tribeverse Reveal', icon: 'globe', type: 'Reveal', badgeBg: 'bg-[#FFE600] text-black font-black', desc: 'Closing reveal connecting the day & welcoming freshers into Student Tribe.' },
+  { time: '3:20 – 3:30 PM', stage: 'SEGMENT 07', name: 'Closing', icon: 'check', type: 'Closing', badgeBg: 'bg-white/10 text-white/80 border-white/20', desc: 'Final thank you, celebration and student community induction.' },
 ]
 
 export default function EventGuidePage() {
