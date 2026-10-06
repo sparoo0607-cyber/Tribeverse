@@ -80,6 +80,7 @@ export default function LandingPage() {
           <li><a href="#overview" className="nav-link" onClick={() => setMenuOpen(false)}>Overview</a></li>
           <li><a href="#schedule" className="nav-link" onClick={() => setMenuOpen(false)}>Itinerary</a></li>
           <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
+          <li><Link href="/ambassador" className="nav-link text-[#FF2D87] font-bold" onClick={() => setMenuOpen(false)}>Ambassadors</Link></li>
           <li>
             <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
               LOGIN
@@ -559,6 +560,7 @@ export default function LandingPage() {
  <p>TRIBEVERSE V1 · FRESHERS EDITION</p>
  </div>
  <p className="footer-tag">Structure. Purpose. Teamwork.</p>
+ <p className="footer-tag"><Link href="/ambassador" className="underline">Become a Campus Ambassador →</Link></p>
  </div>
  </footer>
  </div>

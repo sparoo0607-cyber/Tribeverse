@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
   // directory — scanning a member's QR code must open their page directly,
   // not bounce through login.
   const publicRoutes = ['/', '/login', '/register', '/auth/callback']
-  if (publicRoutes.includes(pathname) || pathname.startsWith('/display') || pathname.startsWith('/team')) {
+  if (publicRoutes.includes(pathname) || pathname.startsWith('/display') || pathname.startsWith('/team') || pathname === '/ambassador') {
     return supabaseResponse
   }
 

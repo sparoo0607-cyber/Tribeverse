@@ -10,6 +10,7 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Control Center', icon: 'bolt' },
   { href: '/admin/scanner', label: 'QR Check-in & Tags', icon: 'camera' },
   { href: '/admin/participants', label: 'Participants', icon: 'users' },
+  { href: '/admin/ambassadors', label: 'Ambassadors', icon: 'sparkles' },
   { href: '/event-control', label: 'Event Control', icon: 'monitor' },
 ]
 

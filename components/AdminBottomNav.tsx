@@ -9,6 +9,7 @@ const TABS: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin', label: 'Home', icon: 'bolt' },
   { href: '/admin/scanner', label: 'Check-in', icon: 'camera' },
   { href: '/admin/participants', label: 'People', icon: 'users' },
+  { href: '/admin/ambassadors', label: 'Tribe', icon: 'sparkles' },
   { href: '/event-control', label: 'Control', icon: 'monitor' },
 ]
 
@@ -28,7 +29,7 @@ export default function AdminBottomNav() {
       className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#050505]/95 backdrop-blur border-t border-white/10"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <ul className="grid grid-cols-5">
+      <ul className="grid grid-cols-6">
         {TABS.map((t) => {
           const active = pathname === t.href || (t.href !== '/admin' && pathname.startsWith(t.href))
           return (
