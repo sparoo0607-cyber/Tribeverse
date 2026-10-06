@@ -1,5 +1,6 @@
 'use client'
 
+import PostponedBanner from '@/components/PostponedBanner'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import './landing.css'
@@ -37,6 +38,21 @@ export default function LandingPage() {
  const [menuOpen, setMenuOpen] = useState(false)
  const [notes, setNotes] = useState<Note[]>(INITIAL_NOTES)
  const [dreamInput, setDreamInput] = useState('')
+
+ useEffect(() => {
+   try {
+     const saved = localStorage.getItem('tribeverse_user_dreams')
+     if (saved) {
+       const parsed = JSON.parse(saved)
+       if (Array.isArray(parsed) && parsed.length > 0) {
+         setNotes([...parsed, ...INITIAL_NOTES])
+       }
+     }
+   } catch {
+     // Ignore storage errors
+   }
+ }, [])
+
  useEffect(() => {
  document.body.style.overflow = menuOpen ? 'hidden' : ''
  return () => { document.body.style.overflow = '' }
@@ -60,7 +76,15 @@ export default function LandingPage() {
  const colors = ['#FFE600', '#FF6BDE', '#00FFD1', '#FF8C42', '#6BFFA0']
  const rot = (Math.random() * 8 - 4).toFixed(1) +'deg'
  const col = colors[Math.floor(Math.random() * colors.length)]
- setNotes(prev =>[{ id: Date.now(), text: dreamInput.trim(), r: rot, c: col }, ...prev])
+ const newNote: Note = { id: Date.now(), text: dreamInput.trim(), r: rot, c: col }
+ setNotes(prev =>[newNote, ...prev])
+ try {
+   const saved = localStorage.getItem('tribeverse_user_dreams')
+   const existing = saved ? JSON.parse(saved) : []
+   localStorage.setItem('tribeverse_user_dreams', JSON.stringify([newNote, ...existing]))
+ } catch {
+   // Ignore storage errors
+ }
  setDreamInput('')
  }
 
@@ -79,16 +103,11 @@ export default function LandingPage() {
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           <li><a href="#overview" className="nav-link" onClick={() => setMenuOpen(false)}>Overview</a></li>
           <li><a href="#schedule" className="nav-link" onClick={() => setMenuOpen(false)}>Itinerary</a></li>
+          <li><a href="#ecosystem" className="nav-link" onClick={() => setMenuOpen(false)}>Divisions</a></li>
           <li><a href="#team" className="nav-link text-[#FFE600] font-bold" onClick={() => setMenuOpen(false)}>Tribe Team</a></li>
-          <li><Link href="/ambassador" className="nav-link text-[#FF2D87] font-bold" onClick={() => setMenuOpen(false)}>Ambassadors</Link></li>
           <li>
             <Link href="/login" className="nav-link nav-link-login" onClick={() => setMenuOpen(false)}>
               LOGIN
-            </Link>
-          </li>
-          <li>
-            <Link href="/register" className="nav-link nav-link-cta" onClick={() => setMenuOpen(false)}>
-              ENTER TRIBEVERSE →
             </Link>
           </li>
         </ul>
@@ -113,11 +132,12 @@ export default function LandingPage() {
  <div className="hero-wavy-deco top-deco"></div>
  <div className="hero-inner">
  <div className="hero-badge"><Icon name="sparkles" className="w-4 h-4" /> FRESHERS EDITION</div>
+ <PostponedBanner className="max-w-xl mx-auto mb-4" />
  <CurvedTitle />
  <div className="hero-actions">
- <Link href="/register" className="hero-cta">
- ENTER TRIBEVERSE →
- </Link>
+ <span className="hero-cta" aria-disabled="true" style={{ opacity: 0.6, cursor: 'not-allowed' }}>
+ REGISTRATIONS ON HOLD
+ </span>
  <a href="#schedule" className="hero-cta-secondary">
  Explore Event Flow ↓
  </a>
@@ -232,9 +252,9 @@ export default function LandingPage() {
  <div className="stype"><span className="sbadge sb-pink">Playground</span></div>
  </div>
  <div className="srow srow-lunch">
- <div className="stime font-mono text-white/80 font-bold">12:00 – 1:00 PM</div>
+ <div className="stime font-mono text-white/80 font-bold">12:00 – 2:00 PM</div>
  <div className="sevent">
- <span className="sname"><Icon name="pizza" /> LUNCH</span>
+ <span className="sname"><Icon name="pizza" /> LUNCH &amp; FREE TIME</span>
  <span className="sdetail">Break for lunch, relaxation and informal interaction among participants.</span>
  </div>
  <div className="stype"><span className="sbadge sb-green">Social</span></div>
@@ -317,8 +337,8 @@ export default function LandingPage() {
       </div>
     </section>
 
- {/* ── 4. INAUGURATION ── */}
- <section className="section inaug-sec" id="inauguration">
+  {/* ── 5. INAUGURATION ── */}
+  <section className="section inaug-sec" id="inauguration">
  <div className="section-inner">
  <div className="sec-num" aria-hidden="true">05</div>
  <div className="sec-header">
@@ -345,8 +365,8 @@ export default function LandingPage() {
  </div>
  </section>
 
- {/* ── 5. TRIBE PLAYGROUND ── */}
- <section className="section playground-sec" id="playground">
+  {/* ── 6. TRIBE PLAYGROUND ── */}
+  <section className="section playground-sec" id="playground">
  <div className="pg-wavy-top"></div>
  <div className="section-inner">
  <div className="sec-num light-num" aria-hidden="true">06</div>
@@ -514,7 +534,7 @@ export default function LandingPage() {
  <span className="rfp p7"></span><span className="rfp p8">◆</span>
  </div>
  <div className="section-inner rf-inner">
- <div className="sec-num light-num" aria-hidden="true">09</div>
+ <div className="sec-num light-num" aria-hidden="true">10</div>
  <div className="rf-header">
  <span className="rf-label">TRIBEVERSE REVEAL</span>
  </div>
@@ -533,12 +553,9 @@ export default function LandingPage() {
  <h2 className="rf-welcome-title">WELCOME TO TRIBEVERSE.</h2>
  <p className="rf-welcome-sub">YOUR JOURNEY STARTS HERE.</p>
  <div className="mb-8">
- <Link
- href="/register"
- className="hero-cta"
- >
- ENTER TRIBEVERSE PLATFORM →
- </Link>
+ <span className="hero-cta" aria-disabled="true" style={{ opacity: 0.6, cursor: 'not-allowed' }}>
+ REGISTRATIONS ON HOLD
+ </span>
  </div>
  <div className="rf-logo">
  <span className="rfl-st">st.</span>
@@ -560,7 +577,6 @@ export default function LandingPage() {
  <p>TRIBEVERSE V1 · FRESHERS EDITION</p>
  </div>
  <p className="footer-tag">Structure. Purpose. Teamwork.</p>
- <p className="footer-tag"><Link href="/ambassador" className="underline">Become a Campus Ambassador →</Link></p>
  </div>
  </footer>
  </div>

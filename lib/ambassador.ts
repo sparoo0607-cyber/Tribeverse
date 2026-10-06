@@ -40,3 +40,19 @@ export interface AmbassadorApplication {
   created_at: string
   updated_at: string
 }
+
+// WhatsApp group invite link (set NEXT_PUBLIC_AMBASSADOR_WHATSAPP_LINK in .env.local).
+export const AMBASSADOR_WHATSAPP_LINK = process.env.NEXT_PUBLIC_AMBASSADOR_WHATSAPP_LINK ?? ''
+
+// Opens WhatsApp with a prefilled invite message to the applicant. Indian
+// 10-digit numbers get the 91 country code.
+export function whatsappInviteUrl(name: string, phone: string): string | null {
+  if (!AMBASSADOR_WHATSAPP_LINK) return null
+  let digits = phone.replace(/\D/g, '')
+  if (digits.length === 10) digits = '91' + digits
+  const first = name.trim().split(/\s+/)[0]
+  const text =
+    `Hi ${first}! 🎉 Congratulations, you've been shortlisted as a TRIBEVERSE Campus Ambassador.\n\n` +
+    `Join our WhatsApp group for the next steps:\n${AMBASSADOR_WHATSAPP_LINK}`
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`
+}

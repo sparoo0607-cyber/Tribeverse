@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   AMBASSADOR_SKILLS,
   AMBASSADOR_STATUSES,
+  AMBASSADOR_WHATSAPP_LINK,
+  whatsappInviteUrl,
   type AmbassadorApplication,
   type AmbassadorStatus,
 } from '@/lib/ambassador'
@@ -155,6 +157,7 @@ export default function AdminAmbassadorsPage() {
             <div className="mt-4 pt-4 border-t border-white/[0.06] flex flex-wrap gap-2 mt-auto">
               <button onClick={() => setOpenId(a.id)} className="px-3 py-2 rounded-lg bg-white/[0.08] hover:bg-white/[0.14] text-white text-xs font-black font-display">VIEW FULL</button>
               <button disabled={a.status === 'SHORTLISTED'} onClick={() => patch(a.id, { status: 'SHORTLISTED' })} className="px-3 py-2 rounded-lg bg-[#FFE600] text-black text-xs font-black font-display disabled:opacity-30">SHORTLIST</button>
+              {(a.status === 'SHORTLISTED' || a.status === 'SELECTED') && <WhatsAppButton app={a} />}
               <button disabled={a.status === 'REJECTED'} onClick={() => patch(a.id, { status: 'REJECTED' })} className="px-3 py-2 rounded-lg bg-red-500/20 text-red-300 text-xs font-black font-display disabled:opacity-30">REJECT</button>
             </div>
           </article>
@@ -222,6 +225,7 @@ function DetailModal({
             <button onClick={() => onPatch({ status: 'SHORTLISTED' })} className="px-4 py-2 rounded-lg bg-[#FFE600] text-black text-sm font-black font-display">SHORTLIST</button>
             <button onClick={() => onPatch({ status: 'SELECTED' })} className="px-4 py-2 rounded-lg bg-sky-500 text-white text-sm font-black font-display">SELECT</button>
             <button onClick={() => onPatch({ status: 'REJECTED' })} className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 text-sm font-black font-display">REJECT</button>
+            {(app.status === 'SHORTLISTED' || app.status === 'SELECTED') && <WhatsAppButton app={app} large />}
           </div>
         </Section>
 
@@ -259,4 +263,21 @@ function Long({ text }: { text: string | null }) {
   return text?.trim()
     ? <p className="text-white/80 text-sm whitespace-pre-wrap">{text}</p>
     : <p className="text-white/30 text-sm">—</p>
+}
+
+function WhatsAppButton({ app, large }: { app: AmbassadorApplication; large?: boolean }) {
+  const url = whatsappInviteUrl(app.full_name, app.phone)
+  const size = large ? 'px-4 py-2 text-sm' : 'px-3 py-2 text-xs'
+  if (!url) {
+    return (
+      <span className={`${size} rounded-lg bg-white/[0.06] text-white/40 font-bold`} title="Set NEXT_PUBLIC_AMBASSADOR_WHATSAPP_LINK in .env.local">
+        {AMBASSADOR_WHATSAPP_LINK ? '' : 'WhatsApp link not set'}
+      </span>
+    )
+  }
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" className={`${size} rounded-lg bg-[#25D366] text-black font-black font-display`}>
+      WHATSAPP INVITE
+    </a>
+  )
 }

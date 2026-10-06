@@ -1,5 +1,6 @@
 'use client'
 
+import PostponedBanner from '@/components/PostponedBanner'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -135,6 +136,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
  </header>
 
  <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-28 lg:pb-8 overflow-auto">
+ <PostponedBanner className="mb-4" />
  {children}
  </main>
 

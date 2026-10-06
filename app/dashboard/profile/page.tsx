@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
           <div className="pt-4 border-t border-white/10 flex justify-between items-center text-[10px] text-white/40 font-mono">
             <span>TRIBEVERSE V1</span>
-            <span>23 SEP 2026</span>
+            <span>NEW DATE TBA</span>
           </div>
         </div>
       )}

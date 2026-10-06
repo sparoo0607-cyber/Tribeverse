@@ -9,7 +9,7 @@ import Icon from '@/components/icons/Icon'
 
 const EVENT = {
   name: 'TRIBEVERSE V1',
-  date: 'Wednesday, 23 Sep 2026',
+  date: 'Postponed · new date TBA',
   time: '9:30 AM to 3:30 PM',
   venue: 'ANITS, Visakhapatnam',
 }

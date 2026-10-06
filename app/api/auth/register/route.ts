@@ -1,3 +1,4 @@
+import { REGISTRATIONS_OPEN, REGISTRATIONS_HOLD_MESSAGE } from '@/lib/event'
 import { createClient } from '@supabase/supabase-js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -8,6 +9,7 @@ function fail(error: string, status = 400, extra: Record<string, unknown> = {}) 
 }
 
 export async function POST(request: Request) {
+  if (!REGISTRATIONS_OPEN) return fail(REGISTRATIONS_HOLD_MESSAGE, 403)
   try {
     const body = await request.json()
 

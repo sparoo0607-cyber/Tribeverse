@@ -1,5 +1,6 @@
 'use client'
 
+import { REGISTRATIONS_OPEN, REGISTRATIONS_HOLD_MESSAGE } from '@/lib/event'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -121,6 +122,20 @@ export default function RegisterPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (!REGISTRATIONS_OPEN) {
+    return (
+      <div className="min-h-screen bg-[#0E1116] text-white flex items-center justify-center px-4">
+        <div className="max-w-md text-center">
+          <p className="font-black text-[#FFE600] text-sm tracking-widest font-display">⚠️ REGISTRATIONS ON HOLD</p>
+          <h1 className="mt-4 font-black text-3xl font-display">TRIBEVERSE V1 is postponed</h1>
+          <p className="mt-3 text-white/70">{REGISTRATIONS_HOLD_MESSAGE}</p>
+          <Link href="/" className="mt-8 inline-block px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 font-black font-display">← BACK HOME</Link>
+          <p className="mt-4 text-sm text-white/50">Already registered? <Link href="/login" className="text-[#FF2D87] font-bold">Login</Link></p>
+        </div>
+      </div>
+    )
   }
 
   return (

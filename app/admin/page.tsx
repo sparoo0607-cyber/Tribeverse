@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <h1 className="text-3xl font-black text-white font-display">Control Center</h1>
-          <p className="text-white/50 text-sm">TRIBEVERSE V1 · 23 Sep 2026 · 9:30 AM to 3:30 PM</p>
+          <p className="text-white/50 text-sm">TRIBEVERSE V1 · POSTPONED · new date TBA</p>
         </div>
         <span className={`self-start px-3 py-1 text-xs font-black rounded-full font-display ${liveStages.length ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-white/50'}`}>
           {liveStages.length ? `LIVE: ${liveStages.join(', ')}` : 'NO STAGE LIVE'}
