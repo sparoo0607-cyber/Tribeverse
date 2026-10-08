@@ -3,10 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   AMBASSADOR_SKILLS,
   AMBASSADOR_STATUSES,
-  AMBASSADOR_WHATSAPP_LINK,
-  whatsappInviteUrl,
+  WHATSAPP_TEMPLATES,
+  ambassadorsCsv,
+  whatsappMessage,
+  whatsappUrl,
   type AmbassadorApplication,
   type AmbassadorStatus,
+  type WhatsAppTemplate,
 } from '@/lib/ambassador'
 
 type Filter = 'ALL' | AmbassadorStatus
@@ -78,10 +81,29 @@ export default function AdminAmbassadorsPage() {
 
   const open = apps.find((a) => a.id === openId) ?? null
 
+  function exportCsv() {
+    const blob = new Blob([ambassadorsCsv(filtered)], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `ambassadors-${filter.toLowerCase()}-${new Date().toISOString().slice(0, 10)}.csv`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="max-w-5xl mx-auto">
       <p className="font-black text-[#FFE600] text-xs tracking-[0.3em] font-display">TRIBEVERSE</p>
-      <h1 className="font-black text-3xl sm:text-4xl text-white font-display tracking-tight">AMBASSADOR CONTROL</h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <h1 className="font-black text-3xl sm:text-4xl text-white font-display tracking-tight">AMBASSADOR CONTROL</h1>
+        <button
+          onClick={exportCsv}
+          disabled={filtered.length === 0}
+          className="px-4 py-2 rounded-xl bg-emerald-500 text-black text-sm font-black font-display disabled:opacity-30"
+        >
+          ⬇ EXPORT SHEET ({filtered.length})
+        </button>
+      </div>
       <p className="mt-1 text-white/50 text-sm">
         Applications: <span className="font-black text-white">{apps.length}</span>
         {' · '}Public form: <a href="/ambassador" target="_blank" className="text-[#FF2D87] font-bold">/ambassador</a>
@@ -157,7 +179,7 @@ export default function AdminAmbassadorsPage() {
             <div className="mt-4 pt-4 border-t border-white/[0.06] flex flex-wrap gap-2 mt-auto">
               <button onClick={() => setOpenId(a.id)} className="px-3 py-2 rounded-lg bg-white/[0.08] hover:bg-white/[0.14] text-white text-xs font-black font-display">VIEW FULL</button>
               <button disabled={a.status === 'SHORTLISTED'} onClick={() => patch(a.id, { status: 'SHORTLISTED' })} className="px-3 py-2 rounded-lg bg-[#FFE600] text-black text-xs font-black font-display disabled:opacity-30">SHORTLIST</button>
-              {(a.status === 'SHORTLISTED' || a.status === 'SELECTED') && <WhatsAppButton app={a} />}
+              {a.status !== 'NEW' && <WhatsAppButton app={a} template={a.status} />}
               <button disabled={a.status === 'REJECTED'} onClick={() => patch(a.id, { status: 'REJECTED' })} className="px-3 py-2 rounded-lg bg-red-500/20 text-red-300 text-xs font-black font-display disabled:opacity-30">REJECT</button>
             </div>
           </article>
@@ -225,8 +247,14 @@ function DetailModal({
             <button onClick={() => onPatch({ status: 'SHORTLISTED' })} className="px-4 py-2 rounded-lg bg-[#FFE600] text-black text-sm font-black font-display">SHORTLIST</button>
             <button onClick={() => onPatch({ status: 'SELECTED' })} className="px-4 py-2 rounded-lg bg-sky-500 text-white text-sm font-black font-display">SELECT</button>
             <button onClick={() => onPatch({ status: 'REJECTED' })} className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 text-sm font-black font-display">REJECT</button>
-            {(app.status === 'SHORTLISTED' || app.status === 'SELECTED') && <WhatsAppButton app={app} large />}
           </div>
+        </Section>
+
+        <Section title="WhatsApp Message">
+          <div className="flex flex-wrap gap-2">
+            {WHATSAPP_TEMPLATES.map((t) => <WhatsAppButton key={t.key} app={app} template={t.key} label={t.label} large />)}
+          </div>
+          <p className="mt-2 text-xs text-white/40">Opens WhatsApp with a ready message to {app.phone} — you just hit send.</p>
         </Section>
 
         <Section title="Internal Note">
@@ -265,19 +293,23 @@ function Long({ text }: { text: string | null }) {
     : <p className="text-white/30 text-sm">—</p>
 }
 
-function WhatsAppButton({ app, large }: { app: AmbassadorApplication; large?: boolean }) {
-  const url = whatsappInviteUrl(app.full_name, app.phone)
+function WhatsAppButton({
+  app,
+  template,
+  label,
+  large,
+}: {
+  app: AmbassadorApplication
+  template: WhatsAppTemplate
+  label?: string
+  large?: boolean
+}) {
+  const url = whatsappUrl(app.phone, whatsappMessage(template, app.full_name))
   const size = large ? 'px-4 py-2 text-sm' : 'px-3 py-2 text-xs'
-  if (!url) {
-    return (
-      <span className={`${size} rounded-lg bg-white/[0.06] text-white/40 font-bold`} title="Set NEXT_PUBLIC_AMBASSADOR_WHATSAPP_LINK in .env.local">
-        {AMBASSADOR_WHATSAPP_LINK ? '' : 'WhatsApp link not set'}
-      </span>
-    )
-  }
+  const style = template === 'REJECTED' ? 'bg-white/[0.08] text-[#25D366]' : 'bg-[#25D366] text-black'
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className={`${size} rounded-lg bg-[#25D366] text-black font-black font-display`}>
-      WHATSAPP INVITE
+    <a href={url} target="_blank" rel="noopener noreferrer" className={`${size} rounded-lg ${style} font-black font-display uppercase`}>
+      WhatsApp{label ? ` · ${label}` : ''}
     </a>
   )
 }
